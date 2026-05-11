@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "jsdom": "^29.1.1",
-    "markdownlint-cli2": "^0.14.0",
+    "markdownlint-cli2": "^0.22.1",
     "mermaid": "^11.14.0"
   },
   "engines": {
