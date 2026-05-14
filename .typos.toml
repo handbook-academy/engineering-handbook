@@ -127,6 +127,8 @@ designgurus = "designgurus"
 hellointerview = "hellointerview"
 interviewready = "interviewready"
 educative = "educative"
+Neet = "Neet"
+neet = "neet"
 
 [files]
 extend-exclude = [

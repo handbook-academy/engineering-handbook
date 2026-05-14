@@ -310,7 +310,7 @@ Think about: (1) the 10-day `gc_grace_seconds` deadline, (2) how much data 30 no
 - [RFC 6962: Certificate Transparency](https://datatracker.ietf.org/doc/html/rfc6962) - The cleanest standards-quality writeup of Merkle audit paths, consistency proofs, and domain-separated leaf hashing.
 - [Incremental Repair Improvements in Cassandra 4 (The Last Pickle)](https://thelastpickle.com/blog/2018/09/10/incremental-repair-improvements-in-cassandra-4.html) - Explains the pre-4.0 overstreaming bug and the transactional fix; essential production context.
 - [Cassandra Reaper](https://cassandra-reaper.io/) - The operational tool for scheduling repairs; read the Concepts page for segment sizing, back-pressure, and intensity tuning.
-- [Bitcoin Whitepaper, Section 7](https://bitcoin.org/bitcoin.pdf) - Merkle roots in 80-byte block headers enabling SPV light clients; the canonical non-database application of Merkle trees.
+- [Bitcoin Whitepaper, Section 7](https://nakamotoinstitute.org/static/docs/bitcoin.pdf) - Merkle roots in 80-byte block headers enabling SPV light clients; the canonical non-database application of Merkle trees.
 
 ## Flashcards
 
@@ -363,8 +363,8 @@ Think about: (1) the 10-day `gc_grace_seconds` deadline, (2) how much data 30 no
 [^9]: Laurie, Langley, Kasper, "Certificate Transparency", RFC 6962, IETF, June 2013. https://datatracker.ietf.org/doc/html/rfc6962
 [^10]: Alex Dejanovski, "Incremental Repair Improvements in Cassandra 4", The Last Pickle, 10 Sep 2018. https://thelastpickle.com/blog/2018/09/10/incremental-repair-improvements-in-cassandra-4.html
 [^11]: Chacon and Straub, "Pro Git, 2nd Edition", Chapter 10.2: Git Internals - Git Objects. https://git-scm.com/book/en/v2/Git-Internals-Git-Objects
-[^12]: Nakamoto, "Bitcoin: A Peer-to-Peer Electronic Cash System", 2008, section 7. https://bitcoin.org/bitcoin.pdf
-[^13]: Ethereum Execution Specs, state trie module documentation (Modified Merkle Patricia Trie). https://ethereum.github.io/execution-specs/diffs/gray_glacier/paris/trie.py.html
+[^12]: Nakamoto, "Bitcoin: A Peer-to-Peer Electronic Cash System", 2008, section 7. https://nakamotoinstitute.org/static/docs/bitcoin.pdf
+[^13]: Ethereum Foundation, "Patricia Merkle Trie." https://ethereum.org/en/developers/docs/data-structures-and-encoding/patricia-merkle-trie/ (see also the reference implementation at https://github.com/ethereum/execution-specs).
 [^14]: IPFS boxo source, `DefaultLinksPerBlock` and `DefaultBlockSize` (UnixFS importer). https://github.com/ipfs/boxo/blob/main/ipld/unixfs/importer/helpers/helpers.go
 [^15]: BitTorrent.org, "BEP 52: The BitTorrent Protocol Specification v2". https://www.bittorrent.org/beps/bep_0052.html
 [^16]: Cassandra Reaper, "Easy Repair Management for Apache Cassandra" and Concepts page. https://cassandra-reaper.io/docs/concepts/

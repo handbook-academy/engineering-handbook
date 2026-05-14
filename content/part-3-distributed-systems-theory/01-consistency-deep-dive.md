@@ -352,7 +352,7 @@ The key lesson: you did not pick one consistency level for the whole database. Y
 [^2]: Google Cloud. "Strict Serializability and External Consistency in Spanner." https://cloud.google.com/blog/products/databases/strict-serializability-and-external-consistency-in-spanner
 [^3]: Berenson, Bernstein, Gray, Melton, O'Neil, O'Neil. "A Critique of ANSI SQL Isolation Levels." SIGMOD 1995. https://www.microsoft.com/en-us/research/publication/a-critique-of-ansi-sql-isolation-levels/
 [^4]: Adya, Liskov, O'Neil. "Generalized Isolation Level Definitions." ICDE 2000. http://pmg.csail.mit.edu/pubs/adya00generalized-abstract.html
-[^5]: Adya. "Weak Consistency: A Generalized Theory and Optimistic Implementations for Distributed Transactions." PhD thesis, MIT, 1999. https://pmg.csail.mit.edu/papers/adya-phd.pdf
+[^5]: Adya. "Weak Consistency: A Generalized Theory and Optimistic Implementations for Distributed Transactions." PhD thesis, MIT, 1999. https://web.archive.org/web/2024/https://pmg.csail.mit.edu/papers/adya-phd.pdf
 [^6]: PostgreSQL. "Transaction Isolation." https://www.postgresql.org/docs/current/transaction-iso.html
 [^7]: Kingsbury. "PostgreSQL 12.3." Jepsen, 2020-06-12. https://jepsen.io/analyses/postgresql-12.3
 [^8]: Cahill, Rohm, Fekete. "Serializable Isolation for Snapshot Databases." SIGMOD 2008 / TODS 2009. https://dl.acm.org/doi/abs/10.1145/1620585.1620587

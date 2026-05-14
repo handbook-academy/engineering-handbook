@@ -350,7 +350,7 @@ This design gives offline-first editing with guaranteed convergence. The only fi
 
 ## References
 
-[^1]: Shapiro, Preguica, Baquero, Zawirski. "A comprehensive study of Convergent and Commutative Replicated Data Types." INRIA Research Report RR-7506, 2011. https://inria.hal.science/inria-00555588/en (mirror: https://pages.lip6.fr/Marc.Shapiro/papers/Comprehensive-CRDTs-RR7506-2011-01.pdf)
+[^1]: Shapiro, Preguica, Baquero, Zawirski. "A comprehensive study of Convergent and Commutative Replicated Data Types." INRIA Research Report RR-7506, 2011. https://inria.hal.science/inria-00555588/en (full PDF: https://hal.inria.fr/inria-00555588/document)
 [^2]: "Yjs in the Wild" (user list) and npm weekly downloads (https://www.npmjs.com/package/yjs; API: https://api.npmjs.org/downloads/point/last-week/yjs reports 4,115,526 for week of 2026-05-01). https://docs.yjs.dev/yjs-in-the-wild
 [^3]: Evan Wallace. "How Figma's multiplayer technology works." Figma Blog, October 16, 2019. Figma is "inspired by" CRDTs but explicitly not a true CRDT: "Figma isn't using true CRDTs though. CRDTs are designed for decentralized systems... Since Figma is centralized, we can simplify our system." https://www.figma.com/blog/how-figmas-multiplayer-technology-works/
 [^4]: Kleppmann, Wiggins, van Hardenberg, McGranaghan. "Local-first software: you own your data, in spite of the cloud." Onward! 2019. https://www.inkandswitch.com/essay/local-first/

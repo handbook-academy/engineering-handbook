@@ -137,7 +137,7 @@ On startup, a worker claims the lowest free slot via an ephemeral ZooKeeper node
 ```mermaid
 flowchart LR
     subgraph Clients["Application Services"]
-        A[Service A] 
+        A[Service A]
         B[Service B]
         C[Service C]
     end

@@ -528,7 +528,7 @@ A: Tier 1 (hash/regex): ~$0.01. Tier 2 (transformer): ~$2. Tier 3 (multimodal): 
 
 [^26]: AIAAIC Repository, "Facebook fails to manage Christchurch mosque shooting livestreaming". https://www.aiaaic.org/aiaaic-repository/ai-algorithmic-and-automation-incidents/facebook-fails-to-manage-christchurch-mosque-shooting-livestreaming
 
-[^27]: Washington Post, "New Zealand shooter's live stream", Mar 2019. https://www.washingtonpost.com/technology/2019/03/19/fewer-than-people-watched-new-zealand-massacre-live-hateful-group-helped-it-reach-millions/
+[^27]: Washington Post, "New Zealand shooter's live stream", Mar 2019. https://web.archive.org/web/2019/https://www.washingtonpost.com/technology/2019/03/19/fewer-than-people-watched-new-zealand-massacre-live-hateful-group-helped-it-reach-millions/
 
 [^28]: The Guardian, "Facebook trained its AI to block violent live streams after Christchurch attacks", Oct 2021. https://www.theguardian.com/technology/2021/oct/29/facebook-trained-its-ai-to-block-violent-live-streams-after-christchurch-attacks
 

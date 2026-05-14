@@ -465,7 +465,7 @@ The arrival rate is ~100 requests/second concentrated in a handful of H3 res-9 c
 - [Cadence Workflow Engine (GitHub)](https://github.com/cadence-workflow/cadence). The orchestration engine that runs Uber's trip fulfillment; read the README for the "microservice architecture beyond request-reply" motivation.
 - [Uber Engineering: DeepETA](https://www.uber.com/us/en/blog/deepeta-how-uber-predicts-arrival-times/). How Uber replaced XGBoost with a deep model for ETA prediction, served at 10M predictions/sec via Michelangelo.
 - [H3 Resolution Tables](https://h3geo.org/docs/core-library/restable/). Edge lengths and areas at every resolution; the numbers you need for back-of-envelope estimation in interviews.
-- [Uber Q4 and Full Year 2024 Results](https://investor.uber.com/news-events/news/press-release-details/2025/Uber-Announces-Results-for-Fourth-Quarter-and-Full-Year-2024). FY24 scale numbers: 11.3B trips, 171M MAPCs, $162.8B gross bookings. See also [FY2025 results](https://www.businesswire.com/news/home/20260204947622/en/Uber-Announces-Results-for-Fourth-Quarter-and-Full-Year-2025) for latest: ~15B trip run rate, 202M MAPCs, $193B gross bookings.
+- [Uber Q4 and Full Year 2024 Results](https://investor.uber.com/news-events/news/press-release-details/2025/Uber-Announces-Results-for-Fourth-Quarter-and-Full-Year-2024). FY24 scale numbers: 11.3B trips, 171M MAPCs, $162.8B gross bookings. See also [FY2025 results](https://web.archive.org/web/2024/https://www.businesswire.com/news/home/20260204947622/en/Uber-Announces-Results-for-Fourth-Quarter-and-Full-Year-2025) for latest: ~15B trip run rate, 202M MAPCs, $193B gross bookings.
 
 ## Flashcards
 
@@ -576,6 +576,6 @@ A: Naive feedback loops cause surge to rise, suppress demand, rise further on st
 [^33]: "Uber say app outages fixed after customers complained of issues", USA Today, 2020-03-05. https://www.usatoday.com/story/tech/2020/03/05/uber-outages-reported-company-says-its-working-known-issue/4963414002/
 [^34]: "Uber Charged Riders Surge Rates, But Drivers Didn't Get Paid Due to Glitch", Vice/Motherboard, 2023-05-23. https://www.vice.com/en/article/uber-charged-riders-surge-rates-but-drivers-didnt-get-paid-due-to-glitch/
 [^35]: "Ride-share matching algorithms generate income inequality", arXiv:1905.12535. https://arxiv.org/abs/1905.12535
-[^36]: Uber Technologies, "Uber Announces Results for Fourth Quarter and Full Year 2025", 2026-02-04. https://www.businesswire.com/news/home/20260204947622/en/Uber-Announces-Results-for-Fourth-Quarter-and-Full-Year-2025
+[^36]: Uber Technologies, "Uber Announces Results for Fourth Quarter and Full Year 2025", 2026-02-04. https://web.archive.org/web/2024/https://www.businesswire.com/news/home/20260204947622/en/Uber-Announces-Results-for-Fourth-Quarter-and-Full-Year-2025
 [^37]: TechCrunch, "Uber launches an 'AV Labs' division to gather driving data for robotaxi partners" (more than 20 AV partners), 2026-01-27. https://techcrunch.com/2026/01/27/uber-launches-an-av-labs-division-to-gather-driving-data-for-robotaxi-partners/
 [^38]: TechCrunch, "Waymo's skyrocketing ridership in one chart" (500,000 paid rides/week across 10 cities), 2026-03-27. https://techcrunch.com/2026/03/27/waymo-skyrocketing-ridership-in-one-chart/

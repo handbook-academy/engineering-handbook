@@ -1,6 +1,7 @@
 {
   "default": true,
   "line-length": false,
+  "table-column-style": false,
   "no-inline-html": {
     "allowed_elements": [
       "details",

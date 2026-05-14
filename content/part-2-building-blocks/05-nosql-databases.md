@@ -368,7 +368,7 @@ sequenceDiagram
 [^14]: Apache Cassandra documentation, "Data Definition Language." https://github.com/apache/cassandra/blob/trunk/doc/modules/cassandra/pages/developing/cql/ddl.adoc
 [^15]: Apache Cassandra documentation, "Consistency levels." https://cassandra.apache.org/doc/latest/cassandra/architecture/dynamo.html
 [^16]: Neo4j, "Graph Database vs. Relational Database." https://neo4j.com/blog/graph-database/graph-database-vs-relational-database/
-[^17]: Ken Wagatsuma, "Index-free Adjacency in Graph Databases." https://kenwagatsuma.com/blog/neo4j-index-free-adjacency-in-graph
+[^17]: Neo4j, "Graph Database Concepts" (index-free adjacency). https://neo4j.com/docs/getting-started/graph-database/
 [^18]: Mark Marchukov, "TAO: The power of the graph," Facebook Engineering, June 25, 2013. https://engineering.fb.com/core-data/tao-the-power-of-the-graph/
 [^19]: Meta Engineering, "RAMP-TAO: Layering atomic transactions on Facebook's online graph store," August 18, 2021. https://engineering.fb.com/2021/08/18/core-data/ramp-tao/
 [^20]: Google Cloud Spanner documentation, "TrueTime and external consistency." https://cloud.google.com/spanner/docs/true-time-external-consistency

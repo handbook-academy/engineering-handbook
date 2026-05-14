@@ -285,7 +285,7 @@ The test runs in milliseconds. No Spring context, no Testcontainers, no network 
 
 ## Further Reading
 
-- [Hexagonal Architecture](https://alistair.cockburn.us/hexagonal-architecture/) by Alistair Cockburn - The 2005 original with the primary/secondary actor asymmetry that later variants dropped; read this before any secondary source. (URL offline as of 2024; see the 2025 book *Hexagonal Architecture Explained* by Cockburn and Garrido de Paz.)
+- [Hexagonal Architecture](https://web.archive.org/web/2024/https://alistair.cockburn.us/hexagonal-architecture/) by Alistair Cockburn - The 2005 original with the primary/secondary actor asymmetry that later variants dropped; read this before any secondary source. (Original URL offline as of 2024; archived snapshot linked. See also the 2025 book *Hexagonal Architecture Explained* by Cockburn and Garrido de Paz.)
 - [The Clean Architecture](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html) by Robert C. Martin - The 2012 blog post that unified hexagonal, onion, DCI, and BCE under "the Dependency Rule"; short and canonical.
 - [The Onion Architecture: part 1](https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/) by Jeffrey Palermo - Contains the most useful warning: "not appropriate for small websites."
 - [Ready for changes with Hexagonal Architecture](https://netflixtechblog.com/ready-for-changes-with-hexagonal-architecture-b315ec967749) by Svrtan and Makagon, Netflix Tech Blog - The best public production case study with real numbers on test speed and data source swaps.
@@ -336,7 +336,7 @@ The test runs in milliseconds. No Spring context, no Testcontainers, no network 
 
 [^1]: Robert C. Martin, "The Clean Architecture", The Clean Code Blog, 13 August 2012. https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html
 [^2]: Damir Svrtan and Sergii Makagon, "Ready for changes with Hexagonal Architecture", Netflix TechBlog, 10 March 2020. https://netflixtechblog.com/ready-for-changes-with-hexagonal-architecture-b315ec967749 (requires Medium account; see also Svrtan's conference talks on the same material).
-[^3]: Alistair Cockburn, "Hexagonal architecture", 2005. https://alistair.cockburn.us/hexagonal-architecture/ (URL offline as of 2024; see also Alistair Cockburn and Juan Manuel Garrido de Paz, *Hexagonal Architecture Explained*, independently published, 2025).
+[^3]: Alistair Cockburn, "Hexagonal architecture", 2005. Archived: https://web.archive.org/web/2024/https://alistair.cockburn.us/hexagonal-architecture/ (original URL offline as of 2024; see also Alistair Cockburn and Juan Manuel Garrido de Paz, *Hexagonal Architecture Explained*, independently published, 2025).
 [^4]: Jeffrey Palermo, "The Onion Architecture: part 1", 29 July 2008. https://jeffreypalermo.com/2008/07/the-onion-architecture-part-1/
 [^5]: Milosz Smolka, "How to implement Clean Architecture in Go (Golang)", Three Dots Labs, 2020. https://threedots.tech/post/introducing-clean-architecture/
 [^6]: Tom Hombergs, *Get Your Hands Dirty on Clean Architecture*, 2nd ed., Packt Publishing, 2023. https://reflectoring.io/book/

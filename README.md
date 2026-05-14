@@ -6,14 +6,14 @@
 
 **The open-source High-Level Design & System Design handbook.**
 
-159 chapters + 22 trade-off pages · 181 pages · 772,000 words · 719 diagrams · 3,200+ citations
+159 chapters + 22 trade-off pages · 181 pages · 772,000 words · 719 diagrams · 3,100+ citations
 
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/license-CC%20BY--SA%204.0-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![CI](https://github.com/handbook-academy/hld-handbook/actions/workflows/content-ci.yml/badge.svg)](https://github.com/handbook-academy/hld-handbook/actions)
 [![GitHub stars](https://img.shields.io/github/stars/handbook-academy/hld-handbook?style=social)](https://github.com/handbook-academy/hld-handbook/stargazers)
 
-### Read free at **[hld.handbook.academy](https://hld.handbook.academy)** *(public beta)*
+**Read free at [hld.handbook.academy](https://hld.handbook.academy)** *(public beta)*
 
 [Start reading](#start-reading) · [Full curriculum](#the-full-curriculum) · [Case studies](#part-8--case-studies-56-chapters) · [Trade-offs](#trade-offs-library-22-pages) · [Contributing](#contributing)
 
@@ -83,7 +83,7 @@ This handbook fixes all of that:
 
 - **100% inline content.** Every chapter is a full teaching article written from scratch, living in this repo as plain Markdown. Nothing is a stub. Nothing redirects you elsewhere to learn.
 - **Progressive curriculum.** 159 teaching chapters across 12 parts, plus a 22-page Trade-offs Library, sequenced deliberately from prerequisites (Part 0) to Staff+ topics (Parts 7-9). Each chapter declares its prerequisites, learning objectives, estimated reading time, and difficulty tier.
-- **Research-backed.** Every chapter ends with a **Further Reading & References** section citing primary sources — SIGMOD and OSDI papers, RFCs, IETF drafts, engineering postmortems, official docs, canonical books. **3,200+ citations** across the handbook. Not blog posts about blog posts.
+- **Research-backed.** Every chapter ends with a **Further Reading & References** section citing primary sources — SIGMOD and OSDI papers, RFCs, IETF drafts, engineering postmortems, official docs, canonical books. **3,100+ citations** across the handbook. Not blog posts about blog posts.
 - **Opinionated.** Every topic picks a recommended approach and explains *why*, instead of listing options without guidance. Where reasonable people disagree, the trade-offs are made explicit with a decision flowchart and "when to pick A" vs "when to pick B" tables.
 - **Modern (2025+).** LLM serving, RAG pipelines, AI agents, multi-agent orchestration, CRDTs, edge computing, FinOps, post-quantum cryptography, platform engineering, local-first software, differential privacy, MCP — all first-class topics, not afterthoughts.
 - **Decision-oriented.** The **Trade-offs Library** gives decision flowcharts for the hardest architectural choices: SQL vs NoSQL, REST vs gRPC vs GraphQL, monolith vs microservices, B-tree vs LSM, optimistic vs pessimistic locking, and 17 more.
@@ -117,7 +117,7 @@ This handbook is written for:
 | Dedicated Trade-offs Library (22 pages)   |      Yes     |                No               |            No           |           No         |
 | Covers LLMs, RAG, agents, multimodal AI   |      Yes     |           Rarely modern         |         Sometimes       |         Rarely       |
 | Opinionated decisions, not just options   |      Yes     |                No               |        Sometimes        |         Varies       |
-| 3,200+ primary-source citations           |      Yes     |                No               |            No           |           Yes        |
+| 3,100+ primary-source citations           |      Yes     |                No               |            No           |           Yes        |
 | Community-editable, PRs welcome           |      Yes     |                Yes              |            No           |           No         |
 | Updated continuously                      |      Yes     |       Often frozen              |        Varies           |      Every 3-5 years |
 | Decision flowcharts for architectural choices | Yes      |                No               |         Rarely          |         Rarely       |
@@ -129,6 +129,7 @@ This handbook is written for:
 Pick one:
 
 **I want a quick taste.** Read these three in order — they give you the vocabulary and the first real worked example:
+
 1. [Scalability: Growing a System Without Breaking It](content/part-1-core-fundamentals/00-scalability.md)
 2. [Back-of-the-Envelope Estimation](content/part-1-core-fundamentals/04-back-of-envelope-estimation.md)
 3. [Design a URL Shortener (TinyURL / bit.ly)](content/part-8-case-studies/00-url-shortener.md)
@@ -317,100 +318,100 @@ Security architecture for real systems, not a CISSP crib sheet: AuthN vs AuthZ, 
 <details>
 <summary><strong>Messaging & social (chapters 04-09)</strong> — notifications, chat, feeds, photos, crawlers, autocomplete</summary>
 
-5. [Design a Notification System (Push, SMS, Email at Scale)](content/part-8-case-studies/04-notification-system.md)
-6. [Design a Chat System (WhatsApp / Messenger / Signal)](content/part-8-case-studies/05-chat-system.md)
-7. [Design a Social Media Feed (Twitter / Instagram / LinkedIn)](content/part-8-case-studies/06-social-media-feed.md)
-8. [Design a Photo Sharing Service (Instagram)](content/part-8-case-studies/07-photo-sharing.md)
-9. [Design a Web Crawler (Googlebot-style)](content/part-8-case-studies/08-web-crawler.md)
-10. [Design Search Autocomplete (Typeahead Suggestions)](content/part-8-case-studies/09-search-autocomplete.md)
+1. [Design a Notification System (Push, SMS, Email at Scale)](content/part-8-case-studies/04-notification-system.md)
+2. [Design a Chat System (WhatsApp / Messenger / Signal)](content/part-8-case-studies/05-chat-system.md)
+3. [Design a Social Media Feed (Twitter / Instagram / LinkedIn)](content/part-8-case-studies/06-social-media-feed.md)
+4. [Design a Photo Sharing Service (Instagram)](content/part-8-case-studies/07-photo-sharing.md)
+5. [Design a Web Crawler (Googlebot-style)](content/part-8-case-studies/08-web-crawler.md)
+6. [Design Search Autocomplete (Typeahead Suggestions)](content/part-8-case-studies/09-search-autocomplete.md)
 
 </details>
 
 <details>
 <summary><strong>Media & consumer products (chapters 10-17)</strong> — video, ride-hailing, maps, file sync, editing, cache, recommenders</strong></summary>
 
-11. [Design a Video Streaming Service (YouTube / Twitch / TikTok)](content/part-8-case-studies/10-video-streaming.md)
-12. [Design Netflix (End-to-End)](content/part-8-case-studies/11-netflix.md)
-13. [Design a Ride-Hailing Service (Uber / Lyft)](content/part-8-case-studies/12-ride-hailing.md)
-14. [Design Google Maps (Routing and Tile Rendering)](content/part-8-case-studies/13-google-maps.md)
-15. [Design a File Sync Service (Dropbox / Google Drive)](content/part-8-case-studies/14-file-sync.md)
-16. [Design Collaborative Editing (Google Docs / Figma / Notion)](content/part-8-case-studies/15-collaborative-editing.md)
-17. [Design a Distributed Cache (Memcached / Redis Cluster)](content/part-8-case-studies/16-distributed-cache.md)
-18. [Design a Recommendation System (Netflix / YouTube / TikTok)](content/part-8-case-studies/17-recommendation-system.md)
+1. [Design a Video Streaming Service (YouTube / Twitch / TikTok)](content/part-8-case-studies/10-video-streaming.md)
+2. [Design Netflix (End-to-End)](content/part-8-case-studies/11-netflix.md)
+3. [Design a Ride-Hailing Service (Uber / Lyft)](content/part-8-case-studies/12-ride-hailing.md)
+4. [Design Google Maps (Routing and Tile Rendering)](content/part-8-case-studies/13-google-maps.md)
+5. [Design a File Sync Service (Dropbox / Google Drive)](content/part-8-case-studies/14-file-sync.md)
+6. [Design Collaborative Editing (Google Docs / Figma / Notion)](content/part-8-case-studies/15-collaborative-editing.md)
+7. [Design a Distributed Cache (Memcached / Redis Cluster)](content/part-8-case-studies/16-distributed-cache.md)
+8. [Design a Recommendation System (Netflix / YouTube / TikTok)](content/part-8-case-studies/17-recommendation-system.md)
 
 </details>
 
 <details>
 <summary><strong>Commerce & financial (chapters 18-21)</strong> — ticketing, payments, stock exchange, food delivery</summary>
 
-19. [Design a Ticketing System (BookMyShow / Ticketmaster)](content/part-8-case-studies/18-ticketing-system.md)
-20. [Design a Payment System (Stripe / PayPal)](content/part-8-case-studies/19-payment-system.md)
-21. [Design a Stock Exchange (Matching Engine)](content/part-8-case-studies/20-stock-exchange.md)
-22. [Design a Food Delivery Service (DoorDash / Swiggy)](content/part-8-case-studies/21-food-delivery.md)
+1. [Design a Ticketing System (BookMyShow / Ticketmaster)](content/part-8-case-studies/18-ticketing-system.md)
+2. [Design a Payment System (Stripe / PayPal)](content/part-8-case-studies/19-payment-system.md)
+3. [Design a Stock Exchange (Matching Engine)](content/part-8-case-studies/20-stock-exchange.md)
+4. [Design a Food Delivery Service (DoorDash / Swiggy)](content/part-8-case-studies/21-food-delivery.md)
 
 </details>
 
 <details>
 <summary><strong>Data & infrastructure (chapters 22-29)</strong> — metrics, ad-click, logs, proximity, leaderboards, IDs, hotels, schedulers</summary>
 
-23. [Design a Metrics Pipeline (Prometheus / InfluxDB / Thanos)](content/part-8-case-studies/22-metrics-pipeline.md)
-24. [Design Ad-Click Aggregation (Real-Time Stream Processing)](content/part-8-case-studies/23-ad-click-aggregation.md)
-25. [Design a Logging Platform (ELK / Loki / Splunk)](content/part-8-case-studies/24-logging-platform.md)
-26. [Design a Proximity Service (Nearby Friends / Yelp)](content/part-8-case-studies/25-proximity-service.md)
-27. [Design a Real-Time Leaderboard](content/part-8-case-studies/26-leaderboard.md)
-28. [Design a Unique ID Generator (Snowflake, ULID, TSID, UUIDv7)](content/part-8-case-studies/27-unique-id-generator.md)
-29. [Design a Hotel Reservation System (Booking.com / Airbnb)](content/part-8-case-studies/28-hotel-reservation.md)
-30. [Design a Distributed Job Scheduler (Airflow / Temporal / Distributed Cron)](content/part-8-case-studies/29-job-scheduler.md)
+1. [Design a Metrics Pipeline (Prometheus / InfluxDB / Thanos)](content/part-8-case-studies/22-metrics-pipeline.md)
+2. [Design Ad-Click Aggregation (Real-Time Stream Processing)](content/part-8-case-studies/23-ad-click-aggregation.md)
+3. [Design a Logging Platform (ELK / Loki / Splunk)](content/part-8-case-studies/24-logging-platform.md)
+4. [Design a Proximity Service (Nearby Friends / Yelp)](content/part-8-case-studies/25-proximity-service.md)
+5. [Design a Real-Time Leaderboard](content/part-8-case-studies/26-leaderboard.md)
+6. [Design a Unique ID Generator (Snowflake, ULID, TSID, UUIDv7)](content/part-8-case-studies/27-unique-id-generator.md)
+7. [Design a Hotel Reservation System (Booking.com / Airbnb)](content/part-8-case-studies/28-hotel-reservation.md)
+8. [Design a Distributed Job Scheduler (Airflow / Temporal / Distributed Cron)](content/part-8-case-studies/29-job-scheduler.md)
 
 </details>
 
 <details>
 <summary><strong>AI systems (chapters 30-37)</strong> — ChatGPT, RAG, coding agents, AI search, voice, moderation, semantic cache, model routing</summary>
 
-31. [Design ChatGPT (Conversational AI at Scale)](content/part-8-case-studies/30-chatgpt-conversational-ai.md)
-32. [Design an Enterprise RAG System](content/part-8-case-studies/31-enterprise-rag.md)
-33. [Design a Coding Agent (Claude Code / GitHub Copilot / Cursor)](content/part-8-case-studies/32-coding-agent.md)
-34. [Design Perplexity (AI Search with Citations)](content/part-8-case-studies/33-perplexity-ai-search.md)
-35. [Design a Voice Agent (Alexa / Siri-Class Realtime)](content/part-8-case-studies/34-voice-agent.md)
-36. [Design a Content Moderation System at Scale](content/part-8-case-studies/35-content-moderation-at-scale.md)
-37. [Design a Semantic Cache for LLM Applications](content/part-8-case-studies/36-semantic-cache.md)
-38. [Design a Model Router and Gateway (OpenRouter / LiteLLM)](content/part-8-case-studies/37-model-router-gateway.md)
+1. [Design ChatGPT (Conversational AI at Scale)](content/part-8-case-studies/30-chatgpt-conversational-ai.md)
+2. [Design an Enterprise RAG System](content/part-8-case-studies/31-enterprise-rag.md)
+3. [Design a Coding Agent (Claude Code / GitHub Copilot / Cursor)](content/part-8-case-studies/32-coding-agent.md)
+4. [Design Perplexity (AI Search with Citations)](content/part-8-case-studies/33-perplexity-ai-search.md)
+5. [Design a Voice Agent (Alexa / Siri-Class Realtime)](content/part-8-case-studies/34-voice-agent.md)
+6. [Design a Content Moderation System at Scale](content/part-8-case-studies/35-content-moderation-at-scale.md)
+7. [Design a Semantic Cache for LLM Applications](content/part-8-case-studies/36-semantic-cache.md)
+8. [Design a Model Router and Gateway (OpenRouter / LiteLLM)](content/part-8-case-studies/37-model-router-gateway.md)
 
 </details>
 
 <details>
 <summary><strong>Infra services (chapters 38-39)</strong> — feature flags, DNS</summary>
 
-39. [Design a Feature Flag Service (LaunchDarkly / Harness FME / Unleash)](content/part-8-case-studies/38-feature-flag-service.md)
-40. [Design a DNS Service (Cloudflare 1.1.1.1 / Google 8.8.8.8)](content/part-8-case-studies/39-dns-service.md)
+1. [Design a Feature Flag Service (LaunchDarkly / Harness FME / Unleash)](content/part-8-case-studies/38-feature-flag-service.md)
+2. [Design a DNS Service (Cloudflare 1.1.1.1 / Google 8.8.8.8)](content/part-8-case-studies/39-dns-service.md)
 
 </details>
 
 <details>
 <summary><strong>Consumer products II (chapters 40-49)</strong> — dating, auctions, SaaS, video conf, email, live comments, fraud, fitness, online judge, price tracking</summary>
 
-41. [Design a Dating App (Tinder / Hinge / Bumble)](content/part-8-case-studies/40-dating-app.md)
-42. [Design an Online Auction (eBay / Catawiki)](content/part-8-case-studies/41-online-auction.md)
-43. [Design a Multi-Tenant SaaS Platform](content/part-8-case-studies/42-multi-tenant-saas.md)
-44. [Design a Video Conferencing System (Zoom / Google Meet)](content/part-8-case-studies/43-video-conferencing.md)
-45. [Design an Email Service at Gmail Scale (1.8B Users, 300B Messages/Day)](content/part-8-case-studies/44-gmail-scale-email.md)
-46. [Design Live Comments at Scale (FB Live / YouTube Live / Twitch Chat)](content/part-8-case-studies/45-live-comments.md)
-47. [Design a Fraud Detection System (Stripe Radar / PayPal / Feedzai)](content/part-8-case-studies/46-fraud-detection.md)
-48. [Design a Fitness Tracking Service (Strava / MapMyRun)](content/part-8-case-studies/47-strava-fitness.md)
-49. [Design an Online Judge (LeetCode / Codeforces / HackerEarth)](content/part-8-case-studies/48-online-judge.md)
-50. [Design a Price Tracking Service (CamelCamelCamel / Honey / Keepa)](content/part-8-case-studies/49-price-tracking.md)
+1. [Design a Dating App (Tinder / Hinge / Bumble)](content/part-8-case-studies/40-dating-app.md)
+2. [Design an Online Auction (eBay / Catawiki)](content/part-8-case-studies/41-online-auction.md)
+3. [Design a Multi-Tenant SaaS Platform](content/part-8-case-studies/42-multi-tenant-saas.md)
+4. [Design a Video Conferencing System (Zoom / Google Meet)](content/part-8-case-studies/43-video-conferencing.md)
+5. [Design an Email Service at Gmail Scale (1.8B Users, 300B Messages/Day)](content/part-8-case-studies/44-gmail-scale-email.md)
+6. [Design Live Comments at Scale (FB Live / YouTube Live / Twitch Chat)](content/part-8-case-studies/45-live-comments.md)
+7. [Design a Fraud Detection System (Stripe Radar / PayPal / Feedzai)](content/part-8-case-studies/46-fraud-detection.md)
+8. [Design a Fitness Tracking Service (Strava / MapMyRun)](content/part-8-case-studies/47-strava-fitness.md)
+9. [Design an Online Judge (LeetCode / Codeforces / HackerEarth)](content/part-8-case-studies/48-online-judge.md)
+10. [Design a Price Tracking Service (CamelCamelCamel / Honey / Keepa)](content/part-8-case-studies/49-price-tracking.md)
 
 </details>
 
 <details>
 <summary><strong>Developer & ops platforms (chapters 50-55)</strong> — API gateway, CI/CD, observability, search engine, brokerage, chat-at-scale</summary>
 
-51. [Design an API Gateway at Scale (Kong / AWS API Gateway / Apigee / Envoy)](content/part-8-case-studies/50-api-gateway.md)
-52. [Design a CI/CD Platform (GitHub Actions / GitLab CI / CircleCI)](content/part-8-case-studies/51-cicd-platform.md)
-53. [Design an Observability Platform (Datadog / New Relic / Honeycomb)](content/part-8-case-studies/52-observability-platform.md)
-54. [Design a Search Engine (Google-Scale / Brave Search)](content/part-8-case-studies/53-search-engine.md)
-55. [Design a Brokerage Platform (Robinhood / E*TRADE / Interactive Brokers)](content/part-8-case-studies/54-brokerage-trading.md)
-56. [Design Channel-Scale Chat (Discord / Slack)](content/part-8-case-studies/55-channel-scale-chat.md)
+1. [Design an API Gateway at Scale (Kong / AWS API Gateway / Apigee / Envoy)](content/part-8-case-studies/50-api-gateway.md)
+2. [Design a CI/CD Platform (GitHub Actions / GitLab CI / CircleCI)](content/part-8-case-studies/51-cicd-platform.md)
+3. [Design an Observability Platform (Datadog / New Relic / Honeycomb)](content/part-8-case-studies/52-observability-platform.md)
+4. [Design a Search Engine (Google-Scale / Brave Search)](content/part-8-case-studies/53-search-engine.md)
+5. [Design a Brokerage Platform (Robinhood / E*TRADE / Interactive Brokers)](content/part-8-case-studies/54-brokerage-trading.md)
+6. [Design Channel-Scale Chat (Discord / Slack)](content/part-8-case-studies/55-channel-scale-chat.md)
 
 </details>
 
@@ -557,7 +558,7 @@ If you have a loop on Monday:
 | Total words                         | **~772,000**  |
 | Average words per chapter           | ~4,265        |
 | Mermaid diagrams                    | **719**       |
-| Citations to primary sources        | **3,200+**    |
+| Citations to primary sources        | **3,100+**    |
 | Estimated total reading time        | ~110 hours    |
 | Equivalent printed book page count  | ~2,200 pages  |
 
@@ -578,6 +579,7 @@ Every chapter in this repository passes 7 automated CI checks on every PR:
 CI configuration lives in [`.github/workflows/content-ci.yml`](.github/workflows/content-ci.yml). Validator scripts are in [`scripts/`](scripts/).
 
 Beyond automation, every chapter is reviewed for:
+
 - Internal consistency (terminology matches Part 1 definitions)
 - Difficulty calibration (a "Beginner" chapter doesn't assume Staff-level context)
 - Diagram quality (Mermaid, not screenshots; captioned; accessibility-tagged)
@@ -607,10 +609,12 @@ Beyond automation, every chapter is reviewed for:
 2. **Open an issue first** for anything bigger than 30 minutes of work — this ensures you don't duplicate in-flight work.
 3. **Fork, branch, edit.** Use descriptive branch names like `fix/raft-quorum-math` or `add/mcp-protocol-chapter`.
 4. **Run validators locally (optional):**
+
    ```bash
    npm install
    npm run check:all
    ```
+
    If you skip this, CI will run them on your PR anyway and tell you what to fix.
 5. **Submit a pull request** using the [PR template](.github/PULL_REQUEST_TEMPLATE.md). Small fix? A one-sentence description is fine. Full chapter? Describe the pedagogical approach and list your primary sources.
 6. **Respond to review.** A maintainer will review within 7 days (usually faster). For content chapters, expect at least one round of technical review.
@@ -637,7 +641,7 @@ If you have **operated one of the systems we cover in Part 8** (payment processi
 
 ## Project structure
 
-```
+```text
 hld-handbook/
 ├── content/                           # All 181 teaching pages (CC BY-SA 4.0)
 │   ├── part-0-prerequisites/          # 5 chapters
@@ -655,8 +659,8 @@ hld-handbook/
 │   └── trade-offs/                    # 22 decision pages
 │
 ├── writing-guides/                    # Author handbooks (CC BY-SA 4.0)
-│   ├── chapter-template.md            # Canonical skeleton for new chapters
-│   └── case-study-template.md         # Skeleton for Part 8 case studies
+│   ├── case-study-template.md         # Skeleton for Part 8 case studies
+│   └── trade-off-template.md          # Skeleton for trade-off decision pages
 │
 ├── scripts/                           # Content validators used by CI
 │   ├── check-citations.js             # Footnote integrity
@@ -697,12 +701,14 @@ hld-handbook/
 You don't need anything installed to contribute content — edit Markdown, push, let CI validate. But if you want to run the checks locally before pushing:
 
 ### Prerequisites
+
 - [Node.js 20+](https://nodejs.org/) (the `.nvmrc` file pins the exact version)
 - [npm](https://www.npmjs.com/) (ships with Node)
 - Optional: [Vale](https://vale.sh/) for prose-style linting
 - Optional: [lychee](https://github.com/lycheeverse/lychee) for link checking
 
 ### Setup
+
 ```bash
 git clone https://github.com/handbook-academy/hld-handbook.git
 cd hld-handbook
@@ -732,6 +738,7 @@ npm run stats              # word / diagram / citation counts
 ### Editor setup
 
 Any Markdown-aware editor works. Recommended extensions for VS Code:
+
 - `yzhang.markdown-all-in-one` — Markdown editing and preview
 - `bierner.markdown-mermaid` — Mermaid diagram preview
 - `davidanson.vscode-markdownlint` — inline markdownlint warnings
@@ -747,6 +754,7 @@ The repo includes `.editorconfig`, `.nvmrc`, `.markdownlint.json`, `.vale.ini`, 
 **Benevolent maintainer model.** The project is currently solo-maintained by [@invincible04](https://github.com/invincible04). Major architectural decisions (curriculum scope, licensing, CI strategy) are made by the maintainer after consultation with active contributors via Issues/Discussions.
 
 **Decision process:**
+
 - **Typo / dead link / factual correction:** any maintainer can merge.
 - **New chapter or major rewrite:** requires an issue with pedagogical rationale and at least one maintainer approval.
 - **Curriculum scope change (new part, renamed part, reordering):** requires a Discussion thread open for at least 7 days before merge.
@@ -770,6 +778,7 @@ Yes, and specifically: everything in this repository — content, writing guides
 <summary><strong>Can I use this to build a paid course?</strong></summary>
 
 Yes. CC BY-SA 4.0 allows commercial use provided you:
+
 1. Attribute the original ("Adapted from The HLD Handbook, CC BY-SA 4.0, https://github.com/handbook-academy/hld-handbook")
 2. License your derivative under the same CC BY-SA 4.0 terms
 3. Indicate what you changed
@@ -793,11 +802,13 @@ You can teach courses, run boot camps, build YouTube channels, or sell books der
 <summary><strong>How is this different from Alex Xu's books?</strong></summary>
 
 Alex Xu's books are excellent and we cite them in nearly every case study. The differences:
+
 - **Scope:** ~640 pages (Vols 1+2) vs ~2,200 equivalent pages here.
 - **Freshness:** Xu Vol. 2 was published in 2022 and doesn't cover LLMs, RAG, agents, CRDTs, post-quantum crypto, MCP, etc. This handbook does.
 - **Format:** Xu is case-study-focused. This handbook has 56 case studies *plus* 103 foundational chapters that teach the building blocks.
 - **License:** Xu's books are copyrighted and paid. This handbook is CC BY-SA 4.0.
 - **Community:** Xu's books are one-author; this handbook accepts PRs.
+
 </details>
 
 <details>
@@ -816,12 +827,13 @@ We cite primary sources inline where they're relevant. A separate "awesome" list
 <summary><strong>I want to submit a chapter on [topic X]. How?</strong></summary>
 
 Open an issue first with the [writing template](.github/ISSUE_TEMPLATE) explaining:
+
 1. Which part this chapter belongs in
 2. Why it belongs (not already covered? modern emerging topic? missing from Part X?)
 3. Proposed outline (1-2 paragraphs)
 4. Your primary sources
 
-A maintainer will respond with scope feedback within a week. Once approved, fork → draft → PR. Use [`writing-guides/chapter-template.md`](writing-guides/chapter-template.md) as your skeleton.
+A maintainer will respond with scope feedback within a week. Once approved, fork → draft → PR. For Part 8 chapters use [`writing-guides/case-study-template.md`](writing-guides/case-study-template.md); for trade-off pages use [`writing-guides/trade-off-template.md`](writing-guides/trade-off-template.md). All other chapters follow the skeleton documented in [STYLE_GUIDE.md](STYLE_GUIDE.md).
 </details>
 
 <details>
@@ -839,12 +851,14 @@ Everything in this repository — the 181 chapters, writing guides, style guide,
 **What CC BY-SA 4.0 means in practice:**
 
 You can:
+
 - Read it, share it, print it, screenshot it — forever.
 - Build courses, boot camps, YouTube channels, or books derived from it.
 - Translate it into any language.
 - Use it commercially.
 
 You must:
+
 - **Attribute** the original (link back to this repo).
 - Release derivatives under the **same CC BY-SA 4.0 license** (share-alike).
 - Not relicense the content as proprietary or impose additional restrictions.
@@ -885,6 +899,7 @@ The [`CITATION.cff`](CITATION.cff) file in this repository is a [Citation File F
 This project stands on the shoulders of many, and we cite primary sources liberally throughout. A few that shaped the handbook most:
 
 **Canonical books:**
+
 - **Martin Kleppmann** — [Designing Data-Intensive Applications](https://dataintensive.net/) is the foundation underneath most of Parts 3-4.
 - **Alex Xu** — [System Design Interview](https://www.amazon.com/System-Design-Interview-insiders-Second/dp/B08CMF2CQF) Volumes 1 and 2 defined the interview case-study format we build on in Part 8.
 - **Chip Huyen** — [Designing Machine Learning Systems](https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/) and [AI Engineering](https://www.oreilly.com/library/view/ai-engineering/9781098166298/) shape Part 9.
@@ -892,11 +907,13 @@ This project stands on the shoulders of many, and we cite primary sources libera
 - **Mark Richards & Neal Ford** — [Fundamentals of Software Architecture](https://www.oreilly.com/library/view/fundamentals-of-software/9781492043447/) and [Software Architecture: The Hard Parts](https://www.oreilly.com/library/view/software-architecture-the/9781492086888/) for Part 5.
 
 **Open-source references:**
+
 - **Donne Martin** — [system-design-primer](https://github.com/donnemartin/system-design-primer).
 - **The Kubernetes, CNCF, and OpenTelemetry communities** — for cloud-native and observability standards.
 - **The Apache projects** (Kafka, Cassandra, Hadoop, Spark, Flink) — for foundational distributed-systems code and docs.
 
 **Papers, RFCs, and postmortems:**
+
 - **SIGMOD / VLDB / OSDI / SOSP / NSDI** papers — the bedrock of distributed systems.
 - **IETF / W3C / IANA** — for networking and web standards.
 - **Every engineer who has written a public postmortem.** Real outages taught us everything about graceful degradation, blast radius, and the limits of testing.

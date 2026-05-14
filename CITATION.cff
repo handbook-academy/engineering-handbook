@@ -7,7 +7,7 @@ abstract: >-
   159 teaching chapters across 12 parts plus a 22-page trade-offs library
   (181 total pages, approximately 772,000 words). Covers everything from
   networking prerequisites to LLM serving architectures, with 719 Mermaid
-  diagrams and 3,200+ citations to primary sources.
+  diagrams and 3,100+ citations to primary sources.
 authors:
   - family-names: Soni
     given-names: Aayush

@@ -274,16 +274,16 @@ class FulfillmentWorkflow:
     async def run(self, order_id: str):
         # Step 1: Reserve inventory (compensatable)
         await workflow.execute_activity(reserve_inventory, order_id)
-        
+
         # Step 2: Charge payment (partially irreversible)
         payment_id = await workflow.execute_activity(charge_payment, order_id)
-        
+
         # Step 3: Assign warehouse (compensatable)
         await workflow.execute_activity(assign_warehouse, order_id)
-        
+
         # Step 4: Create shipment (irreversible after label printed)
         await workflow.execute_activity(create_shipment, order_id)
-        
+
         # Step 5: Send notification (irreversible)
         await workflow.execute_activity(notify_customer, order_id)
 ```

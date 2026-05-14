@@ -367,7 +367,7 @@ Use a public CDN (CloudFront or Fastly) with Origin Shield enabled. S3 as the or
 [^22]: CDNsun. "Low-Latency HLS with CDN: The Ultimate Production Guide." Accessed 2026. https://blog.cdnsun.com/low-latency-hls-with-cdn-the-ultimate-production-guide/
 [^23]: Netflix. "Open Connect Appliances." Open Connect, accessed 2026. https://openconnect.netflix.com/en/appliances/
 [^24]: Netflix. "Fill patterns." Open Connect Partner Help Center, accessed 2026. https://openconnect.zendesk.com/hc/en-us/articles/360035618071-Fill-patterns
-[^25]: Netflix. "What We Watched: The Second Half of 2024." About Netflix, February 2025. https://about.netflix.com/news/what-we-watched-the-second-half-of-2024
+[^25]: Netflix. "What We Watched: The Second Half of 2024." About Netflix, February 2025. https://about.netflix.com/en/news/what-we-watched-the-second-half-of-2024
 [^26]: ThousandEyes. "Lessons for Major Live Events: Netflix Disruption Analysis." ThousandEyes Blog, November 2024. https://www.thousandeyes.com/blog/netflix-disruption-analysis-november-15-2024
 [^27]: AWS. "Amazon CloudFront Pricing." Accessed 2026. https://aws.amazon.com/cloudfront/pricing/
 [^28]: Cloudflare. "R2 Pricing." Cloudflare R2 Documentation, accessed 2026. https://developers.cloudflare.com/r2/pricing/

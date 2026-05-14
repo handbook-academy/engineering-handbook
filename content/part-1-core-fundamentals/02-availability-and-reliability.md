@@ -398,4 +398,4 @@ The SLA is 99.95%. Your internal SLO should be tighter. Think about how the conf
 [^17]: Marc Brooker (AWS), "Exponential Backoff And Jitter," AWS Architecture Blog, Mar 2015 (updated May 2023). https://aws.amazon.com/blogs/architecture/exponential-backoff-and-jitter/
 [^18]: David Yanacek (AWS), "Using load shedding to avoid overload," Amazon Builders' Library. https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/
 [^19]: Amazon Web Services, "Disaster Recovery of Workloads on AWS: Recovery in the Cloud." https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html
-[^20]: Netflix Technology Blog, "The Netflix Simian Army," 19 Jul 2011. https://netflixtechblog.com/the-netflix-simian-army-16e57fbab116 (archived: https://web.archive.org/web/2024/https://netflixtechblog.com/the-netflix-simian-army-16e57fbab116)
+[^20]: Netflix Technology Blog, "The Netflix Simian Army," 19 Jul 2011. https://netflixtechblog.com/the-netflix-simian-army-16e57fbab116

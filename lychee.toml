@@ -32,6 +32,12 @@ exclude = [
   "https://twitter.com/",
   # Some vendor docs rate-limit aggressively
   "https://docs.oracle.com/",
+  # Hosts with broken HTTP/2 implementations that lychee's HTTP/2 client
+  # cannot negotiate. URLs work fine in browsers (HTTP/1.1 fallback).
+  "https://www.cbc.ca/",
+  "https://www.nasdaq.com/",
+  # Transient TLS CloseNotify; archive URL sits next to the primary in the footnote.
+  "https://newsroom.tiktok.com/",
 ]
 
 # Don't check mail links.

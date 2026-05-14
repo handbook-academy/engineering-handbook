@@ -360,7 +360,7 @@ The key insight: the minority side is unavailable but never unsafe. This is the 
 [^9]: Ongaro and Ousterhout, "In Search of an Understandable Consensus Algorithm (Extended Version)," USENIX ATC 2014. https://www.usenix.org/conference/atc14/technical-sessions/presentation/ongaro
 [^10]: "Raft Consensus Algorithm." https://raft.github.io/
 [^11]: etcd-io/raft README. https://github.com/etcd-io/raft/blob/main/README.md
-[^12]: Castro and Liskov, "Practical Byzantine Fault Tolerance," OSDI 1999. https://pmg.csail.mit.edu/~castro/osdi99_html/osdi99.html
+[^12]: Castro and Liskov, "Practical Byzantine Fault Tolerance," OSDI 1999. https://web.archive.org/web/2024/https://pmg.csail.mit.edu/~castro/osdi99_html/osdi99.html
 [^13]: Yin, Malkhi, Reiter, Gueta, Abraham, "HotStuff: BFT Consensus in the Lens of Blockchain," PODC 2019. https://arxiv.org/abs/1803.05069
 [^14]: Cosmos Network, CometBFT/Tendermint consensus docs. https://docs.cosmos.network/cometbft/latest/spec/consensus/Overview
 [^15]: Kingsbury, "Jepsen: etcd 3.4.3," 2020. https://jepsen.io/analyses/etcd-3.4.3
