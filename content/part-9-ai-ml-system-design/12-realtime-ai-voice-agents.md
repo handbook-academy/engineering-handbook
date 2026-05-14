@@ -69,7 +69,7 @@ The critical insight: measure p95 and p99, not p50. A p50 of 600 ms with a p99 o
 
 Streaming ASR emits interim hypotheses every 100 ms and a final transcript at endpoint (when the user stops speaking). The server sends partial results with an `is_final: false` flag, then a final result on silence or semantic boundary.
 
-Deepgram Nova-3 delivers sub-300 ms transcript latency with approximately 54% lower word error rate than the nearest competitor on Deepgram's internal conversational audio benchmarks[^4]. AssemblyAI Universal-3, Google Streaming, and Azure Speech are alternatives. OpenAI Whisper is batch-only; production streaming uses chunked decoding via `faster-whisper` (CTranslate2, INT8), which hits under 15 ms per 3-second chunk on an RTX 4090[^5].
+Deepgram **Flux** is now their conversational ASR model purpose-built for voice agents (with built-in turn detection); Deepgram Nova-3 remains recommended for batch and multi-speaker meeting transcription. Nova-3 delivers sub-300 ms transcript latency with roughly 54% lower median word error rate than competing providers on Deepgram's internal conversational audio benchmarks[^4]. AssemblyAI Universal-3, Google Streaming, and Azure Speech are alternatives. OpenAI Whisper is batch-only; production streaming uses chunked decoding via `faster-whisper` (CTranslate2, INT8), with vendor benchmarks reporting under 15 ms per 3-second chunk on an RTX 4090[^5].
 
 Two design choices at the ASR boundary:
 
@@ -90,7 +90,7 @@ Prefix caching matters enormously in multi-turn voice calls. The system prompt p
 
 Modern TTS engines accept text over a WebSocket and emit audio chunks (PCM or Opus) at phrase boundaries while still generating the tail. The key metric is TTFB: how quickly the first audio chunk arrives after text is sent.
 
-- **Cartesia Sonic 3.5**: streaming TTS with industry-leading latency (Sonic-2 achieved 90 ms model TTFB but is being deprecated June 2026; Sonic 3.5 is the current recommended model)[^6]
+- **Cartesia Sonic 3.5**: streaming TTS with industry-leading latency (Sonic-2 reported 90 ms model latency but is being deprecated June 2026; Sonic 3.5 is the current recommended model)[^6]
 - **ElevenLabs Flash v2.5**: 50 ms model TTFB with multi-region routing (US, Netherlands, Singapore) cutting perceived TTFB by 100 to 200 ms in EMEA/APAC[^7]
 - **Deepgram Aura**, **OpenAI TTS**, **Azure Neural TTS**: all offer streaming endpoints in the 100 to 300 ms range
 
@@ -130,7 +130,7 @@ flowchart LR
 
 ### Barge-in and turn-taking
 
-Barge-in is the ability for the user to interrupt the agent mid-sentence. Without it, the agent talks over the user and the conversation feels robotic. LiveKit engineering calls barge-in "the single biggest UX differentiator between demo agents and production ones"[^1].
+Barge-in is the ability for the user to interrupt the agent mid-sentence. Without it, the agent talks over the user and the conversation feels robotic. In practice, barge-in is widely treated as the single biggest UX differentiator between demo agents and production ones[^1].
 
 The mechanism requires a Voice Activity Detector (VAD) running continuously, even while the agent is speaking. Silero VAD is a 2 MB JIT model that processes 30 ms audio chunks in under 1 ms on a single CPU thread[^9]. It is the de facto default in every open-source voice-agent framework.
 
@@ -162,9 +162,9 @@ The cascaded pipeline (VAD, STT, LLM, TTS) is modular, debuggable, and vendor-sw
 
 End-to-end speech-to-speech models collapse the cascade into a single model:
 
-- **GPT-Realtime-2** (OpenAI, May 2026): Brings GPT-5-class reasoning to live voice with multi-tool parallel calls and a five-level reasoning-intensity dial[^25]. Exposed via WebSocket and WebRTC[^11], with audio latency in the 200-300 ms range inherited from its GPT-4o Realtime predecessor[^2].
+- **OpenAI Realtime (`gpt-realtime`, GA Aug 28 2025)**: Production speech-to-speech model with configurable reasoning effort. Originally launched as the GPT-4o Realtime API on Oct 1, 2024 over WebSockets only; WebRTC support was added in December 2024[^11]. Audio latency is in the 200-300 ms range, in line with its GPT-4o Realtime predecessor[^2].
 - **Moshi** (Kyutai, September 2024): 160 ms theoretical, 200 ms practical. Full-duplex, open-source, 7B parameters[^10].
-- **Gemini Multimodal Live**: Google's streaming multimodal API.
+- **Gemini Live API**: Google's streaming multimodal API.
 
 End-to-end models preserve prosody and emotion but lock you to one vendor, are harder to debug (no intermediate text), and are weaker at structured tool calling.
 
@@ -190,11 +190,11 @@ A tier-1 telecom deploys a voice agent for billing inquiries, plan changes, and 
 
 **Inbound path**: Twilio SIP receives the PSTN call (approximately 250 ms one-way latency) and bridges via WebRTC to a LiveKit SFU (approximately 30 ms added). Total network overhead: 280 ms before audio reaches the agent.
 
-**Pipeline**: Silero VAD detects speech. Deepgram Nova-3 STT streams interim and final transcripts (sub-300 ms to final). GPT-5.4 mini handles routing; GPT-5.4 handles complex queries with a 2,000-token prefix-cached system prompt. Cartesia Sonic 3.5 TTS synthesizes the response with a cloned brand voice[^6].
+**Pipeline**: Silero VAD detects speech. Deepgram Flux streams turn-aware interim and final transcripts (sub-300 ms to final). GPT-5.4 mini handles routing; GPT-5.4 handles complex queries with a 2,000-token prefix-cached system prompt. Cartesia Sonic 3.5 TTS synthesizes the response with a cloned brand voice[^6].
 
 **Tools**: Billing lookup (200 ms p50) uses the fast-path pattern: the agent speaks "Let me pull up your account" while the API call runs in parallel. Knowledge-base RAG (400 ms p50) uses the same pattern.
 
-**Results**: Turn-taking p50 of approximately 850 ms including PSTN latency; p95 of approximately 1,400 ms. Industry estimates suggest $0.15 to $0.50 per minute for a quality cascaded agent depending on LLM model selection and call complexity[^12].
+**Results**: Turn-taking p50 of approximately 850 ms including PSTN latency; p95 of approximately 1,400 ms. Industry estimates suggest roughly $0.15 to $0.30 per minute for a quality cascaded agent depending on LLM model selection and call complexity[^12].
 
 ```python
 # LiveKit Agents session (simplified from livekit/agents)
@@ -271,7 +271,7 @@ Healthcare requires a text audit trail (HIPAA), which rules out end-to-end speec
 
 - **Transport**: WebRTC via LiveKit SFU, with Twilio SIP bridge for PSTN callers. Budget 280 ms for PSTN + SFU.
 - **VAD**: Silero at 30 ms frames, 500 ms silence for endpointing.
-- **ASR**: Deepgram Nova-3 with medical vocabulary boost. Sub-300 ms to final.
+- **ASR**: Deepgram Flux with medical vocabulary boost. Sub-300 ms to final, with built-in turn detection.
 - **LLM**: GPT-5.4 with a 3,000-token system prompt containing triage protocols. Prefix-cached. TTFT budget: 400 ms.
 - **TTS**: Cartesia Sonic 3.5 with a calm, professional cloned voice.
 - **Urgency classifier**: A small fine-tuned model runs on every STT final. If it detects urgent keywords (chest pain, difficulty breathing, unresponsive), it fires a hard interrupt that overrides normal turn-taking and initiates nurse handoff.
@@ -343,7 +343,7 @@ Healthcare requires a text audit trail (HIPAA), which rules out end-to-end speec
 **A:** When VAD detects user speech during SPEAKING state: (1) cancel the in-flight LLM request, (2) close the TTS WebSocket, (3) flush queued audio from the playout buffer, (4) truncate the canceled turn in conversation history so the model knows what was actually spoken versus cut off.
 
 **Q:** What is the cost range for a production cascaded voice agent per minute?
-**A:** Industry estimates suggest $0.15 to $0.50 per minute for a quality cascaded agent (STT + LLM + TTS + infrastructure). GPT-4o Realtime launched at approximately $0.30/min ($0.06 input + $0.24 output) in October 2024.
+**A:** Industry estimates suggest roughly $0.15 to $0.30 per minute for a quality cascaded agent (STT + LLM + TTS + infrastructure). GPT-4o Realtime launched at approximately $0.30/min ($0.06 input + $0.24 output) in October 2024.
 
 **Q:** Why choose cascade over end-to-end for regulated industries?
 **A:** The cascade produces a text transcript at every stage boundary (ASR output, LLM response, TTS input), which is required for HIPAA, financial compliance, and audit trails. End-to-end models process audio tokens directly with no intermediate text.
@@ -353,7 +353,6 @@ Healthcare requires a text audit trail (HIPAA), which rules out end-to-end speec
 [^1]: Jesse Hall, "Sequential Pipeline Architecture for Voice Agents," LiveKit blog, March 2026. https://livekit.com/blog/sequential-pipeline-architecture-voice-agents
 [^2]: OpenAI, "Hello GPT-4o," May 2024. https://openai.com/index/hello-gpt-4o/
 
-[^25]: OpenAI, "Advancing voice intelligence with new models in the API" (GPT-Realtime-2 with GPT-5-class reasoning, GPT-Realtime-Translate, GPT-Realtime-Whisper), May 7 2026. https://openai.com/index/advancing-voice-intelligence-with-new-models-in-the-api/
 [^3]: Stivers et al., "Universals and cultural variation in turn-taking in conversation," PNAS 2009, 106(26):10587-10592. https://doi.org/10.1073/pnas.0903616106
 [^4]: Deepgram, "Speech-to-Text API Benchmarks: Accuracy, Speed, and Cost Compared," 2025. https://deepgram.com/learn/speech-to-text-benchmarks
 [^5]: Spheron, "Deploy Whisper v4 and Production ASR on GPU Cloud," 2026. https://www.spheron.network/blog/whisper-v4-asr-gpu-cloud-production-guide/

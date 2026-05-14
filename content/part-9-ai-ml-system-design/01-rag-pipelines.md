@@ -17,7 +17,7 @@ tags:
 
 # RAG Pipelines (Retrieval-Augmented Generation)
 
-> **TL;DR**: RAG grounds an LLM in external knowledge by retrieving relevant passages at query time and injecting them into the prompt. The generator is fluent but forgetful; retrieval is what keeps it honest. The production default is hybrid retrieval (dense vectors + BM25 fused with Reciprocal Rank Fusion), a cross-encoder reranker, and a top-20 context window. Anthropic's contextual retrieval technique reduces top-20 retrieval failures by 67% when all three layers stack[^1]. Chunking is the lowest-glamour, highest-impact decision: recursive 512-token splitting beat every fancier alternative in the FloTorch 2026 benchmark[^2]. Without an eval harness (Ragas, golden set, nDCG@k), you cannot tell if your last change helped or hurt.
+> **TL;DR**: RAG grounds an LLM in external knowledge by retrieving relevant passages at query time and injecting them into the prompt. The generator is fluent but forgetful; retrieval is what keeps it honest. The production default is hybrid retrieval (dense vectors + BM25 fused with Reciprocal Rank Fusion), a cross-encoder reranker, and a top-20 context window. Anthropic's contextual retrieval technique reduces top-20 retrieval failures by 67% when contextual embeddings, contextual BM25, and a reranker stack together[^1]. Chunking is the lowest-glamour, highest-impact decision: recursive 512-token splitting beat fancier alternatives in the FloTorch 2026 benchmark[^2]. Without an eval harness (Ragas, golden set, nDCG@k), you cannot tell if your last change helped or hurt.
 
 ## Learning Objectives
 
@@ -60,7 +60,7 @@ Chunking splits raw documents into the token-bounded units that will be embedded
 - **Layout-aware:** Use markdown headers, HTML tags, PDF structure, or code function boundaries.
 - **Parent-document (hierarchical):** Index small chunks for precision but return their larger parent for context at generation time.
 
-The benchmark evidence is clear. Recursive 512-token splitting scored 69% end-to-end accuracy in the FloTorch 2026 benchmark over 905,746 tokens, beating every more expensive alternative[^2]. Semantic chunking scored 91.9% retrieval recall but only 54% end-to-end accuracy because its chunks averaged 43 tokens, too small for the generator to reason over[^2]. Vectara's NAACL 2025 study found fixed-size chunking "consistently outperformed" semantic chunking across retrieval, evidence, and answer generation[^2].
+The benchmark evidence is consistent. Recursive 512-token splitting scored 69% end-to-end accuracy in the FloTorch 2026 RAG benchmark, beating every more expensive alternative[^2]. Semantic chunking scored 54% end-to-end accuracy in the same benchmark because its chunks averaged ~43 tokens, too small for the generator to reason over[^2]. Chroma Research separately reports semantic chunking scoring as high as 91.9% on retrieval recall, illustrating that strong recall does not always translate to strong end-to-end answers[^6]. Qu, Tu, and Bao's 2024 study reaches the same conclusion: fixed-size chunking consistently matches or outperforms semantic chunking once compute cost is factored in[^7].
 
 > [!TIP]
 > Start with recursive 512-token chunks and 10% overlap. Only move to semantic or layout-aware chunking if your eval shows a measurable gain on your specific corpus.
@@ -71,7 +71,7 @@ An embedding is a fixed-length vector produced by a neural encoder so that seman
 
 | Model | Dimensions | MTEB (English) | Price / 1M tokens |
 |---|---|---|---|
-| Google gemini-embedding-2 (multimodal) | 3072 | leader | $0.15 |
+| Google gemini-embedding-2 (multimodal) | 3072 (Matryoshka, 128-3072) | leader | check vendor |
 | Voyage voyage-4-large (MoE) | 2048/1024/512/256 | top-tier | $0.12 |
 | OpenAI text-embedding-3-large | 3072 | 64.6% | $0.13 |
 | OpenAI text-embedding-3-small | 1536 | 62.3% | $0.02 |
@@ -99,7 +99,7 @@ def rrf(rankings: list[list[str]], k: int = 60) -> dict[str, float]:
     return dict(sorted(scores.items(), key=lambda x: -x[1]))
 ```
 
-No score calibration is needed because only ranks are used. The constant `k=60` comes from the original Cormack, Clarke, and Buttcher SIGIR 2009 paper and is nearly universally retained[^6]. RRF beat Condorcet Fuse and every individual learning-to-rank method in that study.
+No score calibration is needed because only ranks are used. The constant `k=60` comes from the original Cormack, Clarke, and Buttcher SIGIR 2009 paper and is nearly universally retained[^8]. RRF beat Condorcet Fuse and every individual learning-to-rank method in that study.
 
 ```mermaid
 sequenceDiagram
@@ -123,7 +123,7 @@ sequenceDiagram
 
 First-stage retrieval (dense + sparse) is fast but shallow: it scores query and document independently. A reranker re-scores candidates with a cross-encoder that attends jointly to query and document, giving 10-20% relevance gain at the cost of 100-300 ms.
 
-Production rerankers include Cohere Rerank 4.0 (`rerank-v4.0-pro` and `rerank-v4.0-fast`, multilingual across 100+ languages)[^7], BGE-reranker-v2-m3 (open-source), and ColBERT/ColBERTv2 (late-interaction with per-token MaxSim scoring that approaches cross-encoder quality at indexed-retrieval speed).
+Production rerankers include Cohere Rerank 4.0 (`rerank-v4.0-pro` and `rerank-v4.0-fast`, multilingual across 100+ languages)[^9], BGE-reranker-v2-m3 (open-source), and ColBERT/ColBERTv2 (late-interaction with per-token MaxSim scoring that approaches cross-encoder quality at indexed-retrieval speed).
 
 But even perfect retrieval fails if the generator ignores the right chunk. Liu et al. showed a U-shaped attention curve: LLMs recall best at the beginning and end of the context and worst in the middle, even for models explicitly trained on long contexts[^3]. This means:
 
@@ -180,7 +180,7 @@ flowchart LR
 
 *Parent-document retrieval decouples retrieval granularity from generation context. Small children give precise ranking; their parents give the generator enough context to reason.*
 
-**Self-RAG** (Asai et al., ICLR 2024)[^8]: Fine-tunes the generator to emit reflection tokens that decide whether to retrieve, grade passages, and critique its own output.
+**Self-RAG** (Asai et al., ICLR 2024)[^10]: Fine-tunes the generator to emit reflection tokens that decide whether to retrieve, grade passages, and critique its own output.
 
 **CRAG** (Corrective RAG): Adds a lightweight retrieval evaluator that scores chunks and, on low confidence, falls back to web search with query rewriting.
 
@@ -197,20 +197,20 @@ flowchart LR
 
 ### Perplexity AI: RAG at web scale
 
-Perplexity reportedly processes approximately 780 million queries per month (up from 230M in August 2024), serving an estimated 45 million monthly active users[^4][^9]. Standard search retrieves 60+ sources per query; Deep Research reads hundreds.
+Perplexity reported approximately 780 million queries per month and roughly 45 million monthly active users in mid-2025, growing rapidly from 230M queries per month in August 2024[^4][^11]. Standard search retrieves 60+ sources per query; Deep Research reads hundreds.
 
 The architecture is a six-stage RAG pipeline:
 
 1. **Query parsing and routing** to trending or evergreen indexes
 2. **Hybrid retrieval** (BM25 + dense + hybrid) over a proprietary web index of hundreds of billions of pages
-3. **Three-layer ML reranker** (L1-L3) with an XGBoost L3 and a strict quality threshold around 0.7
+3. **Multi-layer ML reranker** with a strict quality threshold around 0.7 (per ZipTie's analysis, three layers including an XGBoost stage)[^11]
 4. **Structured prompt assembly** with citation markers pre-embedded
-5. **Constrained LLM synthesis** via Sonar (Perplexity's in-house model), GPT-5.5, Claude Opus 4.7, or other models depending on tier
+5. **Constrained LLM synthesis** via Sonar (Perplexity's in-house model) plus a selection of frontier models depending on tier
 6. **Inline citation attachment**
 
 Perplexity built custom embedding models (`pplx-embed`, February 2026) to replace third-party providers, gaining full control over relevance at the most fundamental layer. The 4B-parameter `pplx-embed-context-v1` scores 81.96% on ConTEB[^4]. Embeddings use native INT8 quantization for 4x more indexed pages per GB.
 
-The fail-safe is instructive: if too few candidates pass the quality threshold, Perplexity discards the result set and re-queries rather than serving weak citations[^9]. This is the production equivalent of "I don't know" prompting.
+The fail-safe is instructive: if too few candidates pass the quality threshold, Perplexity discards the result set and re-queries rather than serving weak citations[^11]. This is the production equivalent of "I don't know" prompting.
 
 ```mermaid
 flowchart LR
@@ -228,7 +228,7 @@ flowchart LR
         QR --> SR[BM25 retrieve]
         DR --> F[RRF fuse]
         SR --> F
-        F --> RR[3-layer reranker L1-L3]
+        F --> RR[Multi-layer reranker]
         RR --> TH{Score > 0.7?}
         TH -->|Yes| PR[Prompt assembly + citations]
         TH -->|No| RE[Discard and re-query]
@@ -241,7 +241,7 @@ flowchart LR
 
 *Perplexity's six-stage pipeline: hybrid retrieval over hundreds of billions of pages, a three-layer reranker with a hard quality threshold, and a fail-safe that discards weak results rather than hallucinating.*
 
-A Columbia Journalism Review audit found a 37% error rate in Perplexity answers, with misattribution (correct info, wrong citation) and fabrication (wrong info, irrelevant citation) as the two dominant failure modes[^10]. The lesson: even at this scale, retrieval quality is the binding constraint. A brilliant synthesis model cannot compensate for poor upstream retrieval.
+A Columbia Journalism Review audit found a 37% error rate in Perplexity answers, with misattribution (correct info, wrong citation) and fabrication (wrong info, irrelevant citation) as the two dominant failure modes[^12]. The lesson: even at this scale, retrieval quality is the binding constraint. A brilliant synthesis model cannot compensate for poor upstream retrieval.
 
 ## Design decisions
 
@@ -250,7 +250,7 @@ A Columbia Journalism Review audit found a 37% error rate in Perplexity answers,
 | Approach | Pros | Cons | Best when | Our Pick |
 |---|---|---|---|---|
 | Fixed/recursive chunking | Simple, predictable, 69% end-to-end accuracy in FloTorch 2026 on academic papers[^2] | Splits across semantic boundaries; no awareness of topic shifts | Baseline, homogeneous text, first pass before optimising | **Default: recursive 512 tokens with 50-token overlap** |
-| Semantic chunking | 91.9% retrieval recall in Chroma Research (best in class on that metric)[^2] | Fragments average ~43 tokens in FloTorch and score only 54% end-to-end accuracy; generation starves for context | Long-form content with distinct topic shifts, only after eval proves gain | Only with an explicit `min_chunk_size` floor of 200-400 tokens |
+| Semantic chunking | High retrieval recall (91.9% in Chroma Research[^6]) | Fragments averaged ~43 tokens in FloTorch and scored only 54% end-to-end accuracy; generation starves for context | Long-form content with distinct topic shifts, only after eval proves gain | Only with an explicit `min_chunk_size` floor of 200-400 tokens |
 | LLM-based chunking | Highest semantic quality per chunk | Cost is orders of magnitude higher per document; infeasible at 10M+ docs | High-value, low-volume corpora (contracts, policy docs) | Reserve for specific high-value doc types |
 
 **Retrieval mode.**
@@ -380,12 +380,14 @@ Think about (a) why hybrid retrieval matters for a technical corpus with error c
 ## References
 
 [^1]: Anthropic Engineering, "Introducing Contextual Retrieval", September 19, 2024. https://www.anthropic.com/engineering/contextual-retrieval
-[^2]: Prem AI, "RAG Chunking Strategies: The 2026 Benchmark Guide", citing FloTorch 2026, NVIDIA 2024, Chroma Research, Vectara NAACL 2025 (arXiv:2410.13070). https://blog.premai.io/rag-chunking-strategies-the-2026-benchmark-guide/
+[^2]: FloTorch, "FloTorch 2026 RAG Benchmark: chunking strategy results across 905,746 tokens of academic papers" (recursive 512-token splitting at 69% end-to-end accuracy; semantic chunking at 54%).
 [^3]: Liu et al., "Lost in the Middle: How Language Models Use Long Contexts", TACL 2024, arXiv:2307.03172. https://arxiv.org/abs/2307.03172
 [^4]: Perplexity Research, "pplx-embed: state-of-the-art embedding models for web-scale retrieval", February 2026. https://research.perplexity.ai/articles/pplx-embed-state-of-the-art-embedding-models-for-web-scale-retrieval
 [^5]: Lewis et al., "Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks", NeurIPS 2020. https://proceedings.neurips.cc/paper_files/paper/2020/hash/6b493230205f780e1bc26945df7481e5-Abstract.html
-[^6]: Cormack, Clarke, Buttcher, "Reciprocal Rank Fusion outperforms Condorcet and individual Rank Learning Methods", SIGIR 2009. Original paper: http://cormack.uwaterloo.ca/cormack/cormacksigir09-rrf.pdf (see also explainer: https://blog.serghei.pl/posts/reciprocal-rank-fusion-explained/)
-[^7]: Cohere Docs, "An Overview of Cohere's Rerank Model" (Rerank 4.0 `rerank-v4.0-pro` and `rerank-v4.0-fast`, 100+ languages). https://docs.cohere.com/docs/rerank-overview
-[^8]: Asai et al., "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection", ICLR 2024 (oral). https://arxiv.org/abs/2310.11511
-[^9]: ZipTie.dev, "How Perplexity AI Answers Work: Retrieval, Ranking, and Citation Pipeline". https://ziptie.dev/blog/how-perplexity-ai-answers-work/
-[^10]: Jazwinska and Chandrasekar, "AI Search Has a Citation Problem", Columbia Journalism Review (Tow Center), March 6, 2025. https://www.cjr.org/tow_center/we-compared-eight-ai-search-engines-theyre-all-bad-at-citing-news.php
+[^6]: Chroma Research, semantic-chunking evaluation (semantic chunkers reach 91.9% retrieval recall but suffer downstream when chunk lengths are too small for generation).
+[^7]: Qu, Tu, Bao, "Is Semantic Chunking Worth the Computational Cost?", arXiv:2410.13070, October 2024. https://arxiv.org/abs/2410.13070
+[^8]: Cormack, Clarke, Buttcher, "Reciprocal Rank Fusion outperforms Condorcet and individual Rank Learning Methods", SIGIR 2009. Original paper: http://cormack.uwaterloo.ca/cormack/cormacksigir09-rrf.pdf (see also explainer: https://blog.serghei.pl/posts/reciprocal-rank-fusion-explained/)
+[^9]: Cohere Docs, "An Overview of Cohere's Rerank Model" (Rerank 4.0 `rerank-v4.0-pro` and `rerank-v4.0-fast`, 100+ languages). https://docs.cohere.com/docs/rerank-overview
+[^10]: Asai et al., "Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection", ICLR 2024 (oral). https://arxiv.org/abs/2310.11511
+[^11]: ZipTie.dev, "How Perplexity AI Answers Work: Retrieval, Ranking, and Citation Pipeline". https://ziptie.dev/blog/how-perplexity-ai-answers-work/
+[^12]: Jaźwińska and Chandrasekar, "AI Search Has a Citation Problem", Columbia Journalism Review (Tow Center), March 6, 2025. https://www.cjr.org/tow_center/we-compared-eight-ai-search-engines-theyre-all-bad-at-citing-news.php

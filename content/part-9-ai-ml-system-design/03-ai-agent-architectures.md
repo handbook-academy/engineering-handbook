@@ -80,7 +80,7 @@ The canonical implementation is 20 lines: the LLM either emits `tool_calls` (con
 
 ### Reflection and self-critique (Reflexion)
 
-Reflexion (Shinn et al., NeurIPS 2023) reinforces language agents through linguistic feedback rather than weight updates. A scalar or textual feedback signal is converted into self-reflective text stored in an episodic buffer, then prepended on the next attempt. On HumanEval, Reflexion reached 91% pass@1, up from the GPT-4 baseline of 80%[^5].
+Reflexion (Shinn et al., NeurIPS 2023) reinforces language agents through linguistic feedback rather than weight updates. A scalar or textual feedback signal is converted into self-reflective text stored in an episodic buffer, then prepended on the next attempt. On HumanEval, Reflexion (using GPT-4 as the base model) reached 91% pass@1, surpassing the prior GPT-4 SOTA of 80%[^5].
 
 The pattern works when the task has a verifiable oracle: tests pass, the compiler accepts, the answer matches ground truth. On open-ended generation it degrades to self-confirming bias because the critic has no external signal to anchor against.
 
@@ -100,7 +100,7 @@ Single-model agents drift on long-horizon tasks. After 20+ steps, the scratchpad
 
 **Tree of Thoughts (Yao et al., NeurIPS 2023)** generalizes chain-of-thought from a line to a tree. Each node is a coherent thought, nodes self-evaluate, and the agent can backtrack. On Game of 24, GPT-4 with CoT solved 4% of problems; ToT solved 74%[^7].
 
-**LLM+P (Liu et al., 2023)** translates the natural-language task into PDDL, hands it to a classical planner (Fast Downward), and translates the solution back. Vanilla LLMs fail to produce even feasible plans on most long-horizon problems; LLM+P produces optimal ones[^8].
+**LLM+P (Liu et al., 2023)** translates the natural-language task into PDDL, hands it to a classical planner (e.g., Fast Downward in their experiments), and translates the solution back. Vanilla LLMs fail to produce even feasible plans on most long-horizon problems; LLM+P produces optimal ones[^8].
 
 **Test-time reasoning (DeepSeek-R1, o1-style)** trains models with reinforcement learning to emit long internal chains of thought before answering, producing emergent self-reflection and verification without human-annotated reasoning trajectories[^9].
 
@@ -133,7 +133,7 @@ sequenceDiagram
 
 *One assistant turn emits multiple tool_use blocks; the client runs them concurrently via MCP servers and returns all results in the next user message.*
 
-**Model Context Protocol (MCP, Anthropic, November 2024)** standardizes the server-side tool and data interface as an open JSON-RPC protocol. Clients (Claude Desktop, Cursor, Zed, Replit, Sourcegraph) and servers (Google Drive, Slack, GitHub, Postgres, Puppeteer) speak a single protocol so every new data source no longer needs a custom integration[^11].
+**Model Context Protocol (MCP, Anthropic, November 2024; current spec revision 2025-11-25)** standardizes the server-side tool and data interface as an open JSON-RPC 2.0 protocol. Clients (Claude Desktop, Cursor, Zed, Replit, Sourcegraph) and servers (Google Drive, Slack, GitHub, Postgres, Puppeteer) speak a single protocol so every new data source no longer needs a custom integration[^11].
 
 **Tool selection at scale:** With 100+ tools, stuffing all descriptions into every prompt is a cost and distraction problem. ToolLLM trained over 16,464 real-world APIs and added a neural retriever that recommends tools per instruction[^12]. The practical pattern: embed tool descriptions, retrieve top-k relevant tools at the start of a turn, and only expose those in the `tools` field.
 
@@ -153,8 +153,8 @@ flowchart LR
     end
     LLM[LLM] --> SP
     LLM --> WM
-    LLM -- memory_search --> EM
-    LLM -- memory_search --> LT
+    LLM -- archival_memory_search --> EM
+    LLM -- archival_memory_search --> LT
     WM -- compaction --> EM
     EM -- promotion --> LT
     WM -- token pressure --> Summary[Rolling summary]
@@ -168,7 +168,7 @@ flowchart LR
 - **Episodic memory:** What the agent remembers about a specific user or project across sessions. Stored in a vector database, retrieved by embedding similarity.
 - **Long-term memory:** Shared facts and skills across users. Includes procedural memory (learned code snippets, verified solutions).
 
-MemGPT (Packer et al., 2023) framed this as virtual memory for LLMs: a small "main context" that fits in the window, plus external archival and recall storage, with the model itself issuing `memory_insert` / `memory_search` tool calls to page information in and out[^13]. The Letta production platform inherits this abstraction: agents actively edit their own core memory while conversational and archival memory live in external layers.
+MemGPT (Packer et al., 2023) framed this as virtual memory for LLMs: a small "main context" that fits in the window, plus external archival and recall storage, with the model itself issuing tool calls such as `core_memory_append`, `archival_memory_insert`, and `archival_memory_search` to page information in and out[^13]. The Letta production platform inherits this abstraction: agents actively edit their own core memory while conversational and archival memory live in external layers.
 
 The teaching insight is tiering, not vector search. Most "agent memory" failures trace to missing compaction (the scratchpad grows unbounded until the context window fills), not missing embeddings.
 
@@ -337,7 +337,7 @@ This is a routing + chaining workflow, not a full agent. The control flow is kno
 **A:** Only when the task has a verifiable oracle (test suite, compiler, ground-truth answer). Reflexion reached 91% on HumanEval vs. 80% baseline. On open-ended generation without an oracle, the critic degrades to self-confirming bias.
 
 **Q:** What is the Model Context Protocol (MCP)?
-**A:** An open JSON-RPC protocol (Anthropic, November 2024) that standardizes the server-side tool and data interface. Clients like Claude Desktop and Cursor speak a single protocol to any MCP server, eliminating custom integrations per data source.
+**A:** An open JSON-RPC 2.0 protocol (Anthropic, November 2024) that standardizes the server-side tool and data interface. Clients like Claude Desktop and Cursor speak a single protocol to any MCP server, eliminating custom integrations per data source.
 
 **Q:** How does parallel tool use reduce latency?
 **A:** The LLM emits multiple tool_use blocks in one assistant turn. The client executes them concurrently and returns all tool_result blocks in the next message. Independent calls see significant latency reduction proportional to the number of parallel calls.

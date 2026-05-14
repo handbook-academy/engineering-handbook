@@ -53,22 +53,22 @@ The early-2026 price ladder spans three orders of magnitude:
 | Flagship | Claude Opus 4.7 | $5.00 | $25.00 |
 | Flagship | GPT-5.5 | $5.00 | $30.00 |
 | Mid-tier | Claude Sonnet 4.6 | $3.00 | $15.00 |
-| Mid-tier | Gemini 3 Flash | $0.30 | $2.50 |
+| Mid-tier | Gemini 3 Flash (Preview) | $0.50 | $3.00 |
 | Small | Claude Haiku 4.5 | $1.00 | $5.00 |
-| Small | Gemini Flash-Lite | $0.10 | $0.40 |
+| Small | Gemini 3.1 Flash-Lite | $0.25 | $1.50 |
 | Small | Amazon Nova Micro | $0.035 | $0.14 |
 
-A back-of-envelope for a 1M-user product: 1 million users, 10 queries per day, averaging 1,200 input and 350 output tokens. That is 12 billion input tokens and 3.5 billion output tokens per day. At Sonnet pricing ($3/$15 per million), the daily bill is $36,000 input + $52,500 output = $88,500/day, or $2.7M/month. At Flash-Lite pricing, the same workload costs $1,200 input + $1,400 output = $2,600/day. The model choice is a P&L decision.
+A back-of-envelope for a 1M-user product: 1 million users, 10 queries per day, averaging 1,200 input and 350 output tokens. That is 12 billion input tokens and 3.5 billion output tokens per day. At Sonnet pricing ($3/$15 per million), the daily bill is $36,000 input + $52,500 output = $88,500/day, or $2.7M/month. At Gemini 3.1 Flash-Lite pricing ($0.25/$1.50), the same workload costs $3,000 input + $5,250 output = $8,250/day. The model choice is a P&L decision.
 
-DeepSeek's R1 release on 2025-01-20 at $0.55 input / $2.19 output (at launch)[^5] forced every provider to price-compete. On 2025-01-27, Nvidia lost approximately $600 billion in market cap in a single session.[^6] The cost floor dropped by an order of magnitude in a week. Any cost projection you made in 2024 is already wrong.
+DeepSeek's R1 release on 2025-01-20 at $0.55 input / $2.19 output (at launch) forced every provider to price-compete; DeepSeek has since released V4-Flash and V4-Pro (April 2026), with V4-Flash priced at roughly $0.14 input / $0.28 output per M tokens, lowering the open-API floor again[^5]. On 2025-01-27, Nvidia lost approximately $600 billion in market cap in a single session.[^6] The cost floor dropped by an order of magnitude in a week. Any cost projection you made in 2024 is already wrong.
 
 ### Prompt caching
 
 Prompt caching reuses the KV-cache representation of a stable prefix so repeated requests skip the prefill compute. It is the first lever to reach for because it has zero quality risk and actually reduces latency.
 
-**Anthropic** supports two modes: automatic caching (a single top-level `cache_control: {"type": "ephemeral"}` field that applies the breakpoint to the last cacheable block and advances it as conversations grow) and explicit cache breakpoints placed on individual content blocks for fine-grained control. Reads pay 0.1x (90% discount), writes pay 1.25x, with a 5-minute TTL (1-hour TTL available at 2x write premium). The minimum cacheable prefix varies by model: 4,096 tokens for Claude Opus 4.7/4.6/4.5 and Haiku 4.5, 2,048 tokens for Sonnet 4.6, and 1,024 tokens for Sonnet 4.5, Opus 4.1, Opus 4, Sonnet 4, and Sonnet 3.7.[^4] Break-even math: one write costs 1.25x; each read saves 0.9x. Two hits pay for one write. That is the memorable number.
+**Anthropic** supports two modes: automatic caching (a single top-level `cache_control: {"type": "ephemeral"}` field that applies the breakpoint to the last cacheable block and advances it as conversations grow) and explicit cache breakpoints placed on individual content blocks for fine-grained control. Reads pay 0.1x (90% discount), writes pay 1.25x, with a 5-minute TTL (1-hour TTL available at 2x write premium). The minimum cacheable prefix varies by model: 4,096 tokens for Claude Opus 4.7/4.6/4.5 and Haiku 4.5, and 1,024 tokens for Sonnet 4.6, Sonnet 4.5, and Opus 4.1.[^4] Break-even math: one write costs 1.25x; each read saves 0.9x. Two hits pay for one write. That is the memorable number.
 
-**OpenAI** caches automatically on prompts of 1,024 tokens or more. The original announcement (October 2024) described a 50% discount, but current models like GPT-5.5 receive a 90% discount on cached input tokens ($0.50 vs $5.00 per M tokens), applied in 128-token increments with a 5 to 10 minute TTL.[^7]
+**OpenAI** caches automatically on prompts of 1,024 tokens or more. The original announcement (October 2024) described a 50% discount; current GPT-5-class models receive substantially deeper cache discounts (commonly cited at ~90% on cached input tokens for the latest snapshots), applied in 128-token increments. TTL is typically 5-10 minutes of inactivity with a roughly 1-hour hard cap. Always check the live pricing page for the specific model and snapshot you deploy.[^7]
 
 **Google Gemini** bills storage-hours for context caches, discounting 75 to 90% on reads.
 
@@ -184,7 +184,7 @@ Multi-tenant SaaS teams typically find 5% of tenants drive 60% of token spend. W
 
 ### Klarna AI assistant: the cost-first cautionary tale
 
-In February 2024, Klarna launched an AI customer service assistant built on OpenAI's GPT models. In the first month, it handled 2.3 million conversations, equivalent to the work of 700 full-time agents.[^12] Average resolution time dropped from 11 minutes to under 2 minutes (82% reduction). The AI assistant was estimated to drive $40 million in profit improvement in 2024.
+In February 2024, Klarna launched an AI customer service assistant built on OpenAI's GPT models. In its first month at peak adoption, it handled 2.3 million conversations, equivalent to the work of 700 full-time agents.[^12] Average resolution time dropped from 11 minutes to under 2 minutes (82% reduction), and Klarna estimated $40 million in profit improvement attributable to the assistant in 2024.
 
 The architecture was straightforward: a single flagship model with retrieval over Klarna's policies and refund flows, serving 35 languages across approximately 150 million customers. Klarna also reported AI-driven savings in marketing, though specific figures were shared in earnings calls rather than public press releases.
 
@@ -332,7 +332,7 @@ Phase 3 total: approximately 62% cumulative reduction. Target met.
 **A:** Up to 98% cost reduction at matched GPT-4 accuracy on news classification, reading comprehension, and scientific QA benchmarks, using a three-stage cascade with a learned verifier.
 
 **Q:** What did the DeepSeek R1 release demonstrate about LLM cost planning?
-**A:** That cost floors can reset by an order of magnitude overnight. R1 launched at $0.55/$2.19 per million tokens versus OpenAI o1 at $15/$60, a 27x input discount. Nvidia lost approximately $600B in market cap in one session on the implication that frontier AI does not require frontier GPUs.
+**A:** That cost floors can reset by an order of magnitude overnight. R1 launched at $0.55/$2.19 per million tokens versus OpenAI o1 at $15/$60, a 27x input discount. Nvidia lost approximately $600B in market cap in one session on the implication that frontier AI does not require frontier GPUs. DeepSeek has continued to push the floor down: V4-Flash (April 2026) runs at roughly $0.14 input / $0.28 output per M tokens.
 
 **Q:** What is the simplest output-cost lever most teams miss?
 **A:** Setting `max_tokens` on every call. Without it, a flagship model can generate 8,000+ tokens on a single request, costing 10 to 100x the expected amount. JSON mode and schema-constrained generation also cap output length at the schema boundary.
@@ -349,7 +349,7 @@ Phase 3 total: approximately 62% cumulative reduction. Target met.
 [^2]: Chen, Zaharia, Zou, "FrugalGPT: How to Use Large Language Models While Reducing Cost and Improving Performance", arXiv:2305.05176, 2023. https://arxiv.org/abs/2305.05176
 [^3]: Microsoft Research, "LLMLingua: Innovating LLM efficiency with prompt compression" (up to 20x compression). https://www.microsoft.com/en-us/research/blog/llmlingua-innovating-llm-efficiency-with-prompt-compression/
 [^4]: Anthropic, "Prompt caching" (Claude API docs, cache_control, 0.1x reads, 1.25x writes, 5-min TTL). https://docs.claude.com/en/docs/build-with-claude/prompt-caching
-[^5]: DeepSeek R1 launch pricing ($0.55/$2.19 per M tokens) widely reported at launch on 2025-01-20; DeepSeek's pricing page has since been updated. Release date confirmed by Wikipedia. https://en.wikipedia.org/wiki/DeepSeek
+[^5]: DeepSeek R1 launch pricing ($0.55/$2.19 per M tokens) widely reported at launch on 2025-01-20. DeepSeek subsequently launched V4-Flash and V4-Pro on 2026-04-24, with V4-Flash at roughly $0.14 / $0.28 per M tokens. https://api-docs.deepseek.com/quick_start/pricing ; release context: https://en.wikipedia.org/wiki/DeepSeek
 [^6]: The Motley Fool, "Why Nvidia Stock Lost 11% in January" (cites roughly $600B single-day loss on DeepSeek reaction, 2025-01-27). https://www.fool.com/investing/2025/02/04/why-nvidia-stock-lost-11-in-january/
 [^7]: OpenAI, "Prompt Caching in the API" (original announcement: 50% discount, 1,024-token minimum, 128-token increments; current GPT-5.5 pricing shows 90% cached discount). https://openai.com/index/api-prompt-caching
 [^8]: Zilliztech, "GPTCache: A Library for Creating Semantic Cache for LLM Queries". https://github.com/zilliztech/GPTCache

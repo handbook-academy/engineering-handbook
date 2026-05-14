@@ -15,7 +15,7 @@ date_updated: 2026-05-11
 
 # Multimodal AI Systems (CLIP, Whisper, LayoutLM, Document AI)
 
-> **TL;DR**: Production AI is no longer text-only. Users upload photos, voice notes, and PDFs and expect the system to reason across all of it. The stack has four layers: ingest (parse, OCR, transcribe), embed (CLIP/SigLIP for images, Whisper for audio, ColPali for documents), store (blob storage for originals, vector DB for embeddings, linked by object ID), and serve (ANN retrieval plus optional multimodal LLM). Google Lens processes over 25 billion visual searches per month[^1]. Cascade pipelines (OCR then embed then LLM) beat end-to-end multimodal LLMs on cost and debuggability at production scale; reserve GPT-4o/Gemini vision for low-volume, quality-critical tasks where a single image costs 765 tokens[^2].
+> **TL;DR**: Production AI is no longer text-only. Users upload photos, voice notes, and PDFs and expect the system to reason across all of it. The stack has four layers: ingest (parse, OCR, transcribe), embed (CLIP/SigLIP for images, Whisper for audio, ColPali for documents), store (blob storage for originals, vector DB for embeddings, linked by object ID), and serve (ANN retrieval plus optional multimodal LLM). Google Lens crossed 100 billion visual searches in 2025 (~8 billion per month), growing 65% year-over-year[^1]. Cascade pipelines (OCR then embed then LLM) beat end-to-end multimodal LLMs on cost and debuggability at production scale; reserve frontier vision models (GPT-5.x, Gemini 3, Claude 4.x, Llama 4) for low-volume, quality-critical tasks — image token costs vary by model family and you should always re-run the math against the specific model you deploy[^2].
 
 ## Learning Objectives
 
@@ -87,7 +87,7 @@ For video, the pragmatic approach is to embed frames at 1 FPS and pool. Higher f
 
 ### Audio pipelines: Whisper and diarization
 
-Whisper (OpenAI, 2022) is an encoder-decoder transformer trained on 680,000 hours of weakly labeled multilingual audio[^5]. The design choice that made it robust was weak supervision from the web rather than cleanly labeled speech datasets. Audio is resampled to 16 kHz, chopped into 30-second windows, converted to 80-channel log-Mel spectrograms (128 channels in large-v3+), and decoded autoregressively with special tokens for language, task (transcription vs. translation), and timestamps.
+Whisper (OpenAI, 2022) is an encoder-decoder transformer originally trained on 680,000 hours of weakly labeled multilingual audio (large-v3 was later trained on 1M weakly labeled + 4M pseudo-labeled hours)[^5]. The design choice that made it robust was weak supervision from the web rather than cleanly labeled speech datasets. Audio is resampled to 16 kHz, chopped into 30-second windows, converted to 80-channel log-Mel spectrograms (128 channels in large-v3+), and decoded autoregressively with special tokens for language, task (transcription vs. translation), and timestamps.
 
 Whisper ships in six sizes: tiny (39M, ~10x real-time), base (74M), small (244M), medium (769M), large-v3 (1,550M, trained on 1M weakly labeled + 4M pseudo-labeled hours, ~2.0% WER on LibriSpeech clean per the HuggingFace Open ASR Leaderboard), and turbo (809M, ~8x real-time with only 4 decoder layers instead of 32)[^6][^7][^8]. The turbo model is the production sweet spot: near-large quality at near-small speed.
 
@@ -114,7 +114,7 @@ flowchart LR
 
 *Audio flows through VAD, Whisper transcription, diarization, and alignment. Transcripts and embeddings are stored separately, linked by recording ID.*
 
-Cost math: batch STT via the Whisper API costs $0.006/minute. Realtime audio APIs (GPT-4o Realtime, Gemini Live) cost $0.30 to $2+/minute[^2]. Use batch for anything that does not need sub-second latency.
+Cost math: batch STT via the Whisper API costs $0.006/minute, and OpenAI's `gpt-4o-transcribe` / `gpt-4o-mini-transcribe` (released March 2025) are the recommended hosted successors for higher-quality transcription. Realtime audio APIs (OpenAI Realtime, Gemini Live) cost $0.30 to $2+/minute[^2]. Use batch for anything that does not need sub-second latency.
 
 ### Document AI: LayoutLM, Donut, and ColPali
 
@@ -138,7 +138,7 @@ Three architectural patterns power today's multimodal LLMs:
 
 **Perceiver resampler (Flamingo):** A Perceiver resampler converts variable-length visual features into a fixed number of visual tokens, and gated cross-attention layers interleaved inside the frozen LLM allow it to attend to them[^15]. This was the first architecture to demonstrate few-shot multimodal reasoning at scale.
 
-**Unified early-fusion (Chameleon, Fuyu, GPT-4o):** Images are tokenized into discrete visual tokens and mixed with text tokens in a single autoregressive sequence[^16]. Strongest cross-modal reasoning, but most expensive to train and serve.
+**Unified early-fusion (Chameleon, Fuyu, GPT-4o, GPT-5, Gemini 3, Llama 4):** Images (and in some models audio/video) are tokenized into discrete visual tokens and mixed with text tokens in a single autoregressive sequence[^16]. Strongest cross-modal reasoning, but most expensive to train and serve.
 
 ```mermaid
 flowchart TD
@@ -148,7 +148,7 @@ flowchart TD
         QF --> LLM1[Frozen or tuned LLM]
         T1[Text] --> LLM1
     end
-    subgraph Unified["Unified early-fusion (GPT-4o / Chameleon)"]
+    subgraph Unified["Unified early-fusion (GPT-5 / Gemini 3 / Llama 4 / Chameleon)"]
         I2[Image patches] --> TOK[Visual tokenizer]
         TOK --> SEQ[Mixed token stream]
         T2[Text tokens] --> SEQ
@@ -158,7 +158,7 @@ flowchart TD
 
 *Adapter-based models bolt vision onto a frozen LLM cheaply. Unified models tokenize all modalities into one sequence for stronger reasoning at higher cost.*
 
-Gemini 3.1 Pro (released Feb 19, 2026) supports up to 1M input tokens and reasons over hours of video and audio in a single prompt[^17]. GPT-4o high-detail mode costs 85 + (tiles x 170) tokens per image; a 1024x1024 image is 765 tokens[^2]. At 10K image queries/day, that is ~$19,125/month just for image input. The cost math matters. Note: OpenAI's newer GPT-5.x models use a patch-based tokenization scheme rather than the GPT-4o tile formula, so re-run the math against the specific model you deploy.
+Gemini 3.1 Pro (released Feb 19, 2026) supports up to 1M input tokens and reasons over hours of video and audio in a single prompt[^17]. As an illustrative example, GPT-4o's high-detail mode costs 85 + (tiles × 170) tokens per image (a 1024×1024 image = 765 tokens). At 10K image queries/day, that is ~$19,125/month just for image input. The cost math matters. OpenAI's newer GPT-5.x models use a patch-based tokenization rather than the GPT-4o tile formula, and Claude 4.x / Gemini 3.x each have their own token-per-image rules — always re-run the math against the specific model and version you deploy[^2].
 
 ### Multimodal RAG and ColPali-style retrieval
 
@@ -174,7 +174,7 @@ ColPali's advantage is that it preserves charts, tables, and fonts that text pip
 ```mermaid
 graph TD
     Q[Task] --> V{Volume > 1k<br/>docs/day?}
-    V -->|No| LLM[Direct multimodal LLM<br/>GPT-4o / Gemini / Claude]
+    V -->|No| LLM[Direct multimodal LLM<br/>GPT-5.x / Gemini 3.x / Claude 4.x]
     V -->|Yes| R{Visually rich?<br/>charts, tables,<br/>infographics}
     R -->|No| C[Cascade<br/>OCR + text embedder + LLM]
     R -->|Yes| CP[ColPali-style<br/>patch embeddings + VLM reader]
@@ -186,9 +186,9 @@ For the storage layer, [Vector Databases](../part-4-data-systems/08-vector-datab
 
 ## Real-World Example
 
-### Google Lens: 25 billion visual searches per month
+### Google Lens: 100B+ visual searches per year
 
-Google Lens processes more than 25 billion visual searches per month as of early 2026, growing 65% year-over-year[^1][^18]. Roughly 1 in 5 queries are shopping-related.
+Google Lens crossed more than 100 billion visual searches in 2025 (~8 billion per month), growing 65% year-over-year, with roughly 1 in 5 queries shopping-related[^1].
 
 The architecture is detect-then-embed-then-retrieve:
 
@@ -198,7 +198,7 @@ The architecture is detect-then-embed-then-retrieve:
 
 Serving at sub-second latency across billions of images requires sharded ANN indexes (ScaNN family), GPU model serving, and aggressive feature caching for the detection front-end.
 
-Pinterest's Shop the Look follows the same pattern: detect products in a scene image, embed each crop with a unified visual embedding model, retrieve from an ANN index over 200B+ Pins, and rerank for category consistency. Their unified embedding (shared across Shop the Look, Visual Search, and Related Pins) reduced storage by eliminating per-surface duplicate embeddings[^19]. Iterating on this pipeline delivered +80% online engagement and +160% cumulative relevance gains[^19].
+Pinterest's Shop the Look follows the same pattern: detect products in a scene image, embed each crop with a unified visual embedding model, retrieve from an ANN index over 200B+ Pins, and rerank for category consistency. Their unified embedding (shared across Shop the Look, Visual Search, and Related Pins) reduced storage by eliminating per-surface duplicate embeddings[^18]. Iterating on this pipeline delivered +80% online engagement and +160% cumulative relevance gains[^18].
 
 The key engineering lesson: per-vertical indexes with domain-fine-tuned embeddings beat one universal CLIP index because domain mismatch degrades recall sharply on specialized content (medical, satellite, legal documents).
 
@@ -206,7 +206,7 @@ The key engineering lesson: per-vertical indexes with domain-fine-tuned embeddin
 
 | Approach | Pros | Cons | Best when | Our Pick |
 |---|---|---|---|---|
-| End-to-end multimodal LLM (GPT-4o, Gemini) | One API, strongest cross-modal reasoning | Model-specific image tokenization (765 tokens/image for GPT-4o high-detail; ~258 for Gemini 2.5 Flash default; ~1,200-1,500 for Claude 3.5 Sonnet at 1024x1024); $0.20-$1.00/page; context rot >5K tokens | Low-volume, quality-critical | Quality path only |
+| End-to-end multimodal LLM (GPT-5.x, Gemini 3.x, Claude 4.x, Llama 4) | One API, strongest cross-modal reasoning | Model-specific image tokenization (e.g., 765 tokens for a 1024×1024 image in GPT-4o high-detail; GPT-5.x patch-based tokenization differs; ~1,300 for a 1024×1024 image in Claude using `width × height / 750`; Gemini 3.x tiles to 768×768 chunks); $0.20-$1.00/page; context rot >5K tokens | Low-volume, quality-critical | Quality path only |
 | Cascade (OCR then LLM, Whisper then LLM) | Swappable stages, cheap ($0.01-$0.05/page), debuggable | Error compounds across stages | High-volume ingestion | **Production default** |
 | Shared CLIP index | Simple, strong cross-modal baseline | Quality ceiling is CLIP's; misses fine attributes | Consumer search, prototypes | Start here |
 | ColPali-style visual retrieval | +22.5 NDCG@5 over text baseline; end-to-end trainable | 256 KB/page raw; ~30x larger index | Document RAG with charts, tables | Visually rich docs |
@@ -225,7 +225,7 @@ The key engineering lesson: per-vertical indexes with domain-fine-tuned embeddin
 > **No OCR fallback for scanned PDFs.** Many PDF libraries check for an embedded text layer and skip OCR if absent. Image-only PDFs silently return empty text, and retrieval recall drops to random on that subset. Classify each document (has text layer vs. image-only) and route accordingly. Unstructured's `hi_res` strategy does this automatically[^13].
 
 > [!WARNING]
-> **Same resolution for all images.** A 4000x6000 product photo costs ~16,000 tokens in GPT-4o high-detail (~$0.041/image) for a task that works fine at 512x512 low-detail (85 tokens, ~$0.0002)[^2]. Resize to 512px on the long edge unless the task genuinely needs fine detail.
+> **Same resolution for all images.** A 4000×6000 product photo costs ~16,000 tokens in GPT-4o high-detail (~$0.041/image) for a task that works fine at 512×512 low-detail (85 tokens, ~$0.0002)[^2]. The numbers shift for GPT-5.x/Gemini 3.x/Claude 4.x but the principle holds: resize to 512px on the long edge unless the task genuinely needs fine detail.
 
 > [!WARNING]
 > **Unmonitored video frame rate.** Flipping Gemini video from 0.1 FPS to 1 FPS in an unmonitored pipeline grows the monthly bill 10x before anyone notices[^2]. Use content-aware frame selection (perceptual hashing, scene detection) and track per-video token count as a first-class observability metric.
@@ -265,12 +265,12 @@ Think about (a) why domain-fine-tuned embeddings beat vanilla CLIP on product at
 ## Key Takeaways
 
 - Cross-modal retrieval is not optional for consumer AI; CLIP-family embeddings are the baseline, SigLIP often stronger per compute.
-- Whisper democratized speech-to-text with 680K hours of weak supervision; diarization and VAD remain the pipeline pieces that take real engineering effort.
+- Whisper democratized speech-to-text with 680K hours of weak supervision (5M hours by large-v3); diarization and VAD remain the pipeline pieces that take real engineering effort.
 - Document AI lives or dies on layout modeling: LayoutLM for token tagging, Donut for JSON extraction, ColPali for retrieval (+22.5 NDCG@5 over text baselines).
 - Separate raw-object storage from vector storage and link by object ID, so re-embedding is a rebuild not a migration.
 - End-to-end multimodal LLMs are tempting but cascade pipelines win on cost and debuggability at production scale.
 - Video frame rate is a silent cost multiplier: 1 FPS to 24 FPS is 21.5x the token budget. Use content-aware frame selection.
-- Google Lens at 25B+ visual searches/month proves the pattern: detect, embed per-vertical, retrieve with sharded ANN, fuse results.
+- Google Lens at 100B+ visual searches/year proves the pattern: detect, embed per-vertical, retrieve with sharded ANN, fuse results.
 
 ## Further Reading
 
@@ -304,7 +304,7 @@ Think about (a) why domain-fine-tuned embeddings beat vanilla CLIP on product at
 **A:** ColPali scores +22.5 NDCG@5 over text baselines on visually rich documents by embedding pages as patch-level multi-vectors. The trade-off: 256 KB per page versus 8.6 KB per chunk for BGE-M3, roughly 30x larger indexes.
 
 **Q:** Name the three architectural patterns for multimodal LLMs.
-**A:** (1) Adapter-based (BLIP-2, LLaVA): frozen vision encoder + learnable adapter + LLM. (2) Perceiver resampler (Flamingo): fixed visual tokens + gated cross-attention. (3) Unified early-fusion (GPT-4o, Chameleon): all modalities tokenized into one autoregressive sequence.
+**A:** (1) Adapter-based (BLIP-2, LLaVA): frozen vision encoder + learnable adapter + LLM. (2) Perceiver resampler (Flamingo): fixed visual tokens + gated cross-attention. (3) Unified early-fusion (GPT-4o, GPT-5, Gemini 3, Llama 4, Chameleon): all modalities tokenized into one autoregressive sequence.
 
 **Q:** How many tokens does a 1024x1024 image cost in GPT-4o high-detail mode?
 **A:** 765 tokens (85 base + tiles x 170). At 10K image queries/day, that is ~$19,125/month for image input alone.
@@ -319,11 +319,11 @@ Think about (a) why domain-fine-tuned embeddings beat vanilla CLIP on product at
 **A:** Detect-then-embed architecture: object detectors crop salient regions, each crop embeds into per-vertical indexes (shopping, plants, text, web), sharded ANN indexes (ScaNN family) serve retrieval, and rank fusion assembles the final response. At 25B+ monthly visual searches, this is the largest production multimodal retrieval system.
 
 **Q:** What is the cost difference between batch and realtime audio transcription?
-**A:** Batch STT (Whisper API) costs ~$0.006/minute. Realtime audio APIs (GPT-4o Realtime, Gemini Live) cost $0.30 to $2+/minute, roughly 50-300x more expensive.
+**A:** Batch STT (Whisper API) costs ~$0.006/minute (or use `gpt-4o-transcribe`/`mini-transcribe` for higher-quality batch transcription, since March 2025). Realtime audio APIs (OpenAI Realtime, Gemini Live) cost $0.30 to $2+/minute, roughly 50-300x more expensive.
 
 ## References
 
-[^1]: Nairametrics, "Google says AI Overviews has hit 2 billion users globally", 2026-03-17. https://nairametrics.com/2026/03/17/google-says-ai-overviews-has-hit-2-billion-users-globally/
+[^1]: Ivan Mehta, "Sundar Pichai shares some Google Lens stats", TechCrunch, 2025-05-20. https://techcrunch.com/snippet/3009713/sundar-pichai-shares-some-google-lens-stats/
 [^2]: Tian Pan, "Multimodal LLMs in Production: The Cost Math Nobody Runs Upfront", 2026-04-10. https://tianpan.co/blog/2026-04-10-multimodal-llms-production-cost-math
 [^3]: Radford et al., "Learning Transferable Visual Models From Natural Language Supervision (CLIP)", arXiv:2103.00020, ICML 2021. https://arxiv.org/abs/2103.00020
 [^4]: Zhai et al., "Sigmoid Loss for Language Image Pre-Training (SigLIP)", arXiv:2303.15343, ICCV 2023 Oral. https://arxiv.org/abs/2303.15343
@@ -340,5 +340,4 @@ Think about (a) why domain-fine-tuned embeddings beat vanilla CLIP on product at
 [^15]: Alayrac et al., "Flamingo: a Visual Language Model for Few-Shot Learning", arXiv:2204.14198, NeurIPS 2022. https://arxiv.org/abs/2204.14198
 [^16]: Chameleon Team (Meta FAIR), "Chameleon: Mixed-Modal Early-Fusion Foundation Models", arXiv:2405.09818, 2024. https://arxiv.org/html/2405.09818v1/
 [^17]: Google DeepMind, "Gemini 3.1 Pro" model card and API docs (1M-token context, multimodal reasoning over video/audio), Feb 2026. https://deepmind.google/models/model-cards/gemini-3-1-pro/ (see also Gemini 1.5 paper, arXiv:2403.05530, which first established the long-context family).
-[^18]: Ivan Mehta, "Sundar Pichai shares some Google Lens stats", TechCrunch, 2025-05-20. https://techcrunch.com/snippet/3009713/sundar-pichai-shares-some-google-lens-stats/
-[^19]: Shiau et al., "Shop The Look: Building a Large Scale Visual Shopping System at Pinterest", arXiv:2006.10866, KDD 2020. http://arxiv.org/abs/2006.10866v1
+[^18]: Shiau et al., "Shop The Look: Building a Large Scale Visual Shopping System at Pinterest", arXiv:2006.10866, KDD 2020. http://arxiv.org/abs/2006.10866v1

@@ -91,7 +91,7 @@ Handoff is peer-to-peer transfer of control. An agent calls a tool that returns 
 
 OpenAI Swarm (October 2024) introduced the minimal primitive: an `Agent` has instructions and functions; a function that returns an `Agent` is a handoff[^3]. The run loop is: get completion from current agent, execute tool calls, if a tool returned an Agent switch to it, loop until no new function calls.
 
-The OpenAI Agents SDK (March 2025, the production successor) compiles handoffs into synthetic tools. A `triage_agent` with `handoffs=[billing_agent, refund_agent]` sees `transfer_to_billing_agent` and `transfer_to_refund_agent` alongside its regular tools on one decision surface[^3]. The model picks handoff or tool call using the same mechanism.
+The OpenAI Agents SDK (initial release March 2025, now provider-agnostic and at 0.17.x as of mid-2026) compiles handoffs into synthetic tools. A `triage_agent` with `handoffs=[billing_agent, refund_agent]` sees `transfer_to_billing_agent` and `transfer_to_refund_agent` alongside its regular tools on one decision surface[^3]. The model picks handoff or tool call using the same mechanism.
 
 ```mermaid
 sequenceDiagram
@@ -145,21 +145,21 @@ The mental model: if you have used React's `useReducer`, LangGraph's typed state
 
 The multi-agent framework landscape is wide. Here are the four you will encounter most, plus a brief mention of alternatives.
 
-**LangGraph (LangChain, 2024):** Explicit DAG/state-machine. Typed shared state with reducers. Checkpointing (SQLite, Postgres). Human-in-the-loop via interrupts. Streaming and subgraphs. Used in production by Klarna, Elastic, and others[^6]. Best when you need durable, observable, long-running workflows with crash recovery.
+**LangGraph (LangChain):** Explicit DAG/state-machine. Typed shared state with reducers. Checkpointing (SQLite, Postgres). Human-in-the-loop via interrupts. Streaming and subgraphs. 1.0 stable shipped Oct 2025; 1.x line is the current production release. Used in production by Klarna, Elastic, and others[^6]. Best when you need durable, observable, long-running workflows with crash recovery.
 
-**OpenAI Agents SDK (March 2025):** Lightweight, few abstractions. Handoffs as tools. Built-in guardrails (run input validation in parallel with agent execution, fail fast). Sessions for persistent memory (SQLite, Postgres, Redis, MongoDB). Built-in tracing compatible with OpenAI's eval tools. Best when you want minimal ceremony and your agents are OpenAI-model-first[^3].
+**OpenAI Agents SDK:** Lightweight, few abstractions. Handoffs as tools. Built-in guardrails (run input validation in parallel with agent execution, fail fast). Sessions for persistent memory (SQLite, Postgres, Redis, MongoDB). Built-in tracing compatible with OpenAI's eval tools. Originally OpenAI-first at the March 2025 launch, now provider-agnostic across 100+ LLMs. Best when you want minimal ceremony[^3].
 
-**AutoGen v0.4+ (Microsoft Research, January 2025):** Asynchronous event-driven actor model. GroupChat with selectors (LLM or round-robin) deciding who speaks next[^7]. Cross-language (Python and .NET). OpenTelemetry support. Magentic-One (generalist multi-agent with Orchestrator, WebSurfer, Coder, ComputerTerminal) ships on v0.4. Now at v0.7 stable; Microsoft is consolidating AutoGen into the broader Microsoft Agent Framework. Best when you need debate-style or code-interpreter workflows with asynchronous execution.
+**Microsoft Agent Framework (MAF) / AutoGen:** AutoGen (Microsoft, Jan 2025 v0.4 → v0.7.5 Sept 2025) introduced the asynchronous event-driven actor model with GroupChat selectors[^7]. Magentic-One (generalist multi-agent: Orchestrator, WebSurfer, FileSurfer, Coder, ComputerTerminal) and the user-facing **Magentic-UI** (latest 0.1.x, Nov 2025) ship on this lineage. AutoGen is now in maintenance mode; **Microsoft Agent Framework (MAF)** is the GA successor (Python `agent-framework`, .NET 1.6.x) for new builds. Useful for debate-style or code-interpreter workflows with asynchronous execution.
 
 **CrewAI:** Role-based crews with a process (sequential or hierarchical). Lower learning curve. Best for prototyping role-based teams quickly.
 
-**Others worth knowing:** MetaGPT (SOP-driven software dev crew, 126 tokens per line of code vs ChatDev's 249)[^8], DSPy (programmatic prompts compiled, not orchestrated), LlamaIndex Workflows (event-driven), Pydantic AI, Mastra (TypeScript-first).
+**Others worth knowing:** CrewAI (1.x as of 2026 — role-based crews with sequential or hierarchical processes), MetaGPT (SOP-driven software dev crew, lower per-task token cost than ChatDev on the SoftwareDev benchmark)[^8], DSPy (programmatic prompts compiled, not orchestrated), LlamaIndex Workflows (event-driven), Pydantic AI, Mastra (TypeScript-first).
 
 | Framework | Core abstraction | State model | Human-in-the-loop | Best for |
 |---|---|---|---|---|
 | LangGraph | DAG + typed state | Explicit schema + reducers | interrupt() + checkpointer | Durable, observable workflows |
 | Agents SDK | Agent + handoff tools | Conversation (sessions) | Not built-in (add manually) | Lightweight triage/routing |
-| AutoGen v0.4+ | Actor + GroupChat | Shared transcript | Termination conditions | Debate, code-interpreter |
+| Microsoft Agent Framework (MAF; supersedes AutoGen) | Actor + GroupChat | Shared transcript | Termination conditions | Debate, code-interpreter |
 | CrewAI | Role + process | Shared memory | Callbacks | Rapid prototyping |
 
 ### Communication patterns and state management
@@ -168,7 +168,7 @@ Multi-agent systems communicate through one of three patterns:
 
 **Shared state / blackboard.** All agents read and write a common state object. LangGraph's `TypedDict` with reducers is the typed version. AutoGen's GroupChat transcript is the untyped version. Pro: simple coordination. Con: context pressure grows with every agent; race conditions on parallel writes require associative reducers.
 
-**Message passing (actor model).** Agents communicate through asynchronous messages. AutoGen v0.4's core layer uses this. Pro: scales across process boundaries. Con: harder to reason about ordering and delivery.
+**Message passing (actor model).** Agents communicate through asynchronous messages. AutoGen and its successor Microsoft Agent Framework (MAF) use this at their core. Pro: scales across process boundaries. Con: harder to reason about ordering and delivery.
 
 **Handoff with payload.** Control transfers with a filtered subset of history. OpenAI Agents SDK's `input_filter` (e.g., `remove_all_tools`) strips prior tool calls before the next agent sees them. Pro: clean isolation. Con: information loss if the filter is too aggressive.
 
@@ -290,8 +290,9 @@ flowchart TD
 - [OpenAI Agents SDK documentation](https://openai.github.io/openai-agents-python/) - Handoffs-as-tools, sessions, guardrails, and tracing; the production successor to Swarm.
 - [LangGraph workflows and agents guide](https://docs.langchain.com/oss/python/langgraph/workflows-agents) - Canonical reference implementations of all five Anthropic patterns in LangGraph with the Send API.
 - [AutoGen v0.4 announcement (Microsoft Research, Jan 2025)](https://www.microsoft.com/en-us/research/blog/autogen-v0-4-reimagining-the-foundation-of-agentic-ai-for-scale-extensibility-and-robustness) - The actor-model rewrite, GroupChat selectors, and Magentic-One.
+- [Microsoft Agent Framework overview](https://learn.microsoft.com/en-us/agent-framework/overview/) - The GA successor to AutoGen; the canonical reference for new builds.
 - [OpenTelemetry GenAI agent spans](https://opentelemetry.io/docs/specs/semconv/gen-ai/gen-ai-agent-spans/) - The emerging standard for agent observability: `invoke_agent`, `create_agent`, `execute_tool` operations.
-- [Encouraging Divergent Thinking through Multi-Agent Debate (Liang et al., 2024)](https://arxiv.org/abs/2305.19118) - A foundational debate-as-ensemble paper; addresses degeneration-of-thought in reasoning benchmarks.
+- [Encouraging Divergent Thinking in Large Language Models through Multi-Agent Debate (Liang et al., EMNLP 2024)](https://arxiv.org/abs/2305.19118) - A foundational debate-as-ensemble paper; addresses degeneration-of-thought in reasoning benchmarks.
 
 ## Flashcards
 
@@ -319,8 +320,8 @@ flowchart TD
 **Q:** What went wrong with Anthropic's early Research agents?
 **A:** They spawned 50 subagents for simple queries, scoured the web endlessly for nonexistent sources, duplicated work across subagents due to vague task descriptions, and chose SEO-optimized content farms over authoritative sources. Fixed by adding scaling rules, explicit task boundaries, and source-quality heuristics.
 
-**Q:** How does AutoGen v0.4+ differ from LangGraph architecturally?
-**A:** AutoGen v0.4+ uses an asynchronous event-driven actor model with GroupChat (a selector decides who speaks next). LangGraph uses an explicit DAG with typed shared state and reducers. AutoGen optimises for conversation-style interaction; LangGraph optimises for durable, observable workflows.
+**Q:** How does Microsoft Agent Framework (MAF / AutoGen lineage) differ from LangGraph architecturally?
+**A:** MAF (and AutoGen before it) uses an asynchronous event-driven actor model with GroupChat (a selector decides who speaks next). LangGraph uses an explicit DAG with typed shared state and reducers. MAF optimises for conversation-style interaction; LangGraph optimises for durable, observable workflows.
 
 **Q:** What is the default recommendation before reaching for multi-agent?
 **A:** Start with a single richer agent. Anthropic's guidance: "start with simple prompts, optimize them with comprehensive evaluation, and add multi-step agentic systems only when simpler solutions fall short." Most production wins come from workflows (predetermined code paths), not autonomous multi-agent systems.

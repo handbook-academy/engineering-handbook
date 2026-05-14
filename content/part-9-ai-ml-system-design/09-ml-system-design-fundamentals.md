@@ -14,7 +14,7 @@ tags:
 
 # ML System Design Fundamentals
 
-> **TL;DR**: Every large-scale recommendation feed runs a two-stage pipeline: retrieval narrows billions of items to thousands in under 50 ms, then a ranking model scores those thousands with rich features in about 100 ms. Two-tower embedding models power retrieval by precomputing item vectors and querying an ANN index at request time. The feature store keeps training and serving consistent. Training-serving skew, not the model itself, is the #1 silent killer of production ML: Sculley et al. found that only a tiny fraction of real-world ML code is the model; the rest is surrounding infrastructure that can silently diverge[^1]. Get the pipeline right before you tune the model.
+> **TL;DR**: Every large-scale recommendation feed runs a two-stage pipeline: retrieval narrows billions of items to thousands in under 50 ms, then a ranking model scores those thousands with rich features in about 100 ms. Two-tower embedding models power retrieval by precomputing item vectors and querying an ANN index at request time. The feature store keeps training and serving consistent. Training-serving skew, not the model itself, is the #1 silent killer of production ML: Sculley et al. found that only a small fraction of real-world ML code is the model; the rest is surrounding infrastructure that can silently diverge[^1]. Get the pipeline right before you tune the model.
 
 ## Learning Objectives
 
@@ -70,7 +70,7 @@ flowchart LR
 
 A two-tower model has two independent subnetworks. The user tower encodes user context (watch history, demographics, device) into a d-dimensional vector (typically 64 to 256). The item tower encodes item features (title, category, popularity) into the same space. They join only at the top via dot product or cosine similarity[^4].
 
-**Training:** Each minibatch contains (user, positive item) pairs. Other items in the batch act as in-batch negatives. The loss is softmax over the batch. Yi et al. (2019) showed that without correction, popular items appear as negatives in many batches and get over-penalized, biasing gradients toward the model-weighted centroid. Their fix: subtract `log(P_sampled(item))` from logits (log-Q correction) using a streaming frequency estimator[^4]. Hard-negative mining replaces random negatives with items the model currently scores highly but the user did not engage with.
+**Training:** Each minibatch contains (user, positive item) pairs. Other items in the batch act as in-batch negatives. The loss is softmax over the batch. Yi et al. (2019) showed that without correction, popular items appear as negatives in many batches and get over-penalized, producing a biased estimate of the full-softmax gradient. Their fix: subtract `log(P_sampled(item))` from logits (log-Q correction) using a streaming frequency estimator[^4]. Hard-negative mining replaces random negatives with items the model currently scores highly but the user did not engage with.
 
 **Serving:** The item tower runs offline over the full catalog, producing one vector per item. Those vectors load into an ANN index (FAISS, ScaNN, or HNSW, as covered in [Vector Databases](../part-4-data-systems/08-vector-databases.md)). At request time, only the user tower runs, produces one vector, and the ANN index returns top-K in sub-linear time.
 
@@ -132,7 +132,7 @@ flowchart LR
 
 *A shared transform library writes to both offline and online stores; a skew monitor continuously diffs the distributions to catch divergence before it reaches production.*
 
-Feast is the reference open-source feature store; managed options include Tecton, Hopsworks, Databricks Feature Store, Vertex Feature Store, and SageMaker Feature Store. Each feature has a freshness SLO: "user_last_click_item_id must be less than 5 seconds old" for a ranking feature vs "user_signup_country is static."
+Feast is the reference open-source feature store; managed options include Tecton (now part of Databricks), Hopsworks, Databricks Feature Store, Vertex AI Feature Store (Bigtable online serving), and SageMaker Feature Store. Each feature has a freshness SLO: "user_last_click_item_id must be less than 5 seconds old" for a ranking feature vs "user_signup_country is static."
 
 ### Training-serving skew
 
@@ -177,7 +177,7 @@ stateDiagram-v2
 
 *A new model version moves through four gates with automated rollback on any guardrail regression. Rollback is always a feature-flag flip back to the prior artifact in the registry, never a redeploy.*
 
-For online evaluation, **classic A/B** randomizes users into treatment and control and measures a primary metric (CTR, retention, revenue). **Interleaving** (Chapelle, Joachims, Radlinski, Yue 2012[^11]; Netflix 2017) blends two rankers' outputs on the same page, attributes each click to whichever ranker contributed that position, and requires roughly 100x fewer users to detect ranking differences than classic A/B (per Netflix's empirical findings)[^12]. Use interleaving as a pre-filter for ranking changes; use classic A/B for architectural or marketplace-affecting launches.
+For online evaluation, **classic A/B** randomizes users into treatment and control and measures a primary metric (CTR, retention, revenue). **Interleaving** (Chapelle, Joachims, Radlinski, Yue 2012[^11]; Netflix 2017) blends two rankers' outputs on the same page and attributes each click to whichever ranker contributed that position. Netflix reported that interleaving requires more than 100x fewer subscribers than their most sensitive A/B metric to detect a ranking difference[^12]. Use interleaving as a pre-filter for ranking changes; use classic A/B for architectural or marketplace-affecting launches.
 
 **Interference** breaks classic A/B when treatment users interact with control users (social networks) or treatment bids affect control prices (ads auctions). Mitigations: cluster-randomization (whole social clusters get the same treatment) or switchback designs (flip regions on/off in time slices).
 
@@ -185,13 +185,13 @@ For online evaluation, **classic A/B** randomizes users into treatment and contr
 
 **YouTube's two-stage recommender (Covington, Adams, Sargin 2016)** remains the canonical reference. At the time of publication, YouTube had hundreds of millions of videos and billions of user-video interactions per day[^3].
 
-The candidate-generation network takes the user's watch history (bag of video embeddings, averaged), search tokens, demographics, and an "example age" feature into several fully-connected ReLU layers (the paper sweeps depth; the representative configuration shown in Figure 3 widens to 1024, then 512, then 256 units) that output a 256-dimensional user embedding. During training, softmax runs over the video vocabulary. At serving time, precomputed video vectors are loaded into an ANN index, and the user embedding retrieves the top few hundred candidates[^3].
+The candidate-generation network takes the user's watch history (bag of video embeddings, averaged), search tokens, demographics, and an "example age" feature into several fully-connected ReLU layers (the paper sweeps depth; one of the configurations reported in Section 3.5 widens to 1024, then 512, then 256 units) that output a 256-dimensional user embedding. During training, softmax runs over the video vocabulary. At serving time, precomputed video vectors are loaded into an ANN index, and the user embedding retrieves the top few hundred candidates[^3].
 
 The ranking network consumes hundreds of features per (user, video) pair, including impression video ID, user language, device, and time since last watch. Critically, the ranking objective is **expected watch time** (regression with weighted logistic loss), not click probability, because watch time correlated with business value better than CTR[^3].
 
-Two engineering decisions stand out. First, the "example age" feature: a continuous value set to the time between video upload and training time. At inference it is set to zero to represent "now," which materially improved recommendation freshness. Second, training labels are the next watched video with hard negatives sampled within a user's session, reducing to nearest-neighbor search at serving time.
+Two engineering decisions stand out. First, the "example age" feature: a continuous value set to the time between video upload and training time. At inference it is set to zero to represent "now," which materially improved recommendation freshness. Second, training labels are the next watched video with negatives sampled from the background video distribution and importance-weighted, which reduces to nearest-neighbor search at serving time.
 
-This architecture, published in 2016, spawned every subsequent two-stage system: Instagram Explore (90 million model predictions per second as of 2019[^13]), Pinterest PinSage (3 billion nodes, 18 billion edges)[^14], Meta DLRM (TB-scale sparse embeddings, thousands of GPUs)[^15], and TikTok Monolith (minute-level online training with collisionless cuckoo hashing)[^5].
+This architecture, published in 2016, spawned every subsequent two-stage system: Instagram Explore (four-stage retrieve-rank-rerank pipeline at Meta scale, with two-tower distillation in stage 2 and multi-task learning in stage 3)[^2], Pinterest PinSage (3 billion nodes, 18 billion edges)[^13], Meta DLRM (TB-scale sparse embeddings, thousands of GPUs)[^14], and TikTok Monolith (minute-level online training with collisionless cuckoo hashing)[^5].
 
 ## Trade-offs
 
@@ -201,7 +201,7 @@ This architecture, published in 2016, spawned every subsequent two-stage system:
 | Rule-based retrieval + ML ranker | Simple, debuggable, cheaper | Coverage gaps; retrieval is the ceiling | Small catalogs, cold-start domains | MVP only |
 | Two-tower + cross-encoder reranker | Recall + deep cross features | Extra latency; another training loop | Search, ads, quality-critical surfaces | When precision justifies cost |
 
-Interleaving is an evaluation methodology rather than a ranking architecture, so it belongs with the A/B discussion: Chapelle et al. report interleaving is roughly 100x more sensitive than parallel A/B tests for ranking changes because each user sees results from both arms on the same query, removing between-user variance. It provides no retention or long-term-outcome signal and is only applicable to ranking changes, so run it as a pre-filter on candidate ranking models before committing to a full A/B ([Chapelle et al., "Large-Scale Validation and Analysis of Interleaved Search Evaluation", ACM TOIS 2012](https://doi.org/10.1145/2094072.2094073)).
+Interleaving is an evaluation methodology rather than a ranking architecture, so it belongs with the A/B discussion: each user sees results from both arms on the same query, removing between-user variance and dramatically increasing sensitivity. Chapelle et al. report that one expert-judged query is roughly equivalent to ten clicked queries under interleaving (~10x more sensitive than judged-query offline evaluation)[^11], and Netflix subsequently reported interleaving needing more than 100x fewer subscribers than their most sensitive A/B metric for ranking comparisons[^12]. It provides no retention or long-term-outcome signal and is only applicable to ranking changes, so run it as a pre-filter on candidate ranking models before committing to a full A/B.
 
 ## Common Pitfalls
 
@@ -328,6 +328,5 @@ Think about what makes news different from video: articles go stale in hours, no
 [^10]: Google / TensorFlow, "TensorFlow Data Validation: Checking Data Skew and Drift". https://github.com/tensorflow/data-validation
 [^11]: Chapelle, Joachims, Radlinski, Yue, "Large-scale Validation and Analysis of Interleaved Search Evaluation", ACM TOIS 2012. https://dl.acm.org/doi/10.1145/2094072.2094078
 [^12]: Parks, Aurisset, Ramm, "Innovating Faster on Personalization Algorithms at Netflix Using Interleaving", Netflix TechBlog, November 2017. https://netflixtechblog.com/interleaving-in-online-experiments-at-netflix-a04ee392ec55
-[^13]: Medvedev, Wu, Gordon, "Powered by AI: Instagram's Explore recommender system", Meta AI, November 2019. https://web.archive.org/web/20250105124659/https://ai.meta.com/blog/powered-by-ai-instagrams-explore-recommender-system/
-[^14]: Ying et al., "Graph Convolutional Neural Networks for Web-Scale Recommender Systems", KDD 2018. https://arxiv.org/abs/1806.01973
-[^15]: Huda et al., "Scaling Recommendation Systems Training to Thousands of GPUs with 2D Sparse Parallelism", PyTorch Blog, March 2025. https://pytorch.org/blog/scaling-recommendation-2d-sparse-parallelism/
+[^13]: Ying et al., "Graph Convolutional Neural Networks for Web-Scale Recommender Systems", KDD 2018. https://arxiv.org/abs/1806.01973
+[^14]: Huda et al., "Scaling Recommendation Systems Training to Thousands of GPUs with 2D Sparse Parallelism", PyTorch Blog, March 2025. https://pytorch.org/blog/scaling-recommendation-2d-sparse-parallelism/

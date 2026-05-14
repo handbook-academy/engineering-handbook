@@ -83,9 +83,9 @@ flowchart LR
 
 **Feast** is a feature-store framework you plug into your own infrastructure. `feast apply` registers feature definitions in an object-store registry; `feast materialize` loads values from the offline store (BigQuery, Snowflake, Redshift, Postgres) into the online store (Redis, DynamoDB, Cassandra, Bigtable, ScyllaDB)[^3]. You own the warehouse, the streaming compute, and the online store operations.
 
-**Tecton** is a managed platform with opinionated compute. It schedules Spark and Rift jobs, materializes features to its hosted online store, and commits to enterprise SLAs on freshness and latency[^4]. Stream Feature Views support point-in-time correct training data generation by construction.
+**Tecton** (acquired by Databricks in 2024-2025) is a managed platform with opinionated compute. It schedules Spark and Rift jobs, materializes features to its hosted online store, and commits to enterprise SLAs on freshness and latency[^4]. Stream Feature Views support point-in-time correct training data generation by construction.
 
-**Other shapes:** Databricks Feature Store (lakehouse-native on Unity Catalog), Vertex AI Feature Store (GCP-native), SageMaker Feature Store (AWS-native), Hopsworks (on-prem-friendly), Chalk (real-time-first).
+**Other shapes:** Databricks Feature Store (lakehouse-native on Unity Catalog), Vertex AI Feature Store (GCP-native, Bigtable online serving), SageMaker Feature Store (AWS-native), Hopsworks (real-time / sovereign-AI platform with Kubernetes-native deployment), Chalk (real-time-first).
 
 The decision tree: choose Feast when you have a data platform team and want full control. Choose Tecton or a cloud-native offering when you want to outsource the plumbing and ship your first model in days rather than months.
 
@@ -104,7 +104,7 @@ The fix: for each training event `(entity, event_timestamp, label)`, the feature
 
 A registry is the system of record for trained models: stable name, versions, stages, lineage back to the training run, approvals, and tags.
 
-MLflow Model Registry stores each model version with a unique integer version. In MLflow 2.x, each version had exactly one stage at a time (None, Staging, Production, Archived), with transitions via `transition_model_version_stage`. In MLflow 3.x, stages are deprecated in favor of **model aliases** (mutable named references such as `@champion` or `@candidate`) set with `set_registered_model_alias()`; stage-transition APIs are unavailable on Unity Catalog-backed registries. Aliases are pointers rather than one-of-N states, so multiple aliases can coexist on a model and promotion is an alias reassignment rather than a state transition[^6]. Rollback is still a single API call: point `@champion` back to the previous version.
+MLflow Model Registry stores each model version with a unique integer version. In MLflow 2.x, each version had exactly one stage at a time (None, Staging, Production, Archived), with transitions via `transition_model_version_stage`. In MLflow 3.x, stages are deprecated globally in favor of **model aliases** (mutable named references such as `@champion` or `@candidate`) set with `set_registered_model_alias()`; stage-transition APIs are entirely unavailable on Unity Catalog-backed registries and slated for removal elsewhere. Aliases are pointers rather than one-of-N states, so multiple aliases can coexist on a model and promotion is an alias reassignment rather than a state transition[^6]. Rollback is still a single API call: point `@champion` back to the previous version.
 
 ```mermaid
 stateDiagram-v2
@@ -126,8 +126,8 @@ The registry makes the handover between data science and platform an immutable a
 A model server loads one or more model artifacts, accepts inference requests over gRPC or REST, applies pre- and post-processing, and batches requests to amortize GPU cost. The decision tree:
 
 - **Single-framework, GPU-light:** TF Serving (TensorFlow) or TorchServe (PyTorch). Strong on their native framework, awkward outside it.
-- **Multi-framework, GPU-heavy:** NVIDIA Triton. Supports TensorFlow, PyTorch, ONNX, TensorRT, Python, and vLLM backends. Its dynamic batcher combines in-flight requests bounded by `preferred_batch_size` and `max_queue_delay_microseconds`[^7]. This is the non-obvious win: batching amortizes GPU kernel launch overhead across requests.
-- **Kubernetes-native control plane:** KServe. Separates a control plane (InferenceService CRDs, autoscaling, canary traffic splitting) from a data plane (inference, transformers, explainers)[^8]. In Knative mode it supports scale-to-zero; in standard mode it uses HPA but cannot scale from zero.
+- **Multi-framework, GPU-heavy:** NVIDIA Triton. Supports TensorFlow, PyTorch, ONNX, TensorRT, Python, and vLLM backends. Its dynamic batcher combines in-flight requests up to `max_batch_size` and bounded by `max_queue_delay_microseconds`; the optional `preferred_batch_size` knob is reserved for niche TensorRT multi-profile tuning[^7]. This is the non-obvious win: batching amortizes GPU kernel launch overhead across requests.
+- **Kubernetes-native control plane:** KServe. Separates a control plane (InferenceService CRDs, autoscaling, canary traffic splitting) from a data plane (inference, transformers, explainers)[^8]. Knative mode supports scale-to-zero by default. Raw mode historically used only HPA (with a min-replica floor of one), but recent KServe versions add KEDA-based autoscaling that also supports scale-to-zero in Raw mode.
 - **Python-first ergonomics:** BentoML. Packages a model plus Python pre/post-processing into a "Bento" artifact. Its adaptive batching is a server-side dispatcher that "continuously adjusts batch size and window based on real-time traffic patterns" and "continuously learns and adjusts the batching parameters based on recent trends in request patterns and processing time," bounded by `max_batch_size` and `max_latency_ms`[^9].
 
 ```mermaid
@@ -197,7 +197,7 @@ Data drift is a shift in input distribution. Concept drift is a shift in `P(y|x)
 
 **Uber Michelangelo** (2017 to present) established the canonical feature-store pattern the industry copied. Before the platform, the same business concept was computed differently by different teams, producing skew. Feature engineering was identified as "the hardest part" and data pipeline management as "one of the most costly pieces" of ML engineering[^1].
 
-Michelangelo introduced the online/offline split that became standard. Feature definitions specify a batch computation (Hive/Spark SQL producing daily updates) and an online serving target (Cassandra with a sub-10 ms p95 latency SLA for models requiring feature lookups) from the same declarative config[^1]. Training pipelines read features from Hive; online serving reads the same feature name from Cassandra. ("Palette" is the later internal name for the curated feature catalog layered on top of this[^13].)
+Michelangelo introduced the online/offline split that became standard. Feature definitions specify a batch computation (Hive/Spark SQL producing daily updates) and an online serving target (Cassandra with typical p95 latency under 10 ms for models requiring feature lookups) from the same declarative config[^1]. Training pipelines read features from Hive; online serving reads the same feature name from Cassandra. ("Palette" is the later internal name for the curated feature catalog layered on top of this[^13].)
 
 **Scale:** Uber reported approximately 10,000 curated features in its Feature Store, with the highest-traffic Michelangelo models serving more than 250,000 predictions per second as of the 2017 platform writeup[^1]. Later third-party summaries describe growth to thousands of production models, sub-week time-to-production, and a platform team of roughly 30 engineers supporting around 400 ML engineers[^13]; exact 2020-era numbers are not published in an official Uber engineering post.
 

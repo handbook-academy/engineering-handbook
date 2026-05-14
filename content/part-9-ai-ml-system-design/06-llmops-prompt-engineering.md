@@ -63,7 +63,7 @@ The technique ladder, from simplest to most expensive:
 
 Wei et al. (2022) showed CoT lifts accuracy on arithmetic, commonsense, and symbolic reasoning, with the largest gains on the largest models[^3]. The cost: CoT inflates output tokens, raising latency and spend. Keep reasoning tokens in a separate `reasoning_steps` field, not in the user-facing answer.
 
-**Structured output** deserves special attention. OpenAI's Structured Outputs (`strict: true` JSON Schema mode, August 2024) reaches 100% schema conformance on `gpt-4o-2024-08-06`, versus less than 40% with prompting alone[^4]. The mechanism is constrained decoding: at each token, the sampler masks tokens that would violate the schema's compiled grammar. First-request latency for a new schema can reach up to one minute (then cached)[^4]. Validate client-side too: Pydantic in Python, Zod in TypeScript. The schema is the contract.
+**Structured output** deserves special attention. OpenAI's Structured Outputs (`strict: true` JSON Schema mode, August 2024) reached 100% schema conformance on the launch snapshot `gpt-4o-2024-08-06`, versus less than 40% with prompting alone, and the same guarantee applies to all subsequent OpenAI snapshots that support strict mode[^4]. The mechanism is constrained decoding: at each token, the sampler masks tokens that would violate the schema's compiled grammar. First-request latency for a new schema can reach up to one minute (then cached)[^4]. Validate client-side too: Pydantic in Python, Zod in TypeScript. The schema is the contract.
 
 ### Prompt versioning and registries
 
@@ -71,7 +71,7 @@ Two schools exist:
 
 **Prompt-as-code (git-tracked).** Prompts live in a `prompts/` directory, deployed atomically with the binary. Rollback is `git revert`. Diffs are reviewable. CODEOWNERS enforces who can change what. The downside: every change needs a deploy pipeline, slowing PM/prompt-engineer iteration.
 
-**Runtime registry (LangSmith Hub, PromptLayer, Humanloop).** Prompts are fetched at request time, swappable without redeploy. LangSmith Hub adds version pinning (`my-prompt:production` or a commit hash tag), commit history, and webhook triggers on promotion[^5]. The downside: a new runtime dependency. If the registry is unreachable, your feature is down.
+**Runtime registry (LangSmith Hub, PromptLayer).** Prompts are fetched at request time, swappable without redeploy. LangSmith Hub adds version pinning (`my-prompt:production` or a commit hash tag), commit history, and webhooks that fire on prompt commits[^5]. The downside: a new runtime dependency. If the registry is unreachable, your feature is down.
 
 **Hybrid (recommended).** Git remains the source of truth. Approved commits mirror to the registry for A/B rollout. Product managers promote between environments without a redeploy, while engineering retains reviewable history. Rakuten adopted this pattern with LangSmith Hub as the central registry across 70+ business lines[^2].
 
@@ -123,7 +123,7 @@ Key rules:
 
 ### DSPy: prompts as compile targets
 
-DSPy (Stanford, 2023) takes a radical position: engineers should never hand-write prompt strings. Instead, you declare signatures (`question -> answer: float`) and strategies (`dspy.ChainOfThought`, `dspy.ReAct`). Given a training set and a metric, optimizers like `MIPROv2` search for few-shot demos and instruction strings that maximize the metric. An informal run raised a ReAct + HotPotQA score from 24% to 51% using `MIPROv2` in `light` mode on 500 examples[^7].
+DSPy (Stanford, 2023) takes a radical position: engineers should never hand-write prompt strings. Instead, you declare signatures (`question -> answer: float`) and strategies (`dspy.ChainOfThought`, `dspy.ReAct`). Given a training set and a metric, optimizers (`MIPROv2`, `COPRO`, the newer `SIMBA` and `GEPA`) search for few-shot demos and instruction strings that maximize the metric. An informal run raised a ReAct + HotPotQA score from 24% to 51% using `MIPROv2` in `light` mode on 500 examples[^7].
 
 The trade-off: optimizer runs cost dollars of model traffic, need a trustworthy eval set, and produce prompts that are less readable than hand-written instructions. Use DSPy when you have a clear metric and enough labeled data. Use hand-crafted prompts when interpretability matters more than the last 5 points of accuracy.
 
@@ -149,9 +149,9 @@ The ecosystem:
 
 - **Guardrails AI** composes validators from a hub (CompetitorCheck, ToxicLanguage, PII detectors); on failure each validator can raise, filter, or rewrite[^8].
 - **NVIDIA NeMo Guardrails** uses Colang, a dialogue modeling language, to define five rail types. Dialog rails redirect off-topic turns; retrieval rails strip sensitive data from RAG chunks[^9].
-- **Meta Llama Guard 3-8B** is an LLM-as-classifier trained to predict safety labels on 14 categories: the 13-hazard MLCommons taxonomy plus an additional Code Interpreter Abuse category for tool-call use cases. A smaller Llama Guard 3-1B is released as a separate model for lower-latency deployments[^10].
+- **Meta Llama Guard 4-12B** is the current natively multimodal (text + image) LLM-as-classifier from Meta, covering the 14-category MLCommons taxonomy (13 hazards plus Code Interpreter Abuse) and 8 languages. The earlier text-only Llama Guard 3-1B remains useful for lower-latency or tighter-memory deployments and covers the 13 MLCommons hazards (Code Interpreter Abuse is dropped)[^10].
 - **Managed services:** OpenAI Moderation, Azure AI Content Safety, AWS Bedrock Guardrails, Anthropic constitutional classifiers.
-- **Lakera Guard** (acquired by Check Point in 2025) adds prompt-injection detection trained on 80+ million labeled data points collected via the Gandalf game[^11].
+- **Lakera** (acquired by Check Point in 2025; product line now branded as AI Agent Security / Workforce AI Security / AI Red Teaming) adds prompt-injection detection trained on 80+ million prompts collected via the Gandalf game[^11].
 
 Latency cost: +50 to 200 ms per guard in the naive setup (two extra model calls). Mitigate with smaller classifier models, batching, and caching known-safe patterns.
 
@@ -241,17 +241,17 @@ The lesson: "NEVER disclose" instructions do not survive a simple attack. OWASP 
 | Approach | Pros | Cons | Best when | Our Pick |
 |---|---|---|---|---|
 | Templated prompt (git-tracked) | Versioned, reviewable, atomic with code | No runtime swap; every change needs a deploy | Most production features | **Default for most teams** |
-| Managed prompt registry (LangSmith Hub, PromptLayer, Humanloop) | Swap without redeploy, central A/B, non-engineer edits | Runtime dependency, cache-invalidation risk, no code atomicity | Rapid-iteration teams with dedicated prompt engineers | When iteration speed is the binding constraint |
+| Managed prompt registry (LangSmith Hub, PromptLayer) | Swap without redeploy, central A/B, non-engineer edits | Runtime dependency, cache-invalidation risk, no code atomicity | Rapid-iteration teams with dedicated prompt engineers | When iteration speed is the binding constraint |
 | Dynamic retrieval (RAG-assembled) | Always current, scales with content | Harder to eval, injection-prone if retrieval touches untrusted sources | Knowledge-heavy features | Combine with spotlighting and per-turn eval |
 
 **Output format.**
 
 | Approach | Pros | Cons | Best when | Our Pick |
 |---|---|---|---|---|
-| JSON-mode / structured output | 100% schema conformance on `gpt-4o-2024-08-06` and later; parser cannot fail[^4] | Schema-compile latency on first request; small cost overhead | Any API consuming model output | **Always for machine-consumed output** |
+| JSON-mode / structured output | 100% schema conformance on OpenAI Structured Outputs (`strict: true`) since `gpt-4o-2024-08-06`; parser cannot fail[^4] | Schema-compile latency on first request; small cost overhead | Any API consuming model output | **Always for machine-consumed output** |
 | Free-form + post-hoc parse | Natural prose, flexible | Parser failures at the tail; hidden retry cost | Chat UIs returning prose to humans | Only when output is human-read |
 
-**Guardrails.** Input and output classifiers (Azure Content Safety, Lakera Guard, self-hosted Llama Guard) run on every request at +50-200 ms latency and catch prompt injection, toxicity, and PII exfiltration that no prompt-storage or output-format choice will catch. Chapter 8 (LLM Safety and Guardrails) covers the defense-in-depth posture and which layers to run together.
+**Guardrails.** Input and output classifiers (Azure Content Safety, Lakera, self-hosted Llama Guard 4) run on every request at +50-200 ms latency and catch prompt injection, toxicity, and PII exfiltration that no prompt-storage or output-format choice will catch. Chapter 8 (LLM Safety and Guardrails) covers the defense-in-depth posture and which layers to run together.
 
 ## Common Pitfalls
 
@@ -348,7 +348,7 @@ Use OpenAI Structured Outputs (`strict: true`) for 100% schema conformance. Clie
 **A:** Prompt injection targets instruction-following: an attacker hijacks the agent to act against the developer's intent (e.g., exfiltrate data). Jailbreaking targets refusal training: a user bypasses safety guardrails to get forbidden content. Different threat models, different mitigations.
 
 **Q:** What schema conformance does OpenAI Structured Outputs achieve versus prompting alone?
-**A:** 100% conformance with `strict: true` on `gpt-4o-2024-08-06`, versus less than 40% with prompting alone. The mechanism is constrained decoding that masks invalid tokens at each generation step.
+**A:** 100% conformance with `strict: true` since the `gpt-4o-2024-08-06` launch snapshot (and on all later OpenAI snapshots), versus less than 40% with prompting alone. The mechanism is constrained decoding that masks invalid tokens at each generation step.
 
 **Q:** What is indirect prompt injection?
 **A:** An attack where the adversarial payload is embedded in data the model ingests (a retrieved web page, an email, source code), not in the user's direct message. The model follows the injected instructions because it cannot distinguish data from instructions.
@@ -369,7 +369,7 @@ Use OpenAI Structured Outputs (`strict: true`) for 100% schema conformance. Clie
 **A:** The instruction is part of the prompt itself, which the model treats as soft guidance, not a hard constraint. Simple re-transcription attacks bypass it. The Cursor system prompt leaked despite this instruction. Defense requires architectural controls (not putting secrets in the prompt), not prompt-level instructions.
 
 **Q:** What does DSPy do differently from hand-written prompts?
-**A:** DSPy treats prompts as compile targets. Engineers declare input/output signatures and strategies; optimizers (MIPROv2, BootstrapRS) search for few-shot demos and instruction strings that maximize a metric. The engineer never writes the prompt string directly.
+**A:** DSPy treats prompts as compile targets. Engineers declare input/output signatures and strategies; optimizers (MIPROv2, COPRO, SIMBA, GEPA) search for few-shot demos and instruction strings that maximize a metric. The engineer never writes the prompt string directly.
 
 **Q:** What latency overhead do guardrails add, and how do you mitigate it?
 **A:** Naive guardrails add 50 to 200 ms (two extra model calls for input and output classification). Mitigate with smaller classifier models (Llama Guard 1B), batching guard checks, caching known-safe patterns, and running guards in parallel with the primary model where possible.
@@ -388,7 +388,7 @@ Use OpenAI Structured Outputs (`strict: true`) for 100% schema conformance. Clie
 [^7]: DSPy docs index, stanfordnlp/dspy. https://github.com/stanfordnlp/dspy/blob/main/docs/docs/index.md
 [^8]: Guardrails AI README (guardrails-ai/guardrails). https://github.com/guardrails-ai/guardrails
 [^9]: NVIDIA NeMo Guardrails README (NVIDIA-NeMo/Guardrails). https://github.com/NVIDIA-NeMo/Guardrails
-[^10]: Meta Llama Guard 3-8B model card (14 categories: 13-hazard MLCommons taxonomy + Code Interpreter Abuse). https://huggingface.co/meta-llama/Llama-Guard-3-8B ; original paper: Inan et al., "Llama Guard: LLM-based Input-Output Safeguard for Human-AI Conversations", arXiv:2312.06674. https://arxiv.org/abs/2312.06674
+[^10]: Meta Llama Guard 4-12B model card (natively multimodal text+image classifier, 14 categories). https://huggingface.co/meta-llama/Llama-Guard-4-12B ; Llama Guard 3-1B for lower-latency text-only use: https://huggingface.co/meta-llama/Llama-Guard-3-1B ; original paper: Inan et al., "Llama Guard: LLM-based Input-Output Safeguard for Human-AI Conversations", arXiv:2312.06674. https://arxiv.org/abs/2312.06674
 [^11]: Atomico, "Lakera Acquisition: making Generative AI safer for the world" (cites Gandalf 80M+ data points figure). https://atomico.com/insights/lakera-acquisition-making-generative-ai-safer-for-the-world
 [^12]: Greshake et al., "Not what you've signed up for: Compromising Real-World LLM-Integrated Applications with Indirect Prompt Injection", arXiv:2302.12173 (Feb 2023). https://arxiv.org/abs/2302.12173
 [^13]: Hines et al., "Defending Against Indirect Prompt Injection Attacks With Spotlighting", arXiv:2403.14720 (Mar 2024). https://arxiv.org/abs/2403.14720

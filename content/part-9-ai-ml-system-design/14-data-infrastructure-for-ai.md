@@ -85,7 +85,7 @@ flowchart LR
 
 **Parent-document (hierarchical)** indexes small chunks for retrieval precision and returns the parent chunk to the LLM for context. This decouples retrieval granularity from generation context.
 
-**Anthropic contextual retrieval** (September 2024) prepends 50-100 tokens of LLM-generated context to each chunk before embedding. The contextualized chunk feeds both the vector and BM25 indexes. Results: top-20 retrieval failure dropped 35% with contextual embeddings alone, 49% combined with contextual BM25, and 67% with a reranker on top[^1]. Cost: $1.02 per million document tokens using Claude Haiku with prompt caching.
+**Anthropic contextual retrieval** (September 2024) prepends 50-100 tokens of LLM-generated context to each chunk before embedding. The contextualized chunk feeds both the vector and BM25 indexes. Results: top-20 retrieval failure dropped 35% with contextual embeddings alone, 49% combined with contextual BM25, and 67% when a reranker is added on top of contextual embeddings + contextual BM25[^1]. Cost: $1.02 per million document tokens using Claude Haiku with prompt caching.
 
 **Late chunking** (Jina, August 2024) inverts the order: embed the entire long document first with a long-context model (8,192 tokens), then mean-pool per chunk over the already-contextualized token vectors. SciFact nDCG@10 improved from 64.20% to 66.10%; NFCorpus from 23.46% to 29.98%[^9]. Unlike contextual retrieval, late chunking has zero extra LLM calls at index time. Trade: it requires a long-context encoder.
 
@@ -105,9 +105,9 @@ flowchart TD
 
 The embedding tier converts chunks to fixed-length vectors and writes them plus metadata to a vector store. Two dimensions matter: throughput mode and cost.
 
-**Cost math:** OpenAI `text-embedding-3-small` costs $0.02 per million input tokens; `text-embedding-3-large` costs $0.13 per million at up to 3,072 dimensions[^10]. OpenAI has not refreshed its embedding line since January 2024; Google's `gemini-embedding-2` and Voyage's `voyage-4-large` now lead MTEB, though OpenAI's prices and tooling remain the default for many teams. A 10M-document corpus at 1K tokens per doc is 10B tokens: $200 for a full pass with `3-small`, $1,300 with `3-large`. Self-hosted BGE-M3 runs at roughly $0.001 per million tokens amortized on commodity GPUs. The OpenAI Batch API gives a 50% discount for non-urgent workloads.
+**Cost math:** OpenAI `text-embedding-3-small` costs $0.02 per million input tokens; `text-embedding-3-large` costs $0.13 per million, with a default 3,072-dimensional embedding (Matryoshka-truncatable to lower dimensions)[^10]. OpenAI has not refreshed its embedding line since January 2024; Google's `gemini-embedding-2` and Voyage's `voyage-4-large` now lead MTEB, though OpenAI's prices and tooling remain the default for many teams. A 10M-document corpus at 1K tokens per doc is 10B tokens: $200 for a full pass with `3-small`, $1,300 with `3-large`. Self-hosted BGE-M3 runs at roughly $0.001 per million tokens amortized on commodity GPUs. The OpenAI Batch API gives a 50% discount for non-urgent workloads.
 
-**Batch pipelines** (Spark, Ray, Dask) process large corpora in parallel. The 15-trillion-token FineWeb dataset was processed using distributed GPU workers at scale[^11]. Batch is cheap and simple but stale between runs.
+**Batch pipelines** (Spark, Ray, Dask) process large corpora in parallel. The 15-trillion-token FineWeb dataset (and its multilingual sibling FineWeb-2, covering 1T+ tokens across 500+ languages) was produced with HuggingFace's `datatrove` library on horizontally-scaled CPU clusters (filtering, MinHash dedup, language ID), with GPUs reserved for the small share of work that uses neural quality classifiers[^11]. Batch is cheap and simple but stale between runs.
 
 **Streaming pipelines** (Kafka into an embedding worker) give seconds-to-minutes freshness. Good fit for customer-facing RAG over tickets, chat logs, and commits. More moving parts: queue, DLQ, backpressure, schema registry.
 
@@ -162,7 +162,7 @@ Every agent used to hand-roll its own adapter for every data source. Teams wrote
 
 Anthropic introduced the Model Context Protocol on November 25, 2024, as an open JSON-RPC 2.0 standard for connecting LLM applications to external data and tools[^2]. The protocol defines three server primitives with distinct control semantics: **resources** (application-controlled context attached by the client host, like file contents or git history), **tools** (model-controlled functions the LLM invokes to take actions), and **prompts** (user-controlled templates invoked by explicit user choice, like slash commands)[^13]. The spec defines two standard transports: **stdio** (client launches the server as a subprocess and exchanges JSON-RPC messages over stdin/stdout) and **Streamable HTTP** (a single HTTP endpoint supporting POST and GET, with optional Server-Sent Events for streaming server-to-client messages). Streamable HTTP replaced the earlier HTTP+SSE transport from protocol version 2024-11-05, which is now deprecated.
 
-Adoption was rapid. Block, Apollo, Zed, Replit, Codeium, and Sourcegraph shipped at launch. OpenAI added MCP to the Agents SDK on March 26, 2025[^14]. Google announced official MCP support across its services in December 2025[^15]. SDKs exist in TypeScript, Python, Go, Java, Kotlin, C#, Swift, Rust, PHP, and Ruby.
+Adoption was rapid. Block, Apollo, Zed, Replit, Codeium, and Sourcegraph shipped at launch. OpenAI added MCP to the Agents SDK on March 26, 2025[^14]. Google announced official MCP support across its services on December 11, 2025[^15]. SDKs exist in TypeScript, Python, Go, Java, Kotlin, C#, Swift, Rust, PHP, and Ruby.
 
 The data-plane win: new tools are added by running an MCP server, not by shipping agent-specific code. A Postgres MCP server exposes tables as resources and SQL as a tool. A filesystem server exposes directories. The host (Claude, ChatGPT, Cursor) discovers capabilities at connection time and presents them to the model.
 
@@ -283,7 +283,7 @@ Think about the split between shared public corpus (case law, statutes) and per-
 
 ## Further Reading
 
-- [Model Context Protocol specification](https://modelcontextprotocol.io/specification/2025-06-18) - The canonical spec including transports, resources, tools, prompts, and the schema reference; read before building any MCP server.
+- [Model Context Protocol specification](https://modelcontextprotocol.io/specification/2025-11-25) - The canonical spec including transports, resources, tools, prompts, and the schema reference; read before building any MCP server.
 - [Introducing Contextual Retrieval (Anthropic, Sep 2024)](https://www.anthropic.com/engineering/contextual-retrieval) - The 35%/49%/67% retrieval-failure-reduction methodology with reproducible prompts and cost analysis.
 - [Late Chunking in Long-Context Embedding Models (Jina, Aug 2024)](https://jina.ai/news/late-chunking-in-long-context-embedding-models/) - Algorithm, BEIR evaluation, and reference implementation for zero-extra-cost contextual chunking.
 - [turbopuffer: fast search on object storage (Eskildsen, Jul 2024)](https://turbopuffer.com/blog/turbopuffer) - The architectural argument for S3-native vector search with full cost comparison against RAM-native incumbents.
@@ -297,8 +297,8 @@ Think about the split between shared public corpus (case law, statutes) and per-
 **Q:** What is the standard dedupe key for embedding pipelines?
 **A:** SHA256 hash of normalized text (Unicode NFKC, whitespace-collapsed) plus the `embedding_model_version`. If the hash exists with the current model version, skip re-embedding.
 
-**Q:** What are the three primitives MCP servers expose?
-**A:** Resources (application-controlled context attached by the client host), tools (model-controlled functions the LLM invokes), and prompts (user-controlled templates invoked by explicit user choice), all exchanged over JSON-RPC.
+**Q:** What are the three server-side primitives in MCP?
+**A:** Resources (application-controlled context attached by the client host), tools (model-controlled functions the LLM invokes), and prompts (user-controlled templates invoked by explicit user choice), all exchanged over JSON-RPC. Clients may also offer features back to servers (Sampling, Roots, Elicitation).
 
 **Q:** How much does Anthropic's contextual retrieval cost at index time?
 **A:** $1.02 per million document tokens using Claude Haiku with prompt caching. It prepends 50-100 tokens of LLM-generated context to each chunk before embedding.
@@ -344,7 +344,7 @@ Think about the split between shared public corpus (case law, statutes) and per-
 [^10]: OpenAI, "New embedding models and API updates", January 25, 2024. https://openai.com/index/new-embedding-models-and-api-updates/
 [^11]: Hugging Face, "The FineWeb Datasets: Decanting the Web for the Finest Text Data at Scale". https://arxiv.org/abs/2406.17557
 [^12]: Debezium documentation and RisingWave, "CDC Architecture Patterns: From Debezium to Streaming Databases". https://risingwave.com/blog/cdc-architecture-patterns-debezium-streaming-databases/
-[^13]: Model Context Protocol specification, version 2025-06-18. https://modelcontextprotocol.io/specification/2025-06-18
+[^13]: Model Context Protocol specification, version 2025-11-25. https://modelcontextprotocol.io/specification/2025-11-25
 [^14]: TechCrunch, "OpenAI adopts rival Anthropic's standard for connecting AI models to data", March 26, 2025. https://techcrunch.com/2025/03/26/openai-adopts-rival-anthropics-standard-for-connecting-ai-models-to-data/
 [^15]: Google Cloud, "Announcing official MCP support for Google services", December 2025. https://cloud.google.com/blog/products/ai-machine-learning/announcing-official-mcp-support-for-google-services
 [^16]: Simon Eskildsen, "turbopuffer: fast search on object storage", July 8, 2024. https://turbopuffer.com/blog/turbopuffer

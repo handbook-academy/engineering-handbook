@@ -150,12 +150,12 @@ Quantization reduces per-vector memory at each precision tier:
 | INT8 | 1,024 | 3.66x avg | ~99.3% |
 | Binary | 128 | 24.76x avg | 92-96% |
 
-Binary quantization thresholds each dimension at zero, packs 8 values into a byte, and uses Hamming distance for comparison. Cohere embed-v3 ships this natively. The combined pipeline (binary for candidate retrieval plus INT8 or FP16 rescoring on the top-k) retains approximately 96% NDCG@10 on MTEB[^2].
+Binary quantization thresholds each dimension at zero, packs 8 values into a byte, and uses Hamming distance for comparison. Cohere added native int8/binary embedding serving on top of embed-v3 in March 2024 and continues this in embed-v4 (current as of 2026, with `float`/`int8`/`uint8`/`binary`/`ubinary` output types). The combined pipeline (binary for candidate retrieval plus INT8 or FP16 rescoring on the top-k) retains approximately 96% NDCG@10 on MTEB[^2].
 
 > [!IMPORTANT]
 > Never serve binary or INT8 results without rescoring. Quantized distances are lossy estimates. Rescoring the top-k with full-precision vectors recovers most of the recall. Skipping rescore is the most common quantization anti-pattern.
 
-**Matryoshka Representation Learning (MRL)** trains embeddings so the first N dimensions are usable as a standalone embedding. OpenAI's `text-embedding-3-large` (3072-dim) retains approximately 93% of retrieval performance (MTEB retrieval subset) when truncated to 256 dimensions (12x compression)[^2]. As of 2026, Google's `gemini-embedding-2` (natively multimodal across text, images, video, audio, and PDFs at 3072-dim) tops the MTEB English leaderboard, and Voyage's MoE-based `voyage-4-large` delivers comparable text retrieval with Matryoshka-ready 2048/1024/512/256-dim truncation. MRL composes with quantization: truncate 1024 to 128 dims plus binary gives approximately 256x total reduction for approximately 10% quality loss.
+**Matryoshka Representation Learning (MRL)** trains embeddings so the first N dimensions are usable as a standalone embedding. OpenAI's `text-embedding-3-large` (3072-dim) reports an MTEB score of 64.6 at full 3072 dimensions and 62.0 at 256 dimensions, retaining roughly 96% of retrieval performance for 12x compression[^2]. As of 2026, Google's `gemini-embedding-2` (natively multimodal across text, images, video, audio, and documents at 3072-dim default) tops the MTEB English leaderboard, and Voyage's MoE-based `voyage-4-large` (default 1024-dim, Matryoshka-truncatable to 2048/512/256) delivers comparable text retrieval. MRL composes with quantization: truncate 1024 to 128 dims plus binary gives approximately 256x total reduction for approximately 10% quality loss.
 
 ### Hybrid search and filtering
 
@@ -206,7 +206,7 @@ DiskANN began as a 2019 NeurIPS paper from Microsoft Research and now powers vec
 
 **Scale economics:** A single DiskANN node indexes 5-10x more vectors than HNSW or FAISS IVF at equivalent recall. For Azure Cosmos DB, this translates to vector search as a feature of an existing database rather than a separate infrastructure tier. Customers add a vector index to their existing document collections without provisioning dedicated vector-search clusters.
 
-**The next frontier:** turbopuffer's ANN v3 (January 2026) pushed further, serving 100 billion vectors at 200 ms p99 latency using object storage (S3) as the source of truth with SSD caching and RaBitQ binary quantization[^6]. By leveraging object storage and aggressive quantization, the cost per TB is dramatically lower than in-memory approaches.
+**The next frontier:** turbopuffer's ANN v3 pushed further, serving 100 billion vectors at 200 ms p99 latency using object storage (S3) as the source of truth with SSD caching and RaBitQ binary quantization[^6]. By leveraging object storage and aggressive quantization, the cost per TB is dramatically lower than in-memory approaches.
 
 ## Trade-offs
 
@@ -226,7 +226,7 @@ DiskANN began as a 2019 NeurIPS paper from Microsoft Research and now powers vec
 > **HNSW recall degradation under churn.** Soft-deleted nodes remain graph hubs but point to nothing useful. After millions of delete-insert cycles, recall drops from 98% to 85%. Monitor recall@10 against a shadow fresh-built index and schedule periodic rebuilds.
 
 > [!WARNING]
-> **Quantization without rescoring.** Binary retrieval alone gives 90-92% recall. Adding FP16/FP32 rescoring on the top-k recovers to 96%+. The rescore step costs microseconds per candidate. Skipping it is the most common quantization mistake.
+> **Quantization without rescoring.** Binary retrieval alone gives roughly 90-92% recall on well-suited 1024-dim models (and substantially less on smaller or less-suited models). Adding FP16/FP32 rescoring on the top-k recovers to 96%+. The rescore step costs microseconds per candidate. Skipping it is the most common quantization mistake.
 
 > [!WARNING]
 > **IVF with default nprobe=1.** FAISS ships `nprobe=1` by default. At `nlist=4096`, that scans 0.02% of the corpus. Recall is stuck at 70-80% regardless of resources. Sweep `nprobe` on a held-out set; the knee is typically `nlist/32` to `nlist/8`.
@@ -309,7 +309,7 @@ Think about (a) why a single index strategy fails when tenant sizes span 4 order
 **A:** Filtered-DiskANN builds graph edges that respect label sets, so traversal stays within matching vertices even on highly selective filters. It solves the recall cliff that post-filtering causes on multi-tenant or metadata-heavy workloads. It powers Bing and Azure Cosmos DB.
 
 **Q:** What is Matryoshka Representation Learning?
-**A:** A training technique that nests embeddings of multiple granularities inside one vector, so the first N dimensions are usable as a standalone embedding. OpenAI text-embedding-3-large retains approximately 93% of retrieval performance at 256 of 3072 dimensions (12x compression).
+**A:** A training technique that nests embeddings of multiple granularities inside one vector, so the first N dimensions are usable as a standalone embedding. OpenAI text-embedding-3-large reports MTEB 64.6 at 3072-dim and 62.0 at 256-dim — roughly 96% of retrieval performance at 12x compression.
 
 **Q:** What is the canonical tuning rule for IVF nlist and nprobe?
 **A:** Set nlist approximately equal to sqrt(N). Set nprobe between nlist/32 and nlist/8 for 90-95% recall. FAISS default nprobe=1 is almost always wrong for production.

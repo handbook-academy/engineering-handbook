@@ -126,17 +126,17 @@ flowchart TD
 
 *Two sequences sharing a system prompt map their first logical blocks to the same physical blocks. Divergent generation gets separate blocks. Copy-on-write handles mutations.*
 
-Prefix sharing falls out naturally: two requests with the same system prompt hash to identical block chains and share physical KV memory. vLLM uses block-hash-based lookup (hash of parent block hash plus current block token IDs) with LRU eviction.[^8] SGLang extends this with a radix tree that handles branching prefixes (multi-agent trees, self-consistency sampling) and reported up to 5x throughput over vLLM v0.2.5 (which lacked prefix caching) on prefix-heavy workloads like RAG and few-shot evaluation.[^8]
+Prefix sharing falls out naturally: two requests with the same system prompt hash to identical block chains and share physical KV memory. vLLM uses block-hash-based lookup (hash of parent block hash plus current block token IDs) with LRU eviction.[^8] SGLang extends this with a radix tree that handles branching prefixes (multi-agent trees, self-consistency sampling) and reported up to 5x throughput over vLLM v0.2.5 (which lacked prefix caching) across a benchmark mix that included RAG, few-shot evaluation, and agentic chains-of-thought.[^8]
 
 ### FlashAttention and fused kernels
 
 Standard attention materialises the full N x N attention matrix in HBM, making it memory-bandwidth bound. FlashAttention (Dao et al., 2022) tiles Q, K, V and computes softmax online in a single fused kernel, turning a quadratic-HBM algorithm into a quadratic-SRAM algorithm.[^9] The result is exact attention (no approximation) that enables 128K+ contexts that would not fit otherwise.
 
-FlashAttention-2 reached approximately 230 TFLOPs/s on A100 FP16 (72 percent model FLOP utilisation).[^10] FlashAttention-3 targets H100 with warp specialisation and FP8 support: 740 TFLOPs/s on FP16 (75 percent utilisation) and close to 1.2 PFLOPs/s on FP8.[^11]
+FlashAttention-2 reached up to 230 TFLOPs/s on the attention kernel on A100 FP16/BF16; end-to-end GPT-style training with FlashAttention-2 reached up to 225 TFLOPs/s, roughly 72 percent model FLOP utilisation.[^10] FlashAttention-3 targets H100 with warp specialisation and FP8 support: 740 TFLOPs/s on FP16 (75 percent utilisation) and close to 1.2 PFLOPs/s on FP8.[^11]
 
 ### Speculative decoding
 
-A small draft model proposes K candidate tokens per step. The target model verifies all K in parallel with one forward pass and accepts the longest prefix whose sampled distribution matches, rejecting the rest. The output distribution is provably identical to vanilla sampling.[^12]
+A small draft model proposes K candidate tokens per step. The target model verifies all K in parallel with one forward pass and accepts the longest prefix whose sampled distribution matches, rejecting the rest. The output distribution is provably equivalent to vanilla sampling from the target model.[^12]
 
 ```mermaid
 sequenceDiagram
@@ -169,7 +169,7 @@ Production acceptance rates are commonly reported at 50 to 70 percent, giving 1.
 
 LMSYS Chatbot Arena served a peak of 60,000 daily requests (average 30K, as of mid-2023) across dozens of models, powered by vLLM. Switching from the HuggingFace Transformers backend to vLLM cut the GPU fleet needed by 50 percent.[^2]
 
-The vLLM V1 architecture (alpha released January 2025) re-architected the engine into a GPU-first, zero-CPU-overhead scheduler.[^15] At every decode step, the scheduler:
+The vLLM V1 architecture (alpha released January 2025; the default engine since 2025, with V0 fully deprecated) re-architected the engine into a GPU-first, zero-CPU-overhead scheduler.[^15] At every decode step, the scheduler:
 
 1. Advances each running request by its token budget (unified across chunked prefill, prefix caching, and speculative decoding)
 2. Attempts KV block allocation for new tokens
@@ -178,7 +178,7 @@ The vLLM V1 architecture (alpha released January 2025) re-architected the engine
 
 This preemption-by-recompute trades compute for memory: rather than swapping KV blocks to CPU (expensive on PCIe), vLLM simply discards them and recomputes prefill when the request resumes. The preempted request jumps to the head of the waiting queue.
 
-The original vLLM blog reported up to 24x throughput over HuggingFace Transformers and up to 3.5x over TGI v0.x on Llama-7B/13B.[^2] On the Anyscale OPT-13B benchmark, continuous batching alone gave roughly 8x over static batching, with PagedAttention's memory layer adding another 3x on top.[^1]
+The original vLLM blog reported up to 24x throughput over HuggingFace Transformers and up to 3.5x over TGI v0.x on Llama-7B/13B.[^2] On the Anyscale OPT-13B benchmark, continuous-batching engines (Ray Serve, TGI) achieved roughly 8x throughput over static batching; vLLM, which combines continuous batching with PagedAttention, reached approximately 23x over the same baseline.[^1]
 
 ```mermaid
 flowchart LR
@@ -206,7 +206,7 @@ Continuous batching and paged attention are not alternatives. They are the two t
 |---|---|---|---|---|
 | vLLM | Open source, fastest-moving community, broad hardware support | Python hot path historically (V1 engine closes the gap) | Cost-sensitive self-hosting, heterogeneous GPU fleets | Best general-purpose OSS engine |
 | TensorRT-LLM | Fastest on NVIDIA, FP8 hardware path, AOT-compiled kernels | NVIDIA-only, AOT compile adds rebuild friction, harder to customise | NVIDIA-committed production stacks where latency is king | When every millisecond counts on NVIDIA |
-| TGI | Production-hardened, Rust router, tight HF ecosystem integration | Historically less feature-rich for structured outputs and prefix caching (v3.x has narrowed this) | HF Inference Endpoints, quick Transformers-native deploys | When HF ecosystem integration is the constraint |
+| TGI | Production-hardened, Rust router, tight HF ecosystem integration | Repository archived March 2026 (read-only); HF officially recommends vLLM/SGLang/llama.cpp/MLX for new deployments | Legacy maintenance only | New builds should pick vLLM or SGLang |
 | SGLang | RadixAttention gives best prefix reuse on branching workloads | Smaller community, fewer battle-tested integrations | Multi-turn agents, RAG, tree-of-thought, self-consistency | Prefix-heavy agentic workloads |
 
 ## Common Pitfalls
@@ -305,7 +305,7 @@ Bill premium at 3x the standard per-token rate. Track GPU-seconds consumed per t
 **A:** Reusing cached KV blocks for token prefixes shared across requests (system prompts, RAG contexts). It gives 2 to 5x speedup on workloads with 60+ percent prefix overlap by skipping redundant prefill computation.
 
 **Q:** How does speculative decoding work?
-**A:** A small draft model proposes K tokens. The target model verifies all K in one forward pass and accepts the longest matching prefix. Output distribution is provably identical to vanilla sampling. Typical speedup is 1.5 to 3x on latency.
+**A:** A small draft model proposes K tokens. The target model verifies all K in one forward pass and accepts the longest matching prefix. The output distribution is provably equivalent to vanilla sampling from the target model. Typical speedup is 1.5 to 3x on latency.
 
 **Q:** When does speculative decoding hurt?
 **A:** Under heavy load, verification of rejected tokens wastes FLOPs that could serve other requests. Net throughput can decrease. Good systems disable speculation above a concurrency threshold.

@@ -16,7 +16,7 @@ date_updated: 2026-05-11
 
 # Recommendation Systems Deep Dive (DLRM, Two-Tower, Embedding Retrieval, Cold Start)
 
-> **TL;DR**: A modern recommender is a multi-stage funnel. A cheap two-tower retrieval model narrows billions of items to thousands using ANN over learned embeddings in tens of milliseconds. An expensive DLRM-style ranker scores those candidates on dozens of engagement objectives via pairwise feature interactions over TB-scale embedding tables. Around it sit exploration policies that prevent filter-bubble collapse, cold-start paths for new users and items, and an evaluation loop where offline NDCG is a filter but online A/B with guardrails is the ship decision. Meta's HSTU-based generative recommender (1.5T parameters) delivered +12.4% online A/B lift in 2024, proving that scaling laws finally apply to recommendation[^1].
+> **TL;DR**: A modern recommender is a multi-stage funnel. A cheap two-tower retrieval model narrows billions of items to thousands using ANN over learned embeddings in tens of milliseconds. An expensive DLRM-style ranker scores those candidates on dozens of engagement objectives via pairwise feature interactions over TB-scale embedding tables. Around it sit exploration policies that prevent filter-bubble collapse, cold-start paths for new users and items, and an evaluation loop where offline NDCG is a filter but online A/B with guardrails is the ship decision. Meta's HSTU (1.5T parameters, +12.4% online A/B lift, 2024) was the first public recommender to demonstrate LLM-style scaling laws[^1]; the 2025 wave (Kuaishou OneRec, Meituan MTGR, Meta LIGER, Pinterest PinRec) has begun replacing the cascaded retrieve-then-rank pipeline end-to-end at billion-user scale.
 
 ## Learning Objectives
 
@@ -89,7 +89,7 @@ sequenceDiagram
 
 *The item tower precomputes embeddings offline; at request time only the user tower runs, querying the ANN index in milliseconds.*
 
-**Hard-negative mining** improves retrieval quality by replacing random negatives with items the model scores highly but the user did not engage with. PinSage (Ying et al. 2018), a GCN-based embedding method, demonstrates hard-negative mining at Pinterest scale: 3 billion nodes and 7.5 billion training examples with progressively harder negatives during training[^4].
+**Hard-negative mining** improves retrieval quality by replacing random negatives with items the model scores highly but the user did not engage with. PinSage (Ying et al. 2018), a GCN-based embedding method, demonstrates hard-negative mining at Pinterest scale: 3 billion nodes and 7.5 billion training examples with progressively harder negatives during training[^4]. Pinterest has since published several production successors — PinnerFormer (2022, batch sequential user embeddings), TransAct (KDD 2023, transformer-based real-time user-action ranking), and PinRec (2025, outcome-conditioned multi-token generative retrieval) — that are worth tracking if you operate Pinterest-scale systems.
 
 ### DLRM: sparse embeddings meet dense features
 
@@ -129,20 +129,20 @@ The DLRM lineage evolved through Wide & Deep (Cheng et al. 2016, Google Play), D
 
 SASRec (Kang & McAuley 2018) applies causal self-attention over the last N items a user interacted with and predicts the next item. BERT4Rec replaces the causal mask with a bidirectional Cloze objective. Both treat user history as a token sequence.
 
-**HSTU** (Hierarchical Sequential Transduction Unit, Zhai et al. ICML 2024) reformulates recommendation as sequential transduction with a hardware-efficient attention variant that is 5.3x to 15.2x faster than FlashAttention2 on 8192-length sequences. The 1.5T parameter model shipped on multiple Meta surfaces with +12.4% online A/B lift, and model quality scales as a power-law of compute across three orders of magnitude[^1]. This is the first public recommender demonstrating LLM-style scaling laws.
+**HSTU** (Hierarchical Sequential Transduction Unit, Zhai et al. ICML 2024) reformulates recommendation as sequential transduction with a hardware-efficient attention variant that is 5.3x to 15.2x faster than FlashAttention2 on 8192-length sequences. The 1.5T parameter model shipped on multiple Meta surfaces with +12.4% online A/B lift, and model quality scales as a power-law of compute across three orders of magnitude[^1]. This was the first public recommender demonstrating LLM-style scaling laws. The 2025 wave built on it: **OneRec** (Kuaishou, Feb 2025) replaced the cascaded retrieve-then-rank pipeline with an end-to-end generative model and reported a 1.6% production watch-time lift; **MTGR** (Meituan, May 2025) deployed an HSTU-style ranker that preserves DLRM cross-features in food-delivery; **LIGER** (Meta, Nov 2024) unifies generative and dense retrieval and addresses cold-start.
 
-**TIGER** (Rajput et al. 2023, Google) encodes each item as a **Semantic ID**: a hierarchical tuple of codewords from a residual-quantized VAE over content embeddings. A seq2seq transformer autoregressively decodes the next item's Semantic ID. This enables generalization to cold-start items (new items get Semantic IDs from content alone) and generative retrieval instead of ANN lookup[^9].
+**TIGER** (Rajput et al. 2023, Google Research) encodes each item as a **Semantic ID**: a hierarchical tuple of codewords from a residual-quantized VAE over content embeddings. A seq2seq transformer autoregressively decodes the next item's Semantic ID. This enables generalization to cold-start items (new items get Semantic IDs from content alone) and generative retrieval instead of ANN lookup[^9].
 
 > [!IMPORTANT]
-> LLM-as-recommender approaches (P5, LLaRA) show promise on small catalogs but hallucinate and are hard to evaluate at scale. At 2025 billion-user scale, DLRM-plus-two-tower plus HSTU generative approaches dominate. LLMs augment, not replace.
+> LLM-as-recommender approaches (P5, LLaRA) show promise on small catalogs but hallucinate and are hard to evaluate at scale. As of 2026, DLRM-plus-two-tower remains the production default at most companies, with HSTU-style generative architectures (and the OneRec-style end-to-end generative replacement) gaining ground at the largest platforms.
 
 ### Exploration-exploitation and cold start
 
 Without exploration, the recommender trains on its own logs, items never shown get no feedback, and the system converges onto a small popular set. Exploration is a reliability feature, not a quality feature.
 
-**Thompson sampling** models the posterior over each arm's reward and samples one draw per arm at decision time. DoorDash uses Thompson sampling over `Beta(alpha=orders_of_cuisine, beta=orders_of_other)` to pick cuisine filters[^10]. Separately, Deezer's music-carousel bandit found that pessimistic initialization (`Beta(1, 99)`) outperformed naive initialization (`Beta(1, 1)`) because the lower prior was more reflective of real-world reward rates[^11].
+**Thompson sampling** models the posterior over each arm's reward and samples one draw per arm at decision time. DoorDash uses Thompson sampling over `Beta(alpha=orders_of_cuisine, beta=orders_of_other)` to pick cuisine filters[^10]. Deezer's music-carousel bandit found that pessimistic initialization (e.g. `Beta(1, 99)`) outperformed naive initialization (`Beta(1, 1)`) because the lower prior was more reflective of real-world reward rates[^10][^11].
 
-**LinUCB** (Li et al. 2010, Yahoo) fits a ridge regression per arm and selects the arm with highest `x^T theta + alpha * sqrt(x^T A^-1 x)`, where the second term is the confidence radius. Yahoo deployed it for personalized news, reducing 1,200 user features to 6 via PCA before the bandit[^10][^12].
+**LinUCB** (Li et al. 2010, Yahoo) fits a ridge regression per arm and selects the arm with highest `x^T theta + alpha * sqrt(x^T A^-1 x)`, where the second term is the confidence radius. Yahoo deployed it for personalized news, reducing 1,193 raw user features to a 6-dimensional vector by projecting onto article categories (via a bilinear logistic-regression model), then K-means-clustering users into 5 groups (the 6 dimensions are the 5 cluster memberships plus a constant)[^10][^12].
 
 **Cold-start items** bootstrap from content embeddings: CLIP for images, Sentence-BERT for text, Whisper for audio. TIGER's Semantic IDs solve cold-start generatively: a new item is quantized into the same codeword space without any interaction data[^9]. **Cold-start users** bootstrap from registration features (country, device, signup source) plus contextual bandits that update every few interactions.
 
@@ -247,7 +247,7 @@ Think about the latency budget split: retrieval gets ~20 ms, ranking gets ~80 ms
 - Exploration is not optional. Without it, the system collapses onto yesterday's winners and creates filter bubbles. Thompson sampling is the principled default.
 - Cold-start items bootstrap from content embeddings (CLIP, BERT); cold-start users bootstrap from demographics plus contextual bandits.
 - Offline metrics (NDCG, MRR) are a filter, not a decision. Ship on online A/B with guardrails. The offline-online gap is the most common source of wasted engineering effort.
-- Generative recommenders (HSTU, TIGER) prove that scaling laws apply to recsys, but DLRM-plus-two-tower remains the production default for most teams in 2025.
+- Generative recommenders (HSTU, TIGER, OneRec, MTGR, LIGER, PinRec) prove that scaling laws apply to recsys, but DLRM-plus-two-tower remains the production default for most teams as of 2026.
 
 ## Further Reading
 

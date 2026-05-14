@@ -79,7 +79,7 @@ For RAG systems, you do not need a reference answer if you have the retrieved co
 
 **Faithfulness** extracts atomic claims from the answer, then asks a judge LLM to mark each claim as supported (1) or not supported (0) by the retrieved context. The score is `supported_claims / total_claims`[^7]. A low faithfulness with high context precision means the generator is hallucinating over correct context.
 
-**Answer relevance** generates k questions from the answer and scores how similar those questions are to the original user query (embedding cosine). A low score means the answer drifts from what was asked.
+**Answer relevance** generates k questions from the answer (default k=3 via the Ragas `strictness` parameter) and scores the mean cosine similarity between each generated question's embedding and the original user query's embedding. A low score means the answer drifts from what was asked.
 
 **Context precision** checks whether relevant chunks rank high in retrieval. **Context recall** checks whether the ground-truth answer's claims are all present in the context. A low context precision points at the retriever, not the generator.
 
@@ -102,7 +102,7 @@ Zheng et al. at NeurIPS 2023 ("Judging LLM-as-a-Judge with MT-Bench and Chatbot 
 
 **Pairwise** (A vs B, which is better?): Higher inter-rater reliability than absolute scoring because relative comparisons are easier than calibrated numeric scores. Arena (formerly Chatbot Arena / LMArena) uses this at scale with crowdsourced votes and Bradley-Terry model ratings.
 
-**Rubric scoring** (1 to 5 with explicit anchors): G-Eval (Liu et al. EMNLP 2023) formalized this by having the judge generate chain-of-thought evaluation steps, then fill a score form. G-Eval with GPT-4 achieved Spearman 0.514 with human ratings on summarization[^9].
+**Rubric scoring** (1 to 5 with explicit anchors): G-Eval (Liu et al. EMNLP 2023) formalized this by having the judge generate chain-of-thought evaluation steps, then fill a score form. G-Eval with GPT-4 achieved Spearman 0.514 with human ratings on the SummEval summarization benchmark[^9].
 
 **Documented biases** (Zheng et al.):
 
@@ -113,7 +113,7 @@ Zheng et al. at NeurIPS 2023 ("Judging LLM-as-a-Judge with MT-Bench and Chatbot 
 
 **Mitigations**: Randomize pairwise order and run both directions (average). Normalize or cap length. Use a judge outside the candidates' family. For sensitive launches, human-validate a 50-item calibration slice.
 
-**Open-source judges**: Prometheus 2 (Kim et al. 2024) fine-tuned on evaluation data achieved the highest correlation with humans among open evaluator LMs at time of publication[^10]. Patronus Lynx is an open-source hallucination detection model built on Llama-3-Instruct; it ships in both 8B and 70B variants, where the 70B flagship (fine-tuned from Llama-3-70B-Instruct) outperforms GPT-4o on HaluBench and the 8B serves as the practical self-hosted option[^11]. Self-hosting avoids judge drift from proprietary snapshot changes.
+**Open-source judges**: Prometheus 2 (Kim et al. 2024) fine-tuned on evaluation data achieved the highest correlation with humans among open evaluator LMs at time of publication[^10]. Patronus Lynx is an open-source hallucination detection model built on Llama-3-Instruct; it ships in both 8B and 70B variants, where the 70B flagship is competitive with GPT-4o on HaluBench overall (and reports +8.3% over GPT-4o on the PubMedQA medical subset), while the 8B serves as the practical self-hosted option[^11]. Self-hosting avoids judge drift from proprietary snapshot changes.
 
 ```mermaid
 flowchart TD
@@ -163,7 +163,7 @@ flowchart LR
 
 [Observability](../part-6-reliability-and-operations/00-observability.md) introduced the three pillars (metrics, logs, traces) and OpenTelemetry. LLM systems extend this with domain-specific signals.
 
-The **OpenTelemetry GenAI semantic conventions** standardize LLM-specific span attributes[^3]: `gen_ai.provider.name` (provider: openai, anthropic, aws.bedrock; renamed from `gen_ai.system` in the post-v1.36.0 spec), `gen_ai.request.model`, `gen_ai.response.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`, `gen_ai.request.temperature`, `gen_ai.operation.name` (well-known values include: chat, create_agent, embeddings, execute_tool, generate_content, invoke_agent, invoke_workflow, retrieval, text_completion). Content payloads are captured via `gen_ai.input.messages` and `gen_ai.output.messages` (replacing the older per-role event names from v1.36.0).
+The **OpenTelemetry GenAI semantic conventions** (still in Development as of v1.41.x, May 2026) standardize LLM-specific span attributes[^3]: `gen_ai.provider.name` (provider: openai, anthropic, aws.bedrock; renamed from `gen_ai.system` in the post-v1.36.0 spec), `gen_ai.request.model`, `gen_ai.response.model`, `gen_ai.usage.input_tokens`, `gen_ai.usage.output_tokens`, `gen_ai.usage.reasoning.output_tokens` (for reasoning models), `gen_ai.request.temperature`, `gen_ai.operation.name` (well-known values include: chat, create_agent, embeddings, execute_tool, generate_content, invoke_agent, invoke_workflow, retrieval, text_completion). Content payloads are captured via `gen_ai.input.messages` and `gen_ai.output.messages` (replacing the older per-role event names from v1.36.0); these are now classified as opt-in (sensitive payload), not default capture.
 
 The span tree for a RAG request:
 
@@ -207,7 +207,7 @@ The CI gate blocks merge if faithfulness drops below 0.90 or answer relevance dr
 
 Pricing makes the cost model concrete: the Developer tier is free for a single seat with 5,000 base traces/month included and pay-as-you-go thereafter. The Plus tier at $39/seat/month includes 10,000 base traces/month and pay-as-you-go thereafter. Traces come in two retention tiers: base traces retain for 14 days at $2.50 per 1,000 traces, and extended traces retain for 400 days at $5.00 per 1,000 traces (2x the price for ~28x the retention window)[^14]. At scale, implementation TCO can reportedly multiply 10-15x once you account for human annotation time, archival, and operational overhead.
 
-The open-source alternative is Langfuse: open-source (MIT for all product features), self-hostable, OTel-native, and explicitly positioned against LangSmith's closed-source commercial model. It accepts OTel traces directly, making it a drop-in for teams already on OpenTelemetry infrastructure[^15].
+The open-source alternative is Langfuse: MIT-licensed core (Enterprise Edition components under separate terms), self-hostable, OTel-native, and explicitly positioned against LangSmith's closed-source commercial model. It accepts OTel traces directly, making it a drop-in for teams already on OpenTelemetry infrastructure[^15].
 
 ## Trade-offs
 
@@ -304,7 +304,7 @@ Think about (a) what "faithfulness" means in fintech where a wrong account balan
 **A:** They assume one correct label from a finite set. LLM outputs are open-ended text where multiple surface forms are correct, partial credit matters, and models are stochastic across provider snapshots.
 
 **Q:** What is Ragas faithfulness and how is it computed?
-**A:** Faithfulness measures whether every claim in the generated answer is supported by the retrieved context. It extracts atomic claims, runs NLI entailment against the context, and scores `supported_claims / total_claims`.
+**A:** Faithfulness measures whether every claim in the generated answer is supported by the retrieved context. It extracts atomic claims, uses an LLM judge to verify each claim entails from context (an optional `FaithfulnesswithHHEM` variant uses Vectara's HHEM transformer instead), and scores `supported_claims / total_claims`.
 
 **Q:** What are the four biases documented in LLM-as-judge (Zheng et al. 2023)?
 **A:** Position bias (prefers first option), verbosity bias (prefers longer answers), self-enhancement bias (prefers outputs from its own model family), and limited reasoning (cannot grade tasks beyond its own capability).
