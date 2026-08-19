@@ -1567,7 +1567,7 @@ We teach the same concepts in our own words, with our own diagrams, and we cite 
 
 If you find this useful, star the repo. Stars help signal to new contributors that the project is worth their time.
 
-[![Star History Chart](https://api.star-history.com/svg?repos=handbook-academy/engineering-handbook&type=Date)](https://star-history.com/#handbook-academy/engineering-handbook&Date)
+[![Star History Chart](https://star-history.dera.page/svg?repos=handbook-academy/engineering-handbook&type=Date)](https://star-history.dera.page/#handbook-academy/engineering-handbook&Date)
 
 ---
 
