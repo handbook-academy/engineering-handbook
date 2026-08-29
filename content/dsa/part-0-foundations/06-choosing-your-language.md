@@ -106,6 +106,8 @@ If you don't have an incumbent: open this chapter again, write `count_freqs("abr
 
 If you do have an incumbent: stay with it. The 40 to 80 hours you'd spend learning a new language don't pay back unless your incumbent is on Yangshun's avoid list (Haskell, Erlang, Perl, C, MATLAB) or your only target is Google and you currently write Go.
 
+If JavaScript is your incumbent, the [JavaScript interview preparation path](https://frontendatlas.com/guides/framework-prep/javascript-prep-path) provides a 7-, 14-, or 30-day practice sequence covering runtime reasoning, coding drills, and frontend interview follow-ups.
+
 [Language idioms](./05-language-idioms.md) is the cross-language reference you'll come back to. [Part 14 — Interview framework](../part-14-interview-framework/00-pattern-recognition.md) is the broader prep mental model. The language is decided. The next 100 to 400 hours of practice are the part that actually matters.
 
 ## References
