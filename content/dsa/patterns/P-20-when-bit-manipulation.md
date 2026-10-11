@@ -39,12 +39,12 @@ If none fires, write the `set` version. The conventional form is shorter, debugg
 ```mermaid
 flowchart TD
     Start[Problem touches a finite set,<br/>per-element decision,<br/>or per-bit integer structure]
-    Start --> Q1{Universe size<br/>|U| ≤ 20–22?}
+    Start --> Q1{"Universe size<br/>|U| ≤ 20–22?"}
     Q1 -->|No, large or unbounded| Skip1[Use set / dict / array<br/>bitmask cannot fit]
     Q1 -->|Yes, fits in one int| Q2{Need to enumerate subsets,<br/>intersect sets, or carry<br/>visited-subset state?}
     Q2 -->|Yes| BM[Trigger 1: bitmask<br/>iterate s in 0..2^n - 1<br/>or DP on mask state]
-    Q2 -->|No| Q3{"Pairs cancel"<br/>fits the structure?<br/>x ^ x = 0}
-    Q3 -->|Yes, lone element /<br/>missing-number shape| XOR[Trigger 2: XOR scan<br/>O(n) time, O(1) space]
+    Q2 -->|No| Q3{"#quot;Pairs cancel#quot;<br/>fits the structure?<br/>x ^ x = 0"}
+    Q3 -->|Yes, lone element /<br/>missing-number shape| XOR["Trigger 2: XOR scan<br/>O(n) time, O(1) space"]
     Q3 -->|No| Q4{Inner loop counts bits<br/>or isolates low bits<br/>and is hot?}
     Q4 -->|Yes| BT[Trigger 3: popcount /<br/>x &amp; -x / Kernighan loop]
     Q4 -->|No| Skip2[Use set / dict / array<br/>bit manipulation buys nothing]

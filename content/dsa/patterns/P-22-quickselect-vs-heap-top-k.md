@@ -29,16 +29,16 @@ That asymmetry comes from where each algorithm needs the data. A heap of size K 
 ```mermaid
 flowchart TD
     A[Top-K or k-th element on a collection?] --> B{Streams or fully in memory?}
-    B -- "streams (online)" --> C[Heap of size K<br/>O(n log K), the only viable option]
+    B -- "streams (online)" --> C["Heap of size K<br/>O(n log K), the only viable option"]
     B -- "fully in memory" --> D{Caller needs the K elements in sorted order?}
     D -- "yes, sorted" --> E{K small relative to n?}
-    E -- "yes, K << n" --> F[Quickselect, then sort the K-side<br/>O(n + K log K)]
-    E -- "no, K close to n" --> G[Sort the array<br/>O(n log n), simplest]
+    E -- "yes, K << n" --> F["Quickselect, then sort the K-side<br/>O(n + K log K)"]
+    E -- "no, K close to n" --> G["Sort the array<br/>O(n log n), simplest"]
     D -- "no, unsorted is fine" --> H{Adversarial or untrusted input?}
-    H -- "yes" --> I[Heap of size K<br/>O(n log K) worst case<br/>OR introselect for O(n) worst]
+    H -- "yes" --> I["Heap of size K<br/>O(n log K) worst case<br/>OR introselect for O(n) worst"]
     H -- "no, trusted input" --> J{Mutation of caller's array OK?}
-    J -- "yes" --> K[Random-pivot quickselect<br/>O(n) expected, in-place]
-    J -- "no" --> L[Heap of size K<br/>O(n log K), immutable input]
+    J -- "yes" --> K["Random-pivot quickselect<br/>O(n) expected, in-place"]
+    J -- "no" --> L["Heap of size K<br/>O(n log K), immutable input"]
 ```
 
 *Five branching questions resolve the choice. The streaming branch is one-way. The other four trade complexity, output shape, robustness, and side-effects.*

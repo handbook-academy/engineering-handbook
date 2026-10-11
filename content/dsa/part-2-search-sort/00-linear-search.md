@@ -39,11 +39,11 @@ The third is **n is small**. Branch-prediction and cache locality both favour st
 ```mermaid
 flowchart TD
     A[Need to find target in nums] --> B{Is nums sorted?}
-    B -- Yes --> D[Binary search<br/>O(log n)<br/>chapter 2.1]
+    B -- Yes --> D["Binary search<br/>O(log n)<br/>chapter 2.1"]
     B -- No --> C{Many queries against the same data?}
-    C -- "No (one-shot)" --> E[Linear search<br/>O(n)<br/>this chapter]
+    C -- "No (one-shot)" --> E["Linear search<br/>O(n)<br/>this chapter"]
     C -- "Yes (many)" --> F{Worth the build cost?}
-    F -- Yes --> G[Hash set or sort once<br/>O(1) or O(log n) per query]
+    F -- Yes --> G["Hash set or sort once<br/>O(1) or O(log n) per query"]
     F -- "No (data churns)" --> E
 ```
 

@@ -29,7 +29,7 @@ Every other discriminator (sparse vs dense, single goal vs all targets, all-pair
 flowchart TD
     Start[Shortest path<br/>on graph G] --> Q1{All edges<br/>weight 1?}
     Q1 -->|Yes| BFS[BFS<br/>O&#40;V plus E&#41;]
-    Q1 -->|No| Q2{Weights<br/>in {0, 1}?}
+    Q1 -->|No| Q2{"Weights<br/>in {0, 1}?"}
     Q2 -->|Yes| ZBFS[0-1 BFS deque<br/>O&#40;V plus E&#41;]
     Q2 -->|No| Q3{Any edge<br/>weight negative?}
     Q3 -->|Yes| BF[Bellman-Ford<br/>O&#40;V times E&#41;<br/>detects neg cycles]

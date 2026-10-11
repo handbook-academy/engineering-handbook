@@ -166,7 +166,7 @@ The two-pointer pattern is identical to LC 344's. The difference is the inner sk
 
 ```mermaid
 flowchart LR
-    Start[l = 0, r = len(s) - 1] --> Check{l < r?}
+    Start["l = 0, r = len(s) - 1"] --> Check{l < r?}
     Check -- No --> Done[Return true]
     Check -- Yes --> Skip{Skip non-alnum<br/>both ends}
     Skip --> Compare{lower s_l vs lower s_r}
@@ -203,16 +203,16 @@ flowchart TD
     B -- Java --> J[String is final<br/>StringBuilder.append + toString]
     B -- C++ --> C[std::string is mutable<br/>reserve then push_back/append]
     B -- Go --> G[string is read-only<br/>strings.Builder.Grow + WriteString]
-    P --> O1[O(n) amortized]
+    P --> O1["O(n) amortized"]
     J --> O1
     C --> O1
     G --> O1
 
     A --> X[Naive '+' or '+=']
-    X --> X1[Python: O(n^2) worst case<br/>CPython opt masks it sometimes]
-    X --> X2[Java: O(n^2) reliably]
-    X --> X3[C++: O(n) amortized via reserve grow,<br/>O(n^2) without reserve]
-    X --> X4[Go: O(n^2) reliably]
+    X --> X1["Python: O(n^2) worst case<br/>CPython opt masks it sometimes"]
+    X --> X2["Java: O(n^2) reliably"]
+    X --> X3["C++: O(n) amortized via reserve grow,<br/>O(n^2) without reserve"]
+    X --> X4["Go: O(n^2) reliably"]
 ```
 
 *Three of the four languages have immutable strings; the fourth (C++) has a mutable string but still benefits from `reserve` for predictable allocation.*

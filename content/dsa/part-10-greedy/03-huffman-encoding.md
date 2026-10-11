@@ -61,7 +61,7 @@ The procedure is `n - 1` rounds of the same three-step loop. Initialize a min-he
 ```mermaid
 flowchart LR
     I[init: enqueue n leaves<br/>into min-heap Q] --> L
-    L["loop n - 1 times:<br/>x = EXTRACT-MIN(Q)<br/>y = EXTRACT-MIN(Q)<br/>z = new internal(x.w + y.w, left=x, right=y)<br/>INSERT(Q, z)"] --> R[root: EXTRACT-MIN(Q)]
+    L["loop n - 1 times:<br/>x = EXTRACT-MIN(Q)<br/>y = EXTRACT-MIN(Q)<br/>z = new internal(x.w + y.w, left=x, right=y)<br/>INSERT(Q, z)"] --> R["root: EXTRACT-MIN(Q)"]
     R --> W[walk tree:<br/>left=0, right=1<br/>emit codeword per leaf]
 ```
 

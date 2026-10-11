@@ -101,10 +101,10 @@ stateDiagram-v2
     Init --> PassRunning: begin pass i
     PassRunning --> PassRunning: relax edge
     PassRunning --> PassEnd: all edges scanned
-    PassEnd --> PassRunning: i &lt; |V|-1 and any relaxation
+    PassEnd --> PassRunning: i #lt; #124;V#124;-1 and any relaxation
     PassEnd --> EarlyTerm: no relaxation this pass
     EarlyTerm --> Done
-    PassEnd --> VCheck: i == |V|-1
+    PassEnd --> VCheck: i == #124;V#124;-1
     VCheck --> Done: no relaxation
     VCheck --> NegCycle: still relaxing
     NegCycle --> [*]

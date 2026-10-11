@@ -35,12 +35,12 @@ If the data is a static array of `n` values handed to you in one piece, none of 
 ```mermaid
 flowchart TD
     Start{Median query<br/>shape?}
-    Start -->|Static array, one query| Quickselect[Quickselect<br/>O(n) expected<br/>not this archetype]
-    Start -->|Append-only stream,<br/>median after each insert| V1[Variant 1:<br/>Two heaps,<br/>O(log n) per insert]
+    Start -->|Static array, one query| Quickselect["Quickselect<br/>O(n) expected<br/>not this archetype"]
+    Start -->|Append-only stream,<br/>median after each insert| V1["Variant 1:<br/>Two heaps,<br/>O(log n) per insert"]
     Start -->|Fixed window of size k,<br/>one in / one out per step| WindowSize{Multiset<br/>available?}
-    WindowSize -->|Python heapq /<br/>Java stdlib| V2[Variant 2:<br/>Two heaps + lazy deletion,<br/>O(log k) amortized]
-    WindowSize -->|C++ std::multiset /<br/>Python SortedList| V2alt[Variant 2 alt:<br/>Multiset + cursor,<br/>O(log k) per op]
-    Start -->|Stream too large for<br/>O(n) memory,<br/>approximation OK| V3[Variant 3:<br/>Quantile sketch<br/>KLL or t-digest,<br/>O(log n / ε) space]
+    WindowSize -->|Python heapq /<br/>Java stdlib| V2["Variant 2:<br/>Two heaps + lazy deletion,<br/>O(log k) amortized"]
+    WindowSize -->|C++ std::multiset /<br/>Python SortedList| V2alt["Variant 2 alt:<br/>Multiset + cursor,<br/>O(log k) per op"]
+    Start -->|"Stream too large for<br/>O(n) memory,<br/>approximation OK"| V3["Variant 3:<br/>Quantile sketch<br/>KLL or t-digest,<br/>O(log n / ε) space"]
 ```
 
 *Three branches: append-only goes to two-heap streaming, fixed-window splits on language support for ordered multisets, oversized streams bail to approximate sketches and leave the two-heap archetype behind.*

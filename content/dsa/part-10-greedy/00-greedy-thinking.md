@@ -57,11 +57,11 @@ The exchange argument is the workhorse. The shape: assume some optimal solution 
 sequenceDiagram
     participant G as Greedy G
     participant O as Optimal O
-    Note over G,O: assume O ≠ G; find first index k where g_k ≠ o_k
+    Note over G,O: assume O ≠ G#59; find first index k where g_k ≠ o_k
     G->>O: swap o_k for g_k in O, producing O'
     O-->>G: O' is still valid (no constraint broken)
-    O-->>G: |O'| = |O| (size preserved; O' still optimal)
-    Note over G,O: induction: O' agrees with G at index k; repeat at k+1
+    O-->>G: |O'| = |O| (size preserved#59; O' still optimal)
+    Note over G,O: induction: O' agrees with G at index k#59; repeat at k+1
     G->>O: continue exchanges until O' = G
     Note over G,O: therefore G is optimal
 ```

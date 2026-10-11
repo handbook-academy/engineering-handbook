@@ -202,7 +202,7 @@ Not every weighted-graph shortest-path problem wants Dijkstra. Two adjacent algo
 flowchart LR
     Start[Weighted graph,<br/>SSSP needed] --> Sign{All edge<br/>weights non-negative?}
     Sign -->|No| BF[Bellman-Ford<br/>chapter 8.10]
-    Sign -->|Yes| Bin{All weights<br/>in {0, 1}?}
+    Sign -->|Yes| Bin{"All weights<br/>in {0, 1}?"}
     Bin -->|Yes| ZeroOne[0-1 BFS with deque<br/>O&#40;V+E&#41;]
     Bin -->|No| Heap[Dijkstra with binary heap<br/>O&#40;&#40;V+E&#41; log V&#41;]
 ```

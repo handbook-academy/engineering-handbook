@@ -27,10 +27,10 @@ Three forms walk every node of a binary tree in O(n) time. They differ in one th
 
 ```mermaid
 flowchart TD
-    Start[Pick the form] --> Q1{O(1) auxiliary<br/>space required?}
+    Start[Pick the form] --> Q1{"O(1) auxiliary<br/>space required?"}
     Q1 -- Yes --> Q1a{Tree owned<br/>and mutable?}
-    Q1a -- Yes --> Morris[Morris<br/>thread right-pointers<br/>O(1) auxiliary]
-    Q1a -- No --> Iter1[Iterative with stack<br/>O(h) heap, no mutation]
+    Q1a -- Yes --> Morris["Morris<br/>thread right-pointers<br/>O(1) auxiliary"]
+    Q1a -- No --> Iter1["Iterative with stack<br/>O(h) heap, no mutation"]
     Q1 -- No --> Q2{Iterator API<br/>or pause/resume<br/>required?}
     Q2 -- Yes --> Iter2[Iterative with stack<br/>stack IS the saved state]
     Q2 -- No --> Q3{Worst-case h<br/>fits language<br/>stack budget?}

@@ -187,12 +187,12 @@ flowchart TD
     B -- No, expected linear is fine --> C[Rabin-Karp<br/>chapter 12.1]
     B -- Yes --> D{What does the problem ask for?}
     D -- First/all occurrences of P in T --> E[KMP<br/>this chapter]
-    D -- Period of s, longest prefix-suffix,<br/>tiling check --> F[KMP, Phase A only<br/>this chapter §"When the pattern bends"]
+    D -- Period of s, longest prefix-suffix,<br/>tiling check --> F["KMP, Phase A only<br/>this chapter §#quot;When the pattern bends#quot;"]
     D -- All-positions question on prefixes<br/>anchored at i --> G[Z-algorithm<br/>chapter 12.3]
     D -- Many patterns vs one text --> H[Aho-Corasick<br/>chapter 12.4]
     E --> I{Alphabet size}
-    I -- Small fixed e.g. DNA, ASCII --> J[KMP-DFA variant<br/>O(m·R) preprocessing,<br/>O(1) per text char]
-    I -- Arbitrary --> K[KMP-LPS variant<br/>O(m) preprocessing,<br/>amortized O(1) per text char]
+    I -- Small fixed e.g. DNA, ASCII --> J["KMP-DFA variant<br/>O(m·R) preprocessing,<br/>O(1) per text char"]
+    I -- Arbitrary --> K["KMP-LPS variant<br/>O(m) preprocessing,<br/>amortized O(1) per text char"]
 ```
 
 *Decision flowchart for the broader pattern-matching family. The algorithm-pair lookup is the discriminating signal: KMP for "find P in T" with a worst-case guarantee; KMP's Phase A alone for periodicity / prefix-suffix structural questions where the text is the pattern itself.*

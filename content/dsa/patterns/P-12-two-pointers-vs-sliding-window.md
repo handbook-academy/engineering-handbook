@@ -39,7 +39,7 @@ That gives four sub-patterns, one per chapter in Part 3.
 
 ```mermaid
 flowchart TD
-    Start[Two indices walking<br/>a 1D array or string] --> Q1{Does [l..r] hold<br/>contiguous-window state<br/>sum / freq / distinct-count?}
+    Start[Two indices walking<br/>a 1D array or string] --> Q1{"Does [l..r] hold<br/>contiguous-window state<br/>sum / freq / distinct-count?"}
     Q1 -- "yes, the window is the unit of state" --> Q2{Is the window length k<br/>given up front?}
     Q1 -- "no, l and r are independent positions" --> Q3{Do pointers start<br/>at l=0, r=n-1<br/>moving inward?}
     Q2 -- "yes, k is fixed" --> Fixed[Fixed-window<br/>chapter 3.2<br/>LC 643, 567, 438]
