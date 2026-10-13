@@ -76,8 +76,8 @@ const rawArgs = process.argv.slice(2);
 const verbose = rawArgs.includes('--verbose');
 const roots = rawArgs.filter(a => !a.startsWith('--'));
 if (roots.length === 0) {
-  // Default targets cover both books; override via argv to scope a single book.
-  roots.push('content/hld', 'content/dsa');
+  // Default targets cover every book; override via argv to scope a single book.
+  roots.push('content/hld', 'content/dsa', 'content/ai-eng');
 }
 
 let totalDiagrams = 0;

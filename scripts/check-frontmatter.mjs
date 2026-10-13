@@ -41,6 +41,14 @@ const DSA_PATTERN_REQUIRED_FIELDS = [
   'date_updated', 'difficulty',
 ];
 
+// AI Engineering chapters mirror the DSA chapter shape (slug = filename,
+// integer part + chapter, path-style prerequisites) plus date_created.
+// Sample: content/ai-eng/part-0-start-here/00-what-an-ai-engineer-is.md
+const AI_ENG_CHAPTER_REQUIRED_FIELDS = [
+  'title', 'description', 'slug', 'part', 'chapter',
+  'difficulty', 'prerequisites', 'date_created', 'date_updated',
+];
+
 const VALID_DIFFICULTY = ['beginner', 'intermediate', 'advanced'];
 const VALID_DSA_EDITORIAL_DIFFICULTY = ['easy', 'medium', 'hard'];
 const VALID_DSA_LANGUAGES = new Set(['python', 'java', 'cpp', 'go']);
@@ -172,7 +180,100 @@ function classify(file) {
   if (norm.includes('content/dsa/patterns/')) return 'dsa-pattern';
   if (norm.includes('content/dsa/widgets/')) return 'dsa-widget-doc';
   if (/content\/dsa\/part-\d+/.test(norm)) return 'dsa-chapter';
+  if (/content\/ai-eng\/part-\d+/.test(norm)) return 'ai-eng-chapter';
   return 'unknown';
+}
+
+// Registry of AI Engineering chapters, keyed "part-N-slug/NN-chapter-slug",
+// so prerequisites can be checked against real files.
+const AI_ENG_REGISTRY = new Set();
+
+function registerAiEngChapter(file) {
+  const m = file.replace(/\\/g, '/').match(/content\/ai-eng\/(part-\d+-[^/]+)\/(\d+-[^/]+)\.md$/);
+  if (m) AI_ENG_REGISTRY.add(`${m[1]}/${m[2]}`);
+}
+
+function validateAiEngChapter(fm, file) {
+  const errors = [];
+  const norm = file.replace(/\\/g, '/');
+
+  for (const field of AI_ENG_CHAPTER_REQUIRED_FIELDS) {
+    if (isMissing(fm, field) && !(field === 'prerequisites' && Array.isArray(fm[field]))) {
+      errors.push(`missing required field: ${field}`);
+    }
+  }
+
+  const loc = norm.match(/content\/ai-eng\/part-(\d+)-[^/]+\/(\d+)-[^/]+\.md$/);
+  const partDir = norm.match(/content\/ai-eng\/(part-\d+-[^/]+)\//)?.[1];
+
+  if (fm.part !== undefined) {
+    const partNum = Number(fm.part);
+    if (!Number.isInteger(partNum) || partNum < 0 || partNum > 11) {
+      errors.push(`part must be integer 0-11, got ${fm.part}`);
+    } else if (loc && partNum !== Number(loc[1])) {
+      errors.push(`part ${fm.part} does not match directory part-${loc[1]}`);
+    }
+  }
+
+  if (fm.chapter !== undefined) {
+    const chapterNum = Number(fm.chapter);
+    if (!Number.isInteger(chapterNum) || chapterNum < 0) {
+      errors.push(`chapter must be a non-negative integer, got ${fm.chapter}`);
+    } else if (loc && chapterNum !== Number(loc[2])) {
+      errors.push(`chapter ${fm.chapter} does not match filename prefix ${loc[2]}`);
+    }
+  }
+
+  if (fm.difficulty && !VALID_DIFFICULTY.includes(fm.difficulty)) {
+    errors.push(`difficulty must be one of ${VALID_DIFFICULTY.join(', ')}, got ${fm.difficulty}`);
+  }
+
+  if (fm.slug) {
+    const expected = norm.split('/').pop().replace(/\.md$/, '');
+    if (fm.slug !== expected) {
+      errors.push(`slug "${fm.slug}" must match filename basename "${expected}"`);
+    }
+  }
+
+  for (const field of ['date_created', 'date_updated']) {
+    if (fm[field] && !/^\d{4}-\d{2}-\d{2}$/.test(fm[field])) {
+      errors.push(`${field} must be YYYY-MM-DD, got ${fm[field]}`);
+    }
+  }
+  if (fm.date_created && fm.date_updated && fm.date_updated < fm.date_created) {
+    errors.push(`date_updated ${fm.date_updated} is before date_created ${fm.date_created}`);
+  }
+
+  if (fm.tags !== undefined) {
+    if (!Array.isArray(fm.tags)) {
+      errors.push(`tags must be an array, got ${typeof fm.tags}`);
+    } else {
+      for (const tag of fm.tags) {
+        if (!VALID_TAGS.has(tag)) {
+          errors.push(`tags entry "${tag}" is not in the canonical list (see STYLE_GUIDE.md)`);
+        }
+      }
+    }
+  }
+
+  // Prereqs: "part-N-slug/NN-chapter-slug" (cross-part) or "NN-chapter-slug"
+  // (same part). Both must resolve to a real AI Engineering chapter.
+  if (Array.isArray(fm.prerequisites)) {
+    for (const p of fm.prerequisites) {
+      const fullForm = /^part-\d+-[a-z0-9-]+\/\d+-[a-z0-9-]+$/.test(p);
+      const samePart = /^\d+-[a-z0-9-]+$/.test(p);
+      if (!fullForm && !samePart) {
+        errors.push(`prerequisites entry "${p}" must be "part-N-slug/NN-chapter-slug" or "NN-chapter-slug"`);
+        continue;
+      }
+      const key = fullForm ? p : `${partDir}/${p}`;
+      if (!AI_ENG_REGISTRY.has(key)) {
+        errors.push(`prerequisites entry "${p}" does not resolve to any AI Engineering chapter`);
+      }
+    }
+  }
+
+  return errors;
 }
 
 function validateDsaChapter(fm, file) {
@@ -327,6 +428,7 @@ function validate(fm, file) {
   if (kind === 'dsa-chapter')   return validateDsaChapter(fm, file);
   if (kind === 'dsa-editorial') return validateDsaEditorial(fm, file);
   if (kind === 'dsa-pattern')   return validateDsaPattern(fm, file);
+  if (kind === 'ai-eng-chapter') return validateAiEngChapter(fm, file);
   // Widget README is documentation; no frontmatter required, no checks.
   if (kind === 'dsa-widget-doc') return errors;
 
@@ -438,7 +540,8 @@ async function checkFile(file) {
   // Skip prose READMEs that have no frontmatter and aren't part of the curriculum.
   const norm = file.replace(/\\/g, '/');
   if (norm.endsWith('content/dsa/widgets/README.md') ||
-      norm.endsWith('content/dsa/README.md')) {
+      norm.endsWith('content/dsa/README.md') ||
+      norm.endsWith('content/ai-eng/README.md')) {
     return;
   }
 
@@ -475,19 +578,23 @@ async function checkFile(file) {
 
 async function main() {
   const files = [];
-  // Both books share this validator. classify() in validate() dispatches each
+  // Every book shares this validator. classify() in validate() dispatches each
   // file to its book/genre-specific schema branch (HLD chapter, HLD trade-off,
-  // DSA chapter, DSA editorial, DSA pattern decision page).
+  // DSA chapter, DSA editorial, DSA pattern decision page, AI Engineering chapter).
   for await (const f of glob('content/hld/**/*.md')) files.push(f);
   for await (const f of glob('content/dsa/**/*.md')) files.push(f);
+  for await (const f of glob('content/ai-eng/**/*.md')) files.push(f);
 
   if (files.length === 0) {
     console.log('No content files found.');
     exit(0);
   }
 
-  // Pass 1: build the module registry so prereq validation has ground truth.
-  for (const f of files) registerModule(f);
+  // Pass 1: build the module registries so prereq validation has ground truth.
+  for (const f of files) {
+    registerModule(f);
+    registerAiEngChapter(f);
+  }
 
   // Pass 2: validate each file.
   await Promise.all(files.map(checkFile));

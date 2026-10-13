@@ -21,7 +21,7 @@ function walk(dir) {
 // Default targets cover both books; override via argv to scope a single book.
 const targets = process.argv.slice(2).length
   ? process.argv.slice(2)
-  : ['content/hld', 'content/dsa'];
+  : ['content/hld', 'content/dsa', 'content/ai-eng'];
 
 let problems = 0;
 for (const t of targets) {

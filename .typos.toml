@@ -143,6 +143,11 @@ Mathematisch = "Mathematisch"
 Canva = "Canva"
 IIT = "IIT"
 
+# AI-Eng Handbook proper nouns and intentional strings.
+Yiu = "Yiu"              # Siu Ming Yiu, co-author of the AgentEval paper
+reuslt = "reuslt"        # deliberate broken-JSON example in part-4/03-assertions
+unparseable = "unparseable"  # accepted variant spelling (see writeable above)
+
 [files]
 extend-exclude = [
   "*.excalidraw",
