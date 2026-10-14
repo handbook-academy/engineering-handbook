@@ -1,7 +1,7 @@
 {
   "name": "engineering-handbook",
   "version": "0.0.0",
-  "description": "The Engineering Handbook — open-source curricula (HLD, DSA, and more) under one CC BY-SA 4.0 license.",
+  "description": "The Engineering Handbook — open-source curricula (HLD, DSA, AI Engineering, and more) under one CC BY-SA 4.0 license.",
   "private": true,
   "type": "module",
   "scripts": {
@@ -41,6 +41,10 @@
     "algorithms",
     "dsa",
     "leetcode",
+    "ai-engineering",
+    "llm",
+    "rag",
+    "ai-agents",
     "interview",
     "architecture",
     "distributed-systems",

@@ -1,9 +1,9 @@
 cff-version: 1.2.0
 message: "If you use or reference this project, please cite it as below."
 type: dataset
-title: "The Engineering Handbook: Open-Source Engineering Curricula (HLD + DSA)"
+title: "The Engineering Handbook: Open-Source Engineering Curricula (HLD + DSA + AI Engineering)"
 abstract: >-
-  An open-source umbrella for in-depth engineering curricula, hosting two
+  An open-source umbrella for in-depth engineering curricula, hosting three
   sibling handbooks today and growing over time.
   The HLD Handbook (content/hld/) contains 159 teaching chapters across 12
   parts plus a 22-page trade-offs library (181 total pages, ~773,000 words,
@@ -13,6 +13,9 @@ abstract: >-
   parts, 37 pattern decision pages, 5 long-form LeetCode editorials, and 46
   interactive widget specs (~470,000 words, 226 Mermaid diagrams), with sibling
   Python / Java / C++ / Go solutions for 155 LeetCode problems.
+  The AI Engineering Handbook (content/ai-eng/) contains 86 teaching chapters
+  across 12 parts (~192,000 words, 87 figures, 750+ citations) on building
+  and operating production AI products on top of foundation models.
   All books share the same CC BY-SA 4.0 license, contribution workflow, and
   CI quality bar.
 authors:
@@ -35,3 +38,8 @@ keywords:
   - algorithms
   - dsa
   - leetcode
+  - ai-engineering
+  - llm
+  - rag
+  - ai-agents
+  - llm-evaluation

@@ -1,6 +1,6 @@
 # Style Guide
 
-This style guide defines **how we write** in The Engineering Handbook (HLD, DSA, and any future curricula in this repo). Every chapter is checked against these rules in CI and in human review.
+This style guide defines **how we write** in The Engineering Handbook (HLD, DSA, AI Engineering, and any future curricula in this repo). Every chapter is checked against these rules in CI and in human review.
 
 If you are a contributor, read this once, then keep it open in a tab while you write.
 
@@ -12,6 +12,8 @@ If you are a contributor, read this once, then keep it open in a tab while you w
 - [Trade-off Tables](#trade-off-tables)
 - [Formatting](#formatting)
 - [Frontmatter Schema](#frontmatter-schema)
+- [DSA-specific deviations](#dsa-specific-deviations)
+- [AI Engineering-specific deviations](#ai-engineering-specific-deviations)
 - [Diagrams](#diagrams)
 - [Code Blocks](#code-blocks)
 - [Links and Citations](#links-and-citations)
@@ -271,6 +273,41 @@ DSA chapters under `content/dsa/` follow a different shape from HLD chapters. Mo
 **Identifier conventions.** Problems are referenced by `LC-NNN` (e.g. `LC-088`, `LC-189`) and registered in [`content/dsa/_problem-registry.yml`](content/dsa/_problem-registry.yml). Interactive widgets are referenced by `w-NN-<slug>` for canonical pattern widgets (e.g. `w-15-lru-cache`) or `e-LCNNN-<slug>` for editorial widgets, and registered in [`content/dsa/_widget-registry.yml`](content/dsa/_widget-registry.yml). On GitHub, widget callouts link to the YAML spec; the rendered widget itself lives on the website.
 
 **Editorials and patterns.** Long-form per-LC editorials live under `content/dsa/editorials/`, and pattern decision references (one per major pattern family) live under `content/dsa/patterns/`. Both have thinner frontmatter schemas — see existing files for the shape.
+
+## AI Engineering-specific deviations
+
+AI Engineering chapters under `content/ai-eng/` keep this guide's voice, citation, and accessibility rules. They differ in chapter shape, frontmatter, and diagrams.
+
+**Chapter shape.** No fixed skeleton. Each chapter takes the structure its topic needs: most open with a real incident or a failing example, explain the mechanism, and end with something the reader can apply (a checklist, a decision rule, or a runnable snippet). The HLD template sections (TL;DR, Learning Objectives, Flashcards) are not used. Chapters aim for one concept each and stay short; length is earned, never padded.
+
+**Scope line.** If a topic answers "what would I draw on the whiteboard?", it belongs in [HLD Part 9](content/hld/part-9-ai-ml-system-design/) and the AI Engineering chapter links to it. If it answers "what would I open in my editor?", it belongs in `content/ai-eng/`.
+
+**Frontmatter.** AI Engineering chapters use `title`, `description`, `slug`, `part`, `chapter`, `difficulty`, `prerequisites`, `tags`, `date_created`, and `date_updated`. They do **not** use HLD's `module` or `technologies` fields. `slug` must equal the filename without `.md`; `part` and `chapter` must match the directory and filename prefix. `prerequisites` use the DSA path form: `part-N-slug/NN-chapter-slug` across parts, or `NN-chapter-slug` within the same part, and must resolve to a real chapter. `tags` use the canonical list above.
+
+```yaml
+---
+title: "MCP security"
+description: "The four attack classes MCP creates..."
+slug: 05-mcp-security
+part: 7
+chapter: 5
+difficulty: intermediate
+prerequisites:
+  - 04-mcp-model-context-protocol
+  - 03-tool-design
+tags: [llm, agents, ai-safety]
+date_created: 2026-06-12
+date_updated: 2026-06-12
+---
+```
+
+**Figures, not a Mermaid quota.** The three-diagram minimum does not apply. Teaching figures are minimalist PNG images stored next to the chapter at `content/ai-eng/<part-dir>/images/<NN>-<name>.png`, usually one to three per chapter, only where they teach. Every figure needs descriptive alt text that states what the figure shows, followed by a one-line italic caption. Mermaid is the exception, at most one per chapter, used when a flowchart teaches better than a picture.
+
+**Code.** Program code is Python, targeting 3.10+ and the official provider SDKs. SQL, YAML, JSON, and shell blocks appear only where the topic itself is configuration or a query.
+
+**Perishable facts.** Prices, model names, context limits, and benchmark scores carry an "as of" date and a footnoted source. Prefer the provider's own docs or pricing page over a blog summary.
+
+**Warnings.** Use GitHub's `> [!WARNING]` callout for production traps that cost money or cause incidents.
 
 ## Diagrams
 

@@ -16,6 +16,7 @@ body:
       options:
         - HLD Handbook (content/hld/)
         - DSA Handbook (content/dsa/)
+        - AI Engineering Handbook (content/ai-eng/)
     validations:
       required: true
   - type: input
@@ -32,6 +33,7 @@ body:
       description: |
         HLD parts: Part 0 (Prerequisites) - Part 11 (Interview Framework), or Trade-offs Library.
         DSA parts: Part 0 (Foundations) - Part 14 (Interview Framework), or Patterns / Editorials.
+        AI Engineering parts: Part 0 (Start Here) - Part 11 (AI Product Engineering).
       placeholder: "HLD Part 6 - Reliability & Operations"
     validations:
       required: true

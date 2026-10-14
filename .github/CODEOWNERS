@@ -1,5 +1,5 @@
 # CODEOWNERS for The Engineering Handbook (public content repository
-# hosting the HLD and DSA handbooks, with more curricula planned).
+# hosting the HLD, DSA, and AI Engineering handbooks, with more curricula planned).
 #
 # Every path has a default owner. PRs touching these paths get automatic
 # review requests from the listed owner(s).
@@ -16,6 +16,11 @@
 # Content — DSA Handbook (120 chapters + 37 patterns + editorials + widgets).
 # ---------------------------------------------------------------------------
 /content/dsa/                                   @invincible04
+
+# ---------------------------------------------------------------------------
+# Content — AI Engineering Handbook (86 chapters + 87 figures).
+# ---------------------------------------------------------------------------
+/content/ai-eng/                                @invincible04
 
 /writing-guides/                                @invincible04
 /STYLE_GUIDE.md                                 @invincible04

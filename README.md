@@ -4,19 +4,20 @@
 
 # The Engineering Handbook
 
-**Open-source engineering curricula under one CC BY-SA 4.0 license. HLD and DSA today; more to come.**
+**Open-source engineering curricula under one CC BY-SA 4.0 license. HLD, DSA, and AI Engineering today; more to come.**
 
 HLD Handbook: 159 chapters + 22 trade-off pages · 181 pages · ~773,000 words · 719 Mermaid diagrams · 3,100+ citations
 DSA Handbook: 120 chapters across 15 parts · 37 pattern decision pages · 5 long-form editorials · ~470,000 words · 226 Mermaid diagrams · sibling Python / Java / C++ / Go solutions for 155 LeetCode problems · 46 interactive widget specs
+AI Engineering Handbook: 86 chapters across 12 parts · ~192,000 words · 87 figures · 200 Python examples · 750+ citations
 
 [![License: CC BY-SA 4.0](https://img.shields.io/badge/license-CC%20BY--SA%204.0-blue.svg)](LICENSE)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 [![CI](https://github.com/handbook-academy/engineering-handbook/actions/workflows/content-ci.yml/badge.svg)](https://github.com/handbook-academy/engineering-handbook/actions)
 [![GitHub stars](https://img.shields.io/github/stars/handbook-academy/engineering-handbook?style=social)](https://github.com/handbook-academy/engineering-handbook/stargazers)
 
-**Read free at [handbook.academy](https://handbook.academy)** — landing page links to both books · HLD at [hld.handbook.academy](https://hld.handbook.academy) · DSA at [dsa.handbook.academy](https://dsa.handbook.academy) *(public beta)*
+**Read free at [handbook.academy](https://handbook.academy)** — landing page links to every book · HLD at [hld.handbook.academy](https://hld.handbook.academy) · DSA at [dsa.handbook.academy](https://dsa.handbook.academy) *(public beta)* · AI Engineering at [ai-eng.handbook.academy](https://ai-eng.handbook.academy)
 
-[Start reading](#start-reading) · [HLD curriculum](#the-full-hld-curriculum) · [DSA curriculum](#the-full-dsa-curriculum) · [Trade-offs](#trade-offs-library-22-pages) · [Contributing](#contributing)
+[Start reading](#start-reading) · [HLD curriculum](#the-full-hld-curriculum) · [DSA curriculum](#the-full-dsa-curriculum) · [AI Engineering curriculum](#the-full-ai-engineering-curriculum) · [Trade-offs](#trade-offs-library-22-pages) · [Contributing](#contributing)
 
 </div>
 
@@ -33,6 +34,7 @@ DSA Handbook: 120 chapters across 15 parts · 37 pattern decision pages · 5 lon
 - [Start reading](#start-reading)
 - [The full HLD curriculum](#the-full-hld-curriculum) — 12 parts + 22-page Trade-offs Library
 - [The full DSA curriculum](#the-full-dsa-curriculum) — 15 parts + 37 pattern decision pages + editorials + 46 widgets
+- [The full AI Engineering curriculum](#the-full-ai-engineering-curriculum) — 12 parts, 86 chapters, 87 figures
 - [Study plans](#study-plans)
 - [Project statistics](#project-statistics)
 - [Quality standards](#quality-standards)
@@ -50,34 +52,36 @@ DSA Handbook: 120 chapters across 15 parts · 37 pattern decision pages · 5 lon
 
 ## What this is
 
-This repository hosts **two sibling open-source engineering handbooks** under `content/`, sharing the same CC BY-SA 4.0 license, the same contribution workflow, and the same CI quality bar:
+This repository hosts **three sibling open-source engineering handbooks** under `content/`, sharing the same CC BY-SA 4.0 license, the same contribution workflow, and the same CI quality bar:
 
 - **The HLD Handbook** (`content/hld/`) — an opinionated, end-to-end textbook on high-level software design, distributed systems, and modern infrastructure. 159 teaching chapters across 12 parts plus a 22-page Trade-offs Library — 181 pages, ~773,000 words, 719 Mermaid diagrams, 3,100+ citations. Equivalent in scope to a **~2,400-page book** — longer than *Designing Data-Intensive Applications* and Alex Xu's *System Design Interview* volumes 1+2 combined. Covers TCP/IP and the OS contract through to LLM serving, multi-agent orchestration, and post-quantum crypto.
 - **The DSA Handbook** (`content/dsa/`) — a practice-first data-structures-and-algorithms curriculum aimed at coding interviews and competitive programming. 120 chapters across 15 parts plus 37 pattern decision pages, 5 long-form LC editorials, and 46 interactive widget specs. ~470,000 words, 226 Mermaid diagrams. Each chapter teaches a structure or pattern, then walks the canonical LeetCode problems, with sibling `sol.py` / `sol.java` / `sol.cpp` / `sol.go` files for 155 problems. Python is inlined in the chapter; the other three languages are linked.
+- **The AI Engineering Handbook** (`content/ai-eng/`) — how to build and run production AI products on top of foundation models, for software engineers who don't train models. 86 chapters across 12 parts: model behavior, model APIs, prompting, evals (taught before RAG and agents on purpose), context engineering, retrieval, agents, observability, security, production operations, and AI product. ~192,000 words, 87 figures, 200 Python examples, 750+ dated citations. HLD Part 9 is the whiteboard view of AI systems; this book is the editor view.
 
-> **More curricula are planned.** This repo is structured as an umbrella so additional handbooks (e.g. operating systems, databases, ML systems) can land alongside HLD and DSA over time, sharing the same workflow and license.
+> **More curricula are planned.** This repo is structured as an umbrella so additional handbooks (e.g. operating systems, databases) can land alongside HLD, DSA, and AI Engineering over time, sharing the same workflow and license.
 
-Every concept in either handbook is taught **inline** as a full-length article: introduction, first-principles explanation, diagrams, worked examples, trade-offs, production gotchas, citations to primary sources. No stubs. No "coming soon." No external blog redirects. No bullet outlines that tell you to go somewhere else to actually learn.
+Every concept in every handbook is taught **inline** as a full-length article: introduction, first-principles explanation, diagrams, worked examples, trade-offs, production gotchas, citations to primary sources. No stubs. No "coming soon." No external blog redirects. No bullet outlines that tell you to go somewhere else to actually learn.
 
-Every `.md` file under `content/` also renders natively on GitHub — all 945 Mermaid diagrams display in the GitHub UI, all footnotes work, all cross-references resolve. The websites add search, dark mode, per-chapter diagram zoom, social cards, OG images, the interactive DSA widgets, and fast client-side navigation.
+Every `.md` file under `content/` also renders natively on GitHub — all 950 Mermaid diagrams and 87 figures display in the GitHub UI, all footnotes work, all cross-references resolve. The websites add search, dark mode, per-chapter diagram zoom, social cards, OG images, the interactive DSA widgets, and fast client-side navigation.
 
-Both handbooks are continuously updated. Every chapter's frontmatter declares `date_created` and `date_updated`, so you can see exactly how fresh each page is. We care about numbers being right today, not right in 2022.
+All three handbooks are continuously updated. Every chapter's frontmatter declares `date_created` and `date_updated`, so you can see exactly how fresh each page is. We care about numbers being right today, not right in 2022.
 
 ## Reading the handbooks online
 
-Each book has its own subdomain. The umbrella landing page links to both:
+Each book has its own subdomain. The umbrella landing page links to all of them:
 
 | Site | URL | What it serves |
 |------|-----|----------------|
-| **Landing page** | [handbook.academy](https://handbook.academy) | Two cards — pick HLD or DSA. |
+| **Landing page** | [handbook.academy](https://handbook.academy) | Pick a book. |
 | **HLD Handbook** | [hld.handbook.academy](https://hld.handbook.academy) | The full HLD curriculum. |
 | **DSA Handbook** | [dsa.handbook.academy](https://dsa.handbook.academy) | The full DSA curriculum, with interactive widgets. |
+| **AI Engineering Handbook** | [ai-eng.handbook.academy](https://ai-eng.handbook.academy) | The full AI Engineering curriculum, plus a frameworks reference page. |
 
-Each subdomain serves one book at the root — URLs do not nest. HLD chapters live at `hld.handbook.academy/curriculum/...`, not `handbook.academy/hld/...`. Same for DSA.
+Each subdomain serves one book at the root — URLs do not nest. HLD chapters live at `hld.handbook.academy/curriculum/...`, not `handbook.academy/hld/...`. Same for DSA and AI Engineering.
 
 ## What's in this repo
 
-This repository is the **canonical content source** for both books. PRs to either handbook are welcome.
+This repository is the **canonical content source** for every book. PRs to any handbook are welcome.
 
 - **[`content/hld/`](content/hld/)** — 159 HLD chapters across 12 parts + 22 trade-off decision pages. The chapter template is intro → first principles → diagrams → worked example → trade-offs → production gotchas → references. See [STYLE_GUIDE.md](STYLE_GUIDE.md).
 - **[`content/dsa/`](content/dsa/)** — 120 DSA chapters across 15 parts. The chapter template is practice-first: cheat-sheet table, deep dive on the structure or pattern, prompt cards for representative LeetCode problems, and `<details>` solution + common-mistakes blocks. Code samples live as sibling files (`sol.py`, `sol.java`, `sol.cpp`, `sol.go`) under each chapter's directory. See [STYLE_GUIDE.md § DSA-specific deviations](STYLE_GUIDE.md#dsa-specific-deviations) and [`content/dsa/part-1-linear-data-structures/00-arrays.md`](content/dsa/part-1-linear-data-structures/00-arrays.md) as the canonical example.
@@ -85,6 +89,7 @@ This repository is the **canonical content source** for both books. PRs to eithe
 - **`content/dsa/patterns/`** — pattern decision references that compare interchangeable approaches (e.g. recursion vs iteration, BFS vs DFS, sliding window vs prefix sum).
 - **`content/dsa/widgets/`** — 46 YAML specs for the interactive widgets that render on the DSA website. On GitHub these are callouts that link to the spec; on the website the widget renders.
 - **`content/dsa/_problem-registry.yml`** — canonical `LC-NNN` ID registry; the website source-of-truth for every LeetCode problem the curriculum touches.
+- **[`content/ai-eng/`](content/ai-eng/)** — 86 AI Engineering chapters across 12 parts. No fixed skeleton: each chapter opens with a real incident or failing example, explains the mechanism, and ends with something you can apply. Figures live in each part's `images/` folder. See [`content/ai-eng/README.md`](content/ai-eng/README.md) and [STYLE_GUIDE.md § AI Engineering-specific deviations](STYLE_GUIDE.md#ai-engineering-specific-deviations).
 
 ## Why this exists
 
@@ -112,6 +117,7 @@ These handbooks are written for:
 
 - **SDE1 engineers preparing for SDE2 interviews.** Read **DSA Parts 0-9** for coding-round fluency, then **HLD Part 0 + Part 1 + Part 11**, plus 8-10 targeted case studies from HLD Part 8, plus the top-5 most-cited trade-off pages.
 - **SDE2s preparing for Senior/Staff.** The full **HLD Parts 3-7** are the core "you need to know this to design anything meaningful" material. Parts 6 (Reliability) and 7 (Security) separate Senior candidates from Staff candidates. **DSA Part 14** covers narration and trade-off articulation in the algorithmic round.
+- **Software engineers building AI features.** The **AI Engineering Handbook** is for you if you call model APIs and need the feature to be reliable, measurable, secure, and affordable. Read Parts 0-4 first; Part 4 (evals) is the one to never skip.
 - **Senior/Staff engineers refreshing or filling gaps.** **HLD Part 9** (AI/ML systems) and the Trade-offs Library are valuable even if you've been doing this for 15 years. Modern LLM serving and vector search weren't a thing when most of us learned backend.
 - **Self-taught engineers without a CS degree** who want the vocabulary and the reasoning that bootcamps and YouTube don't teach. **HLD Part 0** is explicit prerequisites: TCP/IP, the OS contract, database internals, API design. **DSA Part 0** is the foundations — Big-O, recursion, bit manipulation — before pattern-matching becomes useful.
 - **Career switchers** moving from adjacent roles (frontend → backend, backend → infra, SWE → MLE) who need to build system-level intuition fast.
@@ -165,11 +171,17 @@ Pick one:
 
 **I'm a Senior engineer refreshing my distributed-systems foundations.** Read [HLD Part 3 — Distributed Systems Theory](#part-3--distributed-systems-theory-11-chapters) straight through.
 
+**I want to build AI features.** Read these three from the AI Engineering Handbook, then follow [the AI Engineering curriculum](#the-full-ai-engineering-curriculum) in order:
+
+1. [What an AI engineer is (and isn't)](content/ai-eng/part-0-start-here/00-what-an-ai-engineer-is.md)
+2. [The escalation ladder](content/ai-eng/part-0-start-here/03-the-escalation-ladder.md)
+3. [Why you can't ship without evals](content/ai-eng/part-4-eval-fundamentals/00-why-you-cant-ship-without-evals.md)
+
 **I want to learn AI-systems design.** Read [HLD Part 9 — AI & ML System Design](#part-9--ai--ml-system-design-15-chapters) + the 8 AI case studies in [Part 8](#part-8--case-studies-56-chapters) (chapters 30-37).
 
 **I want to grind interview algorithms.** Open [the DSA curriculum](#the-full-dsa-curriculum). Read Parts 0-2 in order, then jump into the pattern parts (3-9) as the problems you encounter call for them.
 
-**I want to read both books cover-to-cover.** Start at [HLD Part 0](#part-0--prerequisites-5-chapters) for the systems track and [DSA Part 0](#the-full-dsa-curriculum) for the algorithms track. At one 25-minute chapter per day, the whole repo is roughly a year of reading.
+**I want to read every book cover-to-cover.** Start at [HLD Part 0](#part-0--prerequisites-5-chapters) for the systems track, [DSA Part 0](#the-full-dsa-curriculum) for the algorithms track, and [AI Engineering Part 0](#the-full-ai-engineering-curriculum) for the AI track. At one 25-minute chapter per day, the whole repo is roughly a year of reading.
 
 ---
 
@@ -1077,6 +1089,271 @@ Widgets are catalogued in [`content/dsa/widgets/_widget-registry.yml`](content/d
 
 ---
 
+## The full AI Engineering curriculum
+
+**86 chapters across 12 parts, with 87 figures.** The book teaches a software engineer to build and run production AI products on top of foundation models: prompting, context, retrieval, agents, evaluation, observability, security, cost, and product. It doesn't teach model training. Code is Python, figures sit in each part's `images/` folder, and every perishable number (prices, model names, benchmark scores) carries an "as of" date and a footnoted source. Start with the book's own [README](content/ai-eng/README.md) for how to read it.
+
+Read the parts in order the first time. Part 4 (Eval Fundamentals) deliberately comes before RAG and agents, because everything after it assumes you have an eval set.
+
+| # | Part | Chapters | Difficulty | Reading time |
+|---|------|---------:|------------|-------------:|
+| 0 | [Start Here](#part-0--start-here-4-chapters) | 4 | Beginner | ~1 hr |
+| 1 | [How Models Behave](#part-1--how-models-behave-7-chapters) | 7 | Beginner-Intermediate | ~2 hrs |
+| 2 | [Working with Model APIs](#part-2--working-with-model-apis-8-chapters) | 8 | Beginner-Intermediate | ~2 hrs |
+| 3 | [Prompt Engineering](#part-3--prompt-engineering-5-chapters) | 5 | Beginner-Intermediate | ~2 hrs |
+| 4 | [Eval Fundamentals](#part-4--eval-fundamentals-4-chapters) | 4 | Beginner | ~1 hr |
+| 5 | [Context Engineering](#part-5--context-engineering-6-chapters) | 6 | Intermediate | ~2 hrs |
+| 6 | [Retrieval (RAG)](#part-6--retrieval-rag-9-chapters) | 9 | Intermediate-Advanced | ~3 hrs |
+| 7 | [Agent Engineering](#part-7--agent-engineering-13-chapters) | 13 | Intermediate-Advanced | ~4 hrs |
+| 8 | [Evaluation and Observability](#part-8--evaluation-and-observability-9-chapters) | 9 | Intermediate | ~3 hrs |
+| 9 | [Security and Governance](#part-9--security-and-governance-7-chapters) | 7 | Intermediate-Advanced | ~2 hrs |
+| 10 | [Production AI](#part-10--production-ai-8-chapters) | 8 | Intermediate | ~2 hrs |
+| 11 | [AI Product Engineering](#part-11--ai-product-engineering-6-chapters) | 6 | Intermediate-Advanced | ~2 hrs |
+
+<details>
+<summary><strong>Part 0 — Start Here (4 chapters)</strong> — what an AI engineer is, the software baseline, probabilistic systems, the escalation ladder</summary>
+
+### Part 0 — Start Here (4 chapters)
+
+> **Audience:** everyone, including experienced engineers new to building on LLMs.
+> **Difficulty:** Beginner. **Total reading time:** ~1 hour.
+
+What an AI engineer is, the software baseline, thinking in probabilistic systems, and the escalation ladder the whole book follows: prompt, context, retrieval, tools, agent, fine-tune.
+
+1. [What an AI engineer is (and isn't)](content/ai-eng/part-0-start-here/00-what-an-ai-engineer-is.md)
+1. [The software baseline](content/ai-eng/part-0-start-here/01-the-software-baseline.md)
+1. [Thinking in probabilistic systems](content/ai-eng/part-0-start-here/02-thinking-in-probabilistic-systems.md)
+1. [The escalation ladder](content/ai-eng/part-0-start-here/03-the-escalation-ladder.md)
+
+</details>
+
+<details>
+<summary><strong>Part 1 — How Models Behave (7 chapters)</strong> — model tiers, tokens, sampling, embeddings, reasoning models, the cost-quality-latency triangle</summary>
+
+### Part 1 — How Models Behave (7 chapters)
+
+> **Audience:** anyone who calls a model API and wants to predict its bill, latency, and failure modes.
+> **Difficulty:** Beginner-Intermediate. **Total reading time:** ~2 hours.
+
+The model landscape, tokens and context windows, sampling, embeddings, reasoning models, the cost-quality-latency triangle, and just enough ML to make good system decisions.
+
+1. [The model landscape](content/ai-eng/part-1-how-models-behave/00-the-model-landscape.md)
+1. [Tokens and context windows](content/ai-eng/part-1-how-models-behave/01-tokens-and-context-windows.md)
+1. [Sampling and temperature](content/ai-eng/part-1-how-models-behave/02-sampling-and-temperature.md)
+1. [Embeddings](content/ai-eng/part-1-how-models-behave/03-embeddings.md)
+1. [Reasoning models](content/ai-eng/part-1-how-models-behave/04-reasoning-models.md)
+1. [The cost-quality-latency triangle](content/ai-eng/part-1-how-models-behave/05-the-cost-quality-latency-triangle.md)
+1. [Just enough ML](content/ai-eng/part-1-how-models-behave/06-just-enough-ml.md)
+
+</details>
+
+<details>
+<summary><strong>Part 2 — Working with Model APIs (8 chapters)</strong> — streaming, structured outputs, tool calling, retries, gateways, prompt caching</summary>
+
+### Part 2 — Working with Model APIs (8 chapters)
+
+> **Audience:** engineers wiring their first LLM feature into a real service.
+> **Difficulty:** Beginner-Intermediate. **Total reading time:** ~2 hours.
+
+Calling models reliably: streaming, structured outputs, tool calling, errors and fallbacks, model selection, gateways and routing, and prompt caching economics.
+
+1. [Calling models](content/ai-eng/part-2-working-with-model-apis/00-calling-models.md)
+1. [Streaming](content/ai-eng/part-2-working-with-model-apis/01-streaming.md)
+1. [Structured outputs](content/ai-eng/part-2-working-with-model-apis/02-structured-outputs.md)
+1. [Function and tool calling](content/ai-eng/part-2-working-with-model-apis/03-function-and-tool-calling.md)
+1. [Errors, retries, fallbacks](content/ai-eng/part-2-working-with-model-apis/04-errors-retries-fallbacks.md)
+1. [Choosing models and reading benchmarks](content/ai-eng/part-2-working-with-model-apis/05-choosing-models-and-reading-benchmarks.md)
+1. [Gateways and routing](content/ai-eng/part-2-working-with-model-apis/06-gateways-and-routing.md)
+1. [Prompt caching](content/ai-eng/part-2-working-with-model-apis/07-prompt-caching.md)
+
+</details>
+
+<details>
+<summary><strong>Part 3 — Prompt Engineering (5 chapters)</strong> — prompt anatomy, few-shot, chain-of-thought, templates, versioning</summary>
+
+### Part 3 — Prompt Engineering (5 chapters)
+
+> **Audience:** anyone who owns a production prompt.
+> **Difficulty:** Beginner-Intermediate. **Total reading time:** ~2 hours.
+
+Production prompts: anatomy, few-shot, chain-of-thought and the reasoning-model inversion, templates and chaining, and prompt versioning with rollback.
+
+1. [Anatomy of a production prompt](content/ai-eng/part-3-prompt-engineering/00-anatomy-of-a-production-prompt.md)
+1. [Zero-shot and few-shot](content/ai-eng/part-3-prompt-engineering/01-zero-shot-and-few-shot.md)
+1. [Chain-of-thought, ReAct, self-consistency](content/ai-eng/part-3-prompt-engineering/02-chain-of-thought-react-self-consistency.md)
+1. [Templates and chaining](content/ai-eng/part-3-prompt-engineering/03-templates-and-chaining.md)
+1. [Prompt versioning](content/ai-eng/part-3-prompt-engineering/04-prompt-versioning.md)
+
+</details>
+
+<details>
+<summary><strong>Part 4 — Eval Fundamentals (4 chapters)</strong> — look at your data, your first eval set, assertions in CI</summary>
+
+### Part 4 — Eval Fundamentals (4 chapters)
+
+> **Audience:** everyone. If you read one part, read this one.
+> **Difficulty:** Beginner. **Total reading time:** ~1 hour.
+
+The minimum eval loop, taught before RAG and agents on purpose: look at your data, build your first 50-example eval set, and wire assertions into CI. Nothing after this part ships without evals.
+
+1. [Why you can't ship without evals](content/ai-eng/part-4-eval-fundamentals/00-why-you-cant-ship-without-evals.md)
+1. [Look at your data](content/ai-eng/part-4-eval-fundamentals/01-look-at-your-data.md)
+1. [Your first eval set](content/ai-eng/part-4-eval-fundamentals/02-your-first-eval-set.md)
+1. [Assertions and unit tests for LLM output](content/ai-eng/part-4-eval-fundamentals/03-assertions-and-unit-tests.md)
+
+</details>
+
+<details>
+<summary><strong>Part 5 — Context Engineering (6 chapters)</strong> — context assembly, compression, memory, tool metadata, context testing</summary>
+
+### Part 5 — Context Engineering (6 chapters)
+
+> **Audience:** engineers whose prompts have grown into pipelines.
+> **Difficulty:** Intermediate. **Total reading time:** ~2 hours.
+
+Building the full world the model sees: context assembly and routing, compression and budgets, memory and state, tool context, and testing what was actually assembled.
+
+1. [Context is more than the prompt](content/ai-eng/part-5-context-engineering/00-context-is-more-than-the-prompt.md)
+1. [Context assembly and routing](content/ai-eng/part-5-context-engineering/01-context-assembly-and-routing.md)
+1. [Compression and context budgets](content/ai-eng/part-5-context-engineering/02-compression-and-context-budgets.md)
+1. [Memory and state](content/ai-eng/part-5-context-engineering/03-memory-and-state.md)
+1. [Tool context and metadata](content/ai-eng/part-5-context-engineering/04-tool-context-and-metadata.md)
+1. [Testing and observing context](content/ai-eng/part-5-context-engineering/05-testing-and-observing-context.md)
+
+</details>
+
+<details>
+<summary><strong>Part 6 — Retrieval (RAG) (9 chapters)</strong> — chunking, vector + hybrid search, reranking, citations, retrieval evals, production indexing</summary>
+
+### Part 6 — Retrieval (RAG) (9 chapters)
+
+> **Audience:** anyone building search or question answering over their own documents.
+> **Difficulty:** Intermediate-Advanced. **Total reading time:** ~3 hours.
+
+Retrieval done right: when you actually need RAG, chunking, vector and hybrid search, reranking, query understanding, citations, retrieval evaluation, and production indexing.
+
+1. [When you actually need RAG](content/ai-eng/part-6-retrieval-augmented-generation/00-when-you-actually-need-rag.md)
+1. [Document processing and chunking](content/ai-eng/part-6-retrieval-augmented-generation/01-document-processing-and-chunking.md)
+1. [Embeddings and vector search](content/ai-eng/part-6-retrieval-augmented-generation/02-embeddings-and-vector-search.md)
+1. [Hybrid search and reranking](content/ai-eng/part-6-retrieval-augmented-generation/03-hybrid-search-and-reranking.md)
+1. [Query understanding](content/ai-eng/part-6-retrieval-augmented-generation/04-query-understanding.md)
+1. [Citations and grounding](content/ai-eng/part-6-retrieval-augmented-generation/05-citations-and-grounding.md)
+1. [Advanced retrieval](content/ai-eng/part-6-retrieval-augmented-generation/06-advanced-retrieval.md)
+1. [Evaluating retrieval](content/ai-eng/part-6-retrieval-augmented-generation/07-evaluating-retrieval.md)
+1. [Production RAG](content/ai-eng/part-6-retrieval-augmented-generation/08-production-rag.md)
+
+</details>
+
+<details>
+<summary><strong>Part 7 — Agent Engineering (13 chapters)</strong> — workflows vs agents, tool design, MCP, memory, HITL, multi-agent, voice, frameworks</summary>
+
+### Part 7 — Agent Engineering (13 chapters)
+
+> **Audience:** engineers deciding whether they need an agent, and building one when they do.
+> **Difficulty:** Intermediate-Advanced. **Total reading time:** ~4 hours.
+
+Workflows versus agents, tool design, MCP and its security model, memory, human-in-the-loop, long-running agents, multi-agent systems, agent archetypes, voice agents, and choosing a framework.
+
+1. [Workflow vs agent](content/ai-eng/part-7-agent-engineering/00-workflow-vs-agent.md)
+1. [The five workflow patterns](content/ai-eng/part-7-agent-engineering/01-the-five-workflow-patterns.md)
+1. [The agent loop](content/ai-eng/part-7-agent-engineering/02-the-agent-loop.md)
+1. [Tool design](content/ai-eng/part-7-agent-engineering/03-tool-design.md)
+1. [MCP: Model Context Protocol](content/ai-eng/part-7-agent-engineering/04-mcp-model-context-protocol.md)
+1. [MCP security](content/ai-eng/part-7-agent-engineering/05-mcp-security.md)
+1. [Agent memory and task state](content/ai-eng/part-7-agent-engineering/06-agent-memory-and-task-state.md)
+1. [Human-in-the-loop](content/ai-eng/part-7-agent-engineering/07-human-in-the-loop.md)
+1. [Long-running agents](content/ai-eng/part-7-agent-engineering/08-long-running-agents.md)
+1. [Multi-agent systems](content/ai-eng/part-7-agent-engineering/09-multi-agent-systems.md)
+1. [Agent archetypes](content/ai-eng/part-7-agent-engineering/10-agent-archetypes.md)
+1. [Voice agents](content/ai-eng/part-7-agent-engineering/11-voice-agents.md)
+1. [Choosing a framework](content/ai-eng/part-7-agent-engineering/12-choosing-a-framework.md)
+
+</details>
+
+<details>
+<summary><strong>Part 8 — Evaluation and Observability (9 chapters)</strong> — LLM-as-judge, judge bias, RAG/agent evals, CI gates, A/B tests, tracing, dashboards</summary>
+
+### Part 8 — Evaluation and Observability (9 chapters)
+
+> **Audience:** teams past their first eval set who need evals they can trust in CI and production.
+> **Difficulty:** Intermediate. **Total reading time:** ~3 hours.
+
+The deep spine: LLM-as-judge and its failure modes, component evals for RAG and agents, regression gates in CI, online evaluation, tracing, monitoring, and the data flywheel.
+
+1. [The eval taxonomy](content/ai-eng/part-8-evaluation-and-observability/00-the-eval-taxonomy.md)
+1. [LLM-as-judge](content/ai-eng/part-8-evaluation-and-observability/01-llm-as-judge.md)
+1. [Judge failure modes](content/ai-eng/part-8-evaluation-and-observability/02-judge-failure-modes.md)
+1. [Evaluating RAG and agents](content/ai-eng/part-8-evaluation-and-observability/03-evaluating-rag-and-agents.md)
+1. [Regression suites and CI gates](content/ai-eng/part-8-evaluation-and-observability/04-regression-suites-and-ci-gates.md)
+1. [Online evaluation and A/B testing](content/ai-eng/part-8-evaluation-and-observability/05-online-evaluation-and-ab-testing.md)
+1. [Tracing](content/ai-eng/part-8-evaluation-and-observability/06-tracing.md)
+1. [Monitoring and dashboards](content/ai-eng/part-8-evaluation-and-observability/07-monitoring-and-dashboards.md)
+1. [Feedback & the data flywheel](content/ai-eng/part-8-evaluation-and-observability/08-feedback-and-the-data-flywheel.md)
+
+</details>
+
+<details>
+<summary><strong>Part 9 — Security and Governance (7 chapters)</strong> — prompt injection, the lethal trifecta, guardrails, abuse, PII, compliance, red-teaming</summary>
+
+### Part 9 — Security and Governance (7 chapters)
+
+> **Audience:** anyone shipping an LLM feature that touches user data or tools.
+> **Difficulty:** Intermediate-Advanced. **Total reading time:** ~2 hours.
+
+Prompt injection, the lethal trifecta and agent security, guardrails, abuse prevention, PII and privacy, compliance, and red-teaming your own system.
+
+1. [Prompt injection](content/ai-eng/part-9-security-and-governance/00-prompt-injection.md)
+1. [Agent security and the lethal trifecta](content/ai-eng/part-9-security-and-governance/01-agent-security-and-the-lethal-trifecta.md)
+1. [Guardrails](content/ai-eng/part-9-security-and-governance/02-guardrails.md)
+1. [Abuse prevention](content/ai-eng/part-9-security-and-governance/03-abuse-prevention.md)
+1. [PII and privacy](content/ai-eng/part-9-security-and-governance/04-pii-and-privacy.md)
+1. [Compliance and audit](content/ai-eng/part-9-security-and-governance/05-compliance-and-audit.md)
+1. [Red-teaming](content/ai-eng/part-9-security-and-governance/06-red-teaming.md)
+
+</details>
+
+<details>
+<summary><strong>Part 10 — Production AI (8 chapters)</strong> — hosted vs self-hosted, fine-tuning decisions, cost and latency engineering, rollouts, SLOs</summary>
+
+### Part 10 — Production AI (8 chapters)
+
+> **Audience:** engineers who own an AI feature's bill, latency, and on-call.
+> **Difficulty:** Intermediate. **Total reading time:** ~2 hours.
+
+Operating AI in production: hosted versus self-hosted, the customization menu, cost and latency engineering, eval-gated rollouts, SLOs, incident response, and AI infrastructure patterns.
+
+1. [Hosted vs self-hosted](content/ai-eng/part-10-deployment-and-cost/00-hosted-vs-self-hosted.md)
+1. [Self-hosting essentials](content/ai-eng/part-10-deployment-and-cost/01-self-hosting-essentials.md)
+1. [The customization menu](content/ai-eng/part-10-deployment-and-cost/02-the-customization-menu.md)
+1. [Cost engineering](content/ai-eng/part-10-deployment-and-cost/03-cost-engineering.md)
+1. [Latency engineering](content/ai-eng/part-10-deployment-and-cost/04-latency-engineering.md)
+1. [Shipping changes](content/ai-eng/part-10-deployment-and-cost/05-shipping-changes.md)
+1. [SLOs and incident response](content/ai-eng/part-10-deployment-and-cost/06-slos-and-incident-response.md)
+1. [AI infrastructure patterns](content/ai-eng/part-10-deployment-and-cost/07-ai-infrastructure-patterns.md)
+
+</details>
+
+<details>
+<summary><strong>Part 11 — AI Product Engineering (6 chapters)</strong> — AI UX, failure recovery, product metrics, experimentation, pricing, feedback loops</summary>
+
+### Part 11 — AI Product Engineering (6 chapters)
+
+> **Audience:** engineers and PMs deciding what an AI feature should do and whether it's working.
+> **Difficulty:** Intermediate-Advanced. **Total reading time:** ~2 hours.
+
+AI UX, failure recovery, product metrics beyond accuracy, experimentation, cost modeling and pricing, and feedback loops that compound.
+
+1. [AI UX](content/ai-eng/part-11-ai-product/00-ai-ux.md)
+1. [Failure recovery UX](content/ai-eng/part-11-ai-product/01-failure-recovery-ux.md)
+1. [AI product metrics](content/ai-eng/part-11-ai-product/02-ai-product-metrics.md)
+1. [Experimentation](content/ai-eng/part-11-ai-product/03-experimentation.md)
+1. [Cost modeling and pricing](content/ai-eng/part-11-ai-product/04-cost-modeling-and-pricing.md)
+1. [Feedback and growth loops](content/ai-eng/part-11-ai-product/05-feedback-and-growth-loops.md)
+
+</details>
+
+---
+
 ## Study plans
 
 You don't need one — pick any chapter and start reading. These are here if you prefer a pre-built route, typically because you're preparing for a specific interview window or filling a specific gap.
@@ -1120,6 +1397,21 @@ If you already know the fundamentals and want to become fluent specifically in A
 | 3    | AI case studies      | [Part 8](#part-8--case-studies-56-chapters) chapters 30-37 (ChatGPT, RAG, coding agent, Perplexity, voice, moderation, semantic cache, model router) |
 | 4    | ML fundamentals      | [Part 9](#part-9--ai--ml-system-design-15-chapters) chapters 9-14 + [Recommendation System case study](content/hld/part-8-case-studies/17-recommendation-system.md) |
 
+### AI Engineering track (6 weeks)
+
+If you build on model APIs and want the full production toolkit. Roughly 4-5 hours of reading per week, plus time to try the snippets.
+
+| Week | Focus | Chapters |
+| ---- | ----- | -------- |
+| 1 | Mental model + model behavior | [AI Engineering Parts 0-1](#part-0--start-here-4-chapters) (11 chapters) |
+| 2 | APIs + prompts | [Parts 2-3](#part-2--working-with-model-apis-8-chapters) (13 chapters) |
+| 3 | Evals + context | [Parts 4-5](#part-4--eval-fundamentals-4-chapters) (10 chapters) |
+| 4 | Retrieval | [Part 6](#part-6--retrieval-rag-9-chapters) (9 chapters) |
+| 5 | Agents | [Part 7](#part-7--agent-engineering-13-chapters) (13 chapters) |
+| 6 | Run it in production | [Parts 8-11](#part-8--evaluation-and-observability-9-chapters) (30 chapters; skim, then return as each problem comes up) |
+
+Pair it with the HLD [AI/ML-only track](#aiml-only-track-4-weeks) when you also need the architecture-scale view.
+
 ### Interview-triage track (one weekend)
 
 If you have a loop on Monday:
@@ -1133,32 +1425,33 @@ If you have a loop on Monday:
 
 ## Project statistics
 
-| Metric                              | HLD Handbook | DSA Handbook | Repo total |
-| ----------------------------------- | -----------: | -----------: | ---------: |
-| Parts                               | 12 + Trade-offs Library | 15 | 27 + library |
-| Teaching chapters                   | 159          | 120          | 279        |
-| Decision/pattern pages              | 22 trade-offs | 37 patterns | 59         |
-| Long-form editorials                | —            | 5            | 5          |
-| Interactive widget specs            | —            | 46           | 46         |
-| Sibling code samples (per language) | —            | 155 problems × 4 langs ≈ 620 files | 620 |
-| **Total Markdown pages**            | **181**      | **162**      | **343**    |
-| Total words                         | ~773,000     | ~470,000     | ~1,240,000 |
-| Mermaid diagrams                    | **719**      | **226**      | **945**    |
-| Citations to primary sources        | **3,100+**   | hundreds     | 3,500+     |
-| Estimated total reading time        | ~110 hours   | ~60 hours    | ~170 hours |
-| Equivalent printed book page count  | ~2,400 pages | ~1,500 pages | ~3,900 pages |
+| Metric                              | HLD Handbook | DSA Handbook | AI Engineering Handbook | Repo total |
+| ----------------------------------- | -----------: | -----------: | ----------------------: | ---------: |
+| Parts                               | 12 + Trade-offs Library | 15 | 12 | 39 + library |
+| Teaching chapters                   | 159          | 120          | 86                      | 365        |
+| Decision/pattern pages              | 22 trade-offs | 37 patterns | —                       | 59         |
+| Long-form editorials                | —            | 5            | —                       | 5          |
+| Interactive widget specs            | —            | 46           | —                       | 46         |
+| Sibling code samples (per language) | —            | 155 problems × 4 langs ≈ 620 files | 200 inline Python examples | 620 files + 200 inline |
+| **Total Markdown pages**            | **181**      | **162**      | **86**                  | **429**    |
+| Total words                         | ~773,000     | ~470,000     | ~192,000                | ~1,435,000 |
+| Mermaid diagrams                    | **719**      | **226**      | **5**                   | **950**    |
+| Figures (PNG)                       | —            | —            | **87**                  | **87**     |
+| Citations to primary sources        | **3,100+**   | hundreds     | **750+**                | 4,250+     |
+| Estimated total reading time        | ~110 hours   | ~60 hours    | ~26 hours               | ~196 hours |
+| Equivalent printed book page count  | ~2,400 pages | ~1,500 pages | ~600 pages              | ~4,500 pages |
 
-For comparison, the HLD book alone is longer than *Designing Data-Intensive Applications* (~600 pages) + Alex Xu's *System Design Interview* Vol. 1 (~300 pages) + Vol. 2 (~340 pages) combined. The DSA book is comparable in length to *Cracking the Coding Interview* (~700 pages) plus *Elements of Programming Interviews* (~480 pages).
+For comparison, the HLD book alone is longer than *Designing Data-Intensive Applications* (~600 pages) + Alex Xu's *System Design Interview* Vol. 1 (~300 pages) + Vol. 2 (~340 pages) combined. The DSA book is comparable in length to *Cracking the Coding Interview* (~700 pages) plus *Elements of Programming Interviews* (~480 pages). The AI Engineering book is deliberately shorter: one concept per chapter, about the length of Chip Huyen's *AI Engineering* (~530 pages).
 
 ## Quality standards
 
-Every chapter in this repository passes 7 automated CI checks on every PR. The validators run against both books and dispatch on a per-book schema:
+Every chapter in this repository passes 7 automated CI checks on every PR. The validators run against every book and dispatch on a per-book schema:
 
 1. **[markdownlint](https://github.com/DavidAnson/markdownlint)** — Markdown style and structure conformance.
 2. **[typos](https://github.com/crate-ci/typos)** — source-code spell-check with a project-specific allowlist for technical terms.
 3. **Citation integrity** — every `[^1]`-style footnote has a corresponding `[^1]: source` definition; every citation is a real URL; no orphan citations.
-4. **Frontmatter validation** — HLD chapters declare `title`, `difficulty`, `prerequisites`, `date_created`, `date_updated`, `reading_time_minutes`, `tags` (canonical taxonomy), and `technologies` (curated allowlist). DSA chapters declare `title`, `slug`, `part`, `chapter`, `difficulty`, `languages` (subset of `python`/`java`/`cpp`/`go`), `canonical_test`, `widgets`, and `ladder` (referencing `LC-NNN` IDs in `_problem-registry.yml`). Editorials and pattern decision pages have their own thinner schemas. See [`scripts/check-frontmatter.mjs`](scripts/check-frontmatter.mjs) for the per-book branches.
-5. **Mermaid diagram validation** — all 945 diagrams across both books must parse with `@mermaid-js/mermaid-cli` on CI so broken syntax doesn't ship.
+4. **Frontmatter validation** — HLD chapters declare `title`, `difficulty`, `prerequisites`, `date_created`, `date_updated`, `reading_time_minutes`, `tags` (canonical taxonomy), and `technologies` (curated allowlist). DSA chapters declare `title`, `slug`, `part`, `chapter`, `difficulty`, `languages` (subset of `python`/`java`/`cpp`/`go`), `canonical_test`, `widgets`, and `ladder` (referencing `LC-NNN` IDs in `_problem-registry.yml`). AI Engineering chapters declare `title`, `description`, `slug`, `part`, `chapter`, `difficulty`, `prerequisites` (resolved against real chapter paths), `tags`, `date_created`, and `date_updated`. Editorials and pattern decision pages have their own thinner schemas. See [`scripts/check-frontmatter.mjs`](scripts/check-frontmatter.mjs) for the per-book branches.
+5. **Mermaid diagram validation** — all 950 diagrams across every book must parse with `@mermaid-js/mermaid-cli` on CI so broken syntax doesn't ship.
 6. **[Vale](https://vale.sh/)** — prose-style linter for voice, passive voice, weasel words, and banned phrases. Custom rules in `.vale.ini`.
 7. **[lychee](https://github.com/lycheeverse/lychee)** — external link checker run weekly; flags rotted URLs so citations stay valid.
 
@@ -1168,7 +1461,7 @@ Beyond automation, every chapter is reviewed for:
 
 - Internal consistency (terminology matches Part 1 definitions)
 - Difficulty calibration (a "Beginner" chapter doesn't assume Staff-level context)
-- Diagram quality (Mermaid, not screenshots; captioned; accessibility-tagged)
+- Diagram quality (Mermaid or purpose-drawn figures, not screenshots; captioned; descriptive alt text)
 - Citation quality (primary sources preferred over summarizing blog posts)
 
 ---
@@ -1229,7 +1522,7 @@ If you have **operated one of the systems we cover in Part 8** (payment processi
 
 ```text
 engineering-handbook/
-├── content/                           # Two open-source books (CC BY-SA 4.0)
+├── content/                           # Three open-source books (CC BY-SA 4.0)
 │   ├── hld/                           # HLD Handbook — 181 pages
 │   │   ├── part-0-prerequisites/          # 5 chapters
 │   │   ├── part-1-core-fundamentals/      # 7 chapters
@@ -1244,27 +1537,41 @@ engineering-handbook/
 │   │   ├── part-10-emerging-patterns/     # 1 chapter
 │   │   ├── part-11-interview-framework/   # 6 chapters
 │   │   └── trade-offs/                    # 22 decision pages
-│   └── dsa/                           # DSA Handbook — 120 chapters
-│       ├── part-0-foundations/        # 7 chapters
-│       ├── part-1-linear-data-structures/  # 8 chapters
-│       ├── part-2-search-sort/        # 8 chapters
-│       ├── part-3-pointers-window-prefix/  # 6 chapters
-│       ├── part-4-stack-queue-patterns/  # 5 chapters
-│       ├── part-5-linked-lists/       # 6 chapters
-│       ├── part-6-trees-heaps/        # 11 chapters
-│       ├── part-7-recursion-backtracking/  # 7 chapters
-│       ├── part-8-graphs/             # 13 chapters
-│       ├── part-9-dynamic-programming/  # 15 chapters
-│       ├── part-10-greedy/            # 5 chapters
-│       ├── part-11-bit-manipulation/  # 4 chapters
-│       ├── part-12-strings-pattern-matching/  # 6 chapters
-│       ├── part-13-design-the-data-structure/  # 7 chapters
-│       ├── part-14-interview-framework/  # 12 chapters
-│       ├── editorials/                # Per-LC long-form editorials
-│       ├── patterns/                  # Pattern decision references
-│       ├── widgets/                   # YAML specs for interactive widgets
-│       ├── _problem-registry.yml      # Canonical LC-NNN registry
-│       └── _widget-registry.yml       # Canonical w-NN/e-LCNNN registry
+│   ├── dsa/                           # DSA Handbook — 120 chapters
+│   │   ├── part-0-foundations/        # 7 chapters
+│   │   ├── part-1-linear-data-structures/  # 8 chapters
+│   │   ├── part-2-search-sort/        # 8 chapters
+│   │   ├── part-3-pointers-window-prefix/  # 6 chapters
+│   │   ├── part-4-stack-queue-patterns/  # 5 chapters
+│   │   ├── part-5-linked-lists/       # 6 chapters
+│   │   ├── part-6-trees-heaps/        # 11 chapters
+│   │   ├── part-7-recursion-backtracking/  # 7 chapters
+│   │   ├── part-8-graphs/             # 13 chapters
+│   │   ├── part-9-dynamic-programming/  # 15 chapters
+│   │   ├── part-10-greedy/            # 5 chapters
+│   │   ├── part-11-bit-manipulation/  # 4 chapters
+│   │   ├── part-12-strings-pattern-matching/  # 6 chapters
+│   │   ├── part-13-design-the-data-structure/  # 7 chapters
+│   │   ├── part-14-interview-framework/  # 12 chapters
+│   │   ├── editorials/                # Per-LC long-form editorials
+│   │   ├── patterns/                  # Pattern decision references
+│   │   ├── widgets/                   # YAML specs for interactive widgets
+│   │   ├── _problem-registry.yml      # Canonical LC-NNN registry
+│   │   └── _widget-registry.yml       # Canonical w-NN/e-LCNNN registry
+│   └── ai-eng/                        # AI Engineering Handbook — 86 chapters
+│       ├── README.md                  # How to read the book + full chapter index
+│       ├── part-0-start-here/         # 4 chapters
+│       ├── part-1-how-models-behave/  # 7 chapters
+│       ├── part-2-working-with-model-apis/  # 8 chapters
+│       ├── part-3-prompt-engineering/  # 5 chapters
+│       ├── part-4-eval-fundamentals/  # 4 chapters
+│       ├── part-5-context-engineering/  # 6 chapters
+│       ├── part-6-retrieval-augmented-generation/  # 9 chapters
+│       ├── part-7-agent-engineering/  # 13 chapters
+│       ├── part-8-evaluation-and-observability/  # 9 chapters
+│       ├── part-9-security-and-governance/  # 7 chapters
+│       ├── part-10-deployment-and-cost/  # 8 chapters
+│       └── part-11-ai-product/        # 6 chapters (each part has an images/ folder)
 │
 ├── writing-guides/                    # Author handbooks (CC BY-SA 4.0)
 │   ├── case-study-template.md         # Skeleton for Part 8 case studies
@@ -1280,7 +1587,7 @@ engineering-handbook/
 │
 ├── .github/
 │   ├── workflows/
-│   │   ├── content-ci.yml             # PR validation pipeline (both books)
+│   │   ├── content-ci.yml             # PR validation pipeline (every book)
 │   │   └── stale.yml                  # Issue/PR hygiene
 │   ├── ISSUE_TEMPLATE/                # Correction / Request / Writing templates
 │   ├── PULL_REQUEST_TEMPLATE.md
@@ -1382,7 +1689,7 @@ See [CODEOWNERS](.github/CODEOWNERS) for the current maintainer routing.
 <details>
 <summary><strong>Is this really free?</strong></summary>
 
-Yes, and specifically: everything in this repository — both books' content, writing guides, style guide, validator scripts — is released under **CC BY-SA 4.0**. Anyone (including us) can share and adapt it, but adaptations must carry the same license. That means the chapter text cannot be paywalled by anybody — not by us, not by a future company, not by anyone who forks this repo. You can always read both books free at [handbook.academy](https://handbook.academy).
+Yes, and specifically: everything in this repository — every book's content, writing guides, style guide, validator scripts — is released under **CC BY-SA 4.0**. Anyone (including us) can share and adapt it, but adaptations must carry the same license. That means the chapter text cannot be paywalled by anybody — not by us, not by a future company, not by anyone who forks this repo. You can always read every book free at [handbook.academy](https://handbook.academy).
 </details>
 
 <details>
@@ -1419,7 +1726,7 @@ Alex Xu's books are excellent and we cite them in nearly every case study. The d
 - **Format:** Xu is case-study-focused. This handbook has 56 case studies *plus* 103 foundational HLD chapters that teach the building blocks.
 - **License:** Xu's books are copyrighted and paid. This handbook is CC BY-SA 4.0.
 - **Community:** Xu's books are one-author; this handbook accepts PRs.
-- **Bonus:** this repo also includes a 120-chapter DSA curriculum.
+- **Bonus:** this repo also includes a 120-chapter DSA curriculum and an 86-chapter AI Engineering curriculum.
 
 </details>
 
@@ -1435,7 +1742,19 @@ Alex Xu's books are excellent and we cite them in nearly every case study. The d
 </details>
 
 <details>
-<summary><strong>Is this the same as the websites at hld.handbook.academy and dsa.handbook.academy?</strong></summary>
+<summary><strong>How does the AI Engineering book relate to HLD Part 9?</strong></summary>
+
+They split one subject at the whiteboard. HLD Part 9 answers "how would I design this AI system at scale?": serving topology, vector store architecture, the case studies. The AI Engineering Handbook answers "how do I build and operate it?": the prompt, the eval set, the retrieval pipeline, the agent loop, the trace, the bill. Chapters in each book link to the matching chapter in the other.
+</details>
+
+<details>
+<summary><strong>How is the AI Engineering book different from Chip Huyen's *AI Engineering* or provider docs?</strong></summary>
+
+Huyen's book is the most complete treatment of the field, and the AI Engineering Handbook cites it where it draws the role's boundary. The differences: this book is free, CC BY-SA 4.0, and accepts PRs, so a stale price or a renamed API parameter can be fixed the week it changes. It is also more opinionated about defaults (a workflow before an agent, pgvector before a dedicated vector database, the cheapest rung of the escalation ladder before fine-tuning) and puts evals before RAG and agents. Provider docs tell you how one API works; this book tells you which of them to reach for, and how to tell whether it's working.
+</details>
+
+<details>
+<summary><strong>Is this the same as the websites at hld.handbook.academy, dsa.handbook.academy, and ai-eng.handbook.academy?</strong></summary>
 
 The **content** is identical. The websites add a polished reading UI: full-text search, dark mode, syntax-highlighted code blocks, per-chapter diagram zoom, social cards, OG images, fast client-side navigation, and — on the DSA site — the live interactive widgets. Same content, better reading experience — and still free, with no sign-up.
 </details>
@@ -1469,7 +1788,7 @@ Use the BibTeX entry in the [Citation](#citation) section below, or the `CITATIO
 
 ## License
 
-Everything in this repository — the 343 chapters and decision pages across both books, writing guides, style guide, validator scripts, templates, and configuration — is licensed under **[Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](LICENSE)**.
+Everything in this repository — the 429 chapters and decision pages across all three books, writing guides, style guide, validator scripts, templates, and configuration — is licensed under **[Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)](LICENSE)**.
 
 **What CC BY-SA 4.0 means in practice:**
 
@@ -1486,7 +1805,7 @@ You must:
 - Release derivatives under the **same CC BY-SA 4.0 license** (share-alike).
 - Not relicense the content as proprietary or impose additional restrictions.
 
-Nobody can paywall the chapter text itself under CC BY-SA 4.0. You can build anything on top of it, as long as the text itself stays open. Read both handbooks free at **[handbook.academy](https://handbook.academy)** — no sign-up, no paywall, ever.
+Nobody can paywall the chapter text itself under CC BY-SA 4.0. You can build anything on top of it, as long as the text itself stays open. Read every handbook free at **[handbook.academy](https://handbook.academy)** — no sign-up, no paywall, ever.
 
 ---
 
@@ -1499,17 +1818,17 @@ If you reference this project in academic work, blog posts, books, or courses:
 ```bibtex
 @misc{engineering-handbook,
   author       = {Soni, Aayush},
-  title        = {The Engineering Handbook: Open-Source Engineering Curricula (HLD + DSA)},
+  title        = {The Engineering Handbook: Open-Source Engineering Curricula (HLD + DSA + AI Engineering)},
   year         = {2026},
   publisher    = {GitHub},
   url          = {https://github.com/handbook-academy/engineering-handbook},
-  note         = {HLD: 159 chapters + 22 trade-off pages, ~773K words. DSA: 120 chapters across 15 parts, ~470K words, 155 LeetCode problems with 4-language solutions. CC BY-SA 4.0.}
+  note         = {HLD: 159 chapters + 22 trade-off pages, ~773K words. DSA: 120 chapters across 15 parts, ~470K words, 155 LeetCode problems with 4-language solutions. AI Engineering: 86 chapters across 12 parts, ~192K words, 87 figures. CC BY-SA 4.0.}
 }
 ```
 
 ### Prose
 
-> *"The Engineering Handbook (HLD + DSA)" by Aayush Soni, https://github.com/handbook-academy/engineering-handbook, CC BY-SA 4.0.*
+> *"The Engineering Handbook (HLD + DSA + AI Engineering)" by Aayush Soni, https://github.com/handbook-academy/engineering-handbook, CC BY-SA 4.0.*
 
 ### Machine-readable
 
@@ -1528,6 +1847,14 @@ This project stands on the shoulders of many, and we cite primary sources libera
 - **Chip Huyen** — [Designing Machine Learning Systems](https://www.oreilly.com/library/view/designing-machine-learning/9781098107956/) and [AI Engineering](https://www.oreilly.com/library/view/ai-engineering/9781098166298/) shape HLD Part 9.
 - **Betsy Beyer et al. (Google)** — [Site Reliability Engineering](https://sre.google/sre-book/table-of-contents/) and [The SRE Workbook](https://sre.google/workbook/table-of-contents/) are behind HLD Part 6.
 - **Mark Richards & Neal Ford** — [Fundamentals of Software Architecture](https://www.oreilly.com/library/view/fundamentals-of-software/9781492043447/) and [Software Architecture: The Hard Parts](https://www.oreilly.com/library/view/software-architecture-the/9781492086888/) for HLD Part 5.
+
+**Canonical books — AI Engineering:**
+
+- **Chip Huyen** — [AI Engineering](https://www.oreilly.com/library/view/ai-engineering/9781098166298/) is the field's most complete reference; it frames the AI-engineer-versus-ML-engineer split in Part 0.
+- **Shawn Wang (swyx)** — ["The Rise of the AI Engineer"](https://www.latent.space/p/ai-engineer) named the role and drew the API line the book is organized around.
+- **Hamel Husain and Shreya Shankar** — their writing on evals and error analysis shapes Parts 4 and 8.
+- **Simon Willison** — his prompt-injection and "lethal trifecta" writing underpins Part 9.
+- **Anthropic** — ["Building effective agents"](https://www.anthropic.com/engineering/building-effective-agents) is the source of the workflow-versus-agent split in Part 7.
 
 **Canonical books — DSA:**
 
@@ -1579,6 +1906,8 @@ If you find this useful, star the repo. Stars help signal to new contributors th
 
 **DSA:** [Arrays](content/dsa/part-1-linear-data-structures/00-arrays.md) · [Two pointers](content/dsa/part-3-pointers-window-prefix/00-two-pointers-opposite.md) · [Sliding window (variable)](content/dsa/part-3-pointers-window-prefix/03-sliding-window-variable.md) · [Patterns](content/dsa/patterns/)
 
-Or skim **[the full HLD curriculum](#the-full-hld-curriculum)** or **[the full DSA curriculum](#the-full-dsa-curriculum)** above.
+**AI Engineering:** [What an AI engineer is](content/ai-eng/part-0-start-here/00-what-an-ai-engineer-is.md) · [The escalation ladder](content/ai-eng/part-0-start-here/03-the-escalation-ladder.md) · [Your first eval set](content/ai-eng/part-4-eval-fundamentals/02-your-first-eval-set.md) · [Workflow vs agent](content/ai-eng/part-7-agent-engineering/00-workflow-vs-agent.md)
+
+Or skim **[the full HLD curriculum](#the-full-hld-curriculum)**, **[the full DSA curriculum](#the-full-dsa-curriculum)**, or **[the full AI Engineering curriculum](#the-full-ai-engineering-curriculum)** above.
 
 </div>

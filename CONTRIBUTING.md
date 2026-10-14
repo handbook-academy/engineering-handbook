@@ -6,7 +6,7 @@ This guide covers **what** you can contribute, **how** to submit changes, and **
 
 ## Table of Contents
 
-- [Two books, one workflow](#two-books-one-workflow)
+- [Three books, one workflow](#three-books-one-workflow)
 - [Ways to Contribute](#ways-to-contribute)
 - [Before You Start](#before-you-start)
 - [The Contribution Workflow](#the-contribution-workflow)
@@ -17,14 +17,16 @@ This guide covers **what** you can contribute, **how** to submit changes, and **
 - [Recognition](#recognition)
 - [Questions](#questions)
 
-## Two books, one workflow
+## Three books, one workflow
 
-This repo hosts two sibling open-source curricula: the HLD Handbook under [`content/hld/`](content/hld/) and the DSA Handbook under [`content/dsa/`](content/dsa/). Both share this contribution workflow, the same CC BY-SA 4.0 license, and the same CI quality bar — but they have **different chapter shapes** and you should match the book you're editing.
+This repo hosts three sibling open-source curricula: the HLD Handbook under [`content/hld/`](content/hld/), the DSA Handbook under [`content/dsa/`](content/dsa/), and the AI Engineering Handbook under [`content/ai-eng/`](content/ai-eng/). All three share this contribution workflow, the same CC BY-SA 4.0 license, and the same CI quality bar — but they have **different chapter shapes** and you should match the book you're editing.
 
 - **HLD chapters** follow the chapter template described in [Quality Bar](#quality-bar) below: intro → first principles → diagrams → worked example → trade-offs → production gotchas → references. See [STYLE_GUIDE.md](STYLE_GUIDE.md) for voice and structure.
 - **DSA chapters** are practice-first: a tight cheat-sheet table, a deep dive on the data structure or pattern, prompt cards for representative LeetCode problems, and `<details>` solution + common-mistakes blocks. Code samples live as sibling files (`sol.py`, `sol.java`, `sol.cpp`, `sol.go`) under each chapter's directory; the Python solution is inlined in the chapter, the others are linked. See [`content/dsa/part-1-linear-data-structures/00-arrays.md`](content/dsa/part-1-linear-data-structures/00-arrays.md) for the canonical shape and [STYLE_GUIDE.md § DSA-specific deviations](STYLE_GUIDE.md#dsa-specific-deviations) for the schema rules.
 
-The rest of this guide applies to both books unless noted.
+- **AI Engineering chapters** have no fixed skeleton: each opens with a real incident or failing example, explains the mechanism, and ends with something the reader can apply. Figures are PNGs in each part's `images/` folder with alt text and a caption; code is Python; perishable facts (prices, model names, benchmarks) carry an "as of" date and a footnoted source. See [`content/ai-eng/README.md`](content/ai-eng/README.md) and [STYLE_GUIDE.md § AI Engineering-specific deviations](STYLE_GUIDE.md#ai-engineering-specific-deviations).
+
+The rest of this guide applies to every book unless noted.
 
 ## Ways to Contribute
 

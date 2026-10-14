@@ -7,7 +7,7 @@ body:
     attributes:
       value: |
         Suggest a topic you believe should be covered in one of the handbooks
-        (HLD or DSA today; more curricula planned).
+        (HLD, DSA, or AI Engineering today; more curricula planned).
   - type: dropdown
     id: book
     attributes:
@@ -15,6 +15,7 @@ body:
       options:
         - HLD Handbook (content/hld/)
         - DSA Handbook (content/dsa/)
+        - AI Engineering Handbook (content/ai-eng/)
         - Proposing a brand-new book/curriculum
     validations:
       required: true
@@ -32,6 +33,7 @@ body:
       description: |
         HLD parts: Part 0 (Prerequisites) - Part 11 (Interview Framework), or Trade-offs Library.
         DSA parts: Part 0 (Foundations) - Part 14 (Interview Framework), or Patterns / Editorials.
+        AI Engineering parts: Part 0 (Start Here) - Part 11 (AI Product Engineering).
         Use "Unsure / new part needed" if it doesn't fit anywhere existing.
       placeholder: "HLD Part 6 - Reliability & Operations"
     validations:
