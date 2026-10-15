@@ -17,7 +17,7 @@ If you believe you have found a security vulnerability in this project, please r
 
 ### How to report
 
-1. Open a [private security advisory](../../security/advisories/new) on GitHub. This is the preferred path.
+1. Open a [private security advisory](https://github.com/handbook-academy/engineering-handbook/security/advisories/new) on GitHub. This is the preferred path.
 2. Alternatively, email [hello@handbook.academy](mailto:hello@handbook.academy), or contact the maintainer via their GitHub profile at [@invincible04](https://github.com/invincible04).
 
 Please include:

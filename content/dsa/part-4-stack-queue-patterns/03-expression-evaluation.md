@@ -55,7 +55,7 @@ Reach back to [Stacks and the call stack analogy](../part-1-linear-data-structur
 
 Expression parsing is the canonical use case. When you read `3 + 5 *`, the `+` cannot fire yet. Its right operand isn't fully known until you find out whether the `5` is the right operand of `+` or the left operand of `*`. The parser pushes the partial work and returns to it later. Postfix sidesteps the suspense by writing operators *after* their operands; the operands are already present when the operator is read. Infix forces you to suspend.
 
-There's a second reason the stack is the right shape: it's the same shape recursion has, just made explicit. When you write a recursive parser whose grammar has `expr → term (('+'|'-') term)*` and `term → factor (('*'|'/') factor)*`, the call stack records exactly which sub-expression is in flight. Replace the call stack with an array, and you get the iterative versions this chapter ships. The recursion in [Part 7](../part-7-recursion-and-backtracking/) and the iterative parsers here are two encodings of the same machine.[^2]
+There's a second reason the stack is the right shape: it's the same shape recursion has, just made explicit. When you write a recursive parser whose grammar has `expr → term (('+'|'-') term)*` and `term → factor (('*'|'/') factor)*`, the call stack records exactly which sub-expression is in flight. Replace the call stack with an array, and you get the iterative versions this chapter ships. The recursion in [Part 7](../part-7-recursion-backtracking/) and the iterative parsers here are two encodings of the same machine.[^2]
 
 ## Shape 1: LeetCode 150, postfix
 
@@ -328,13 +328,13 @@ A small warning about LC 224's stack depth in Python: the iterative shape uses a
 
 There is no Easy in the CORE set. The simplest stack-based parser problem, LC 20 Valid Parentheses, is a degenerate parser without operator semantics and lives in [Stacks and the call stack analogy](../part-1-linear-data-structures/05-stacks.md), not here. LC 224 is the chapter's star (★) because it's where the three Shapes' patterns converge. LC 772 Basic Calculator III is the natural extension (parens plus all four operators) but is paywalled on LeetCode; the free-alternative path is to solve LC 224 and LC 227 and fuse them mechanically.
 
-LC 394 and LC 1106 are the chapter's payoff. LC 394 swaps arithmetic for string repetition: `"3[a2[c]]" → "accaccacc"`. The shape is the same as LC 224 (push state on the opening bracket, fold back on the closing one), except now the state is `(count, partial_string)` instead of `(saved_result, saved_sign)`. That's the moment you realise this chapter isn't really about calculators. LC 1106 generalises further to N-ary boolean operators, which is where iterative shapes start straining and recursive descent is the cleaner answer; that's the bridge to [Part 7](../part-7-recursion-and-backtracking/) and to grammar-driven parsing later in the curriculum.
+LC 394 and LC 1106 are the chapter's payoff. LC 394 swaps arithmetic for string repetition: `"3[a2[c]]" → "accaccacc"`. The shape is the same as LC 224 (push state on the opening bracket, fold back on the closing one), except now the state is `(count, partial_string)` instead of `(saved_result, saved_sign)`. That's the moment you realise this chapter isn't really about calculators. LC 1106 generalises further to N-ary boolean operators, which is where iterative shapes start straining and recursive descent is the cleaner answer; that's the bridge to [Part 7](../part-7-recursion-backtracking/) and to grammar-driven parsing later in the curriculum.
 
 ## Where this leads
 
 The next chapter, [Queue from stacks](./04-queue-from-stacks.md), reuses the two-stack composition mental model in a different setting: two stacks chained together to simulate a queue. Same physical primitive, different invariant.
 
-Further out, [Part 7 Recursion and backtracking](../part-7-recursion-and-backtracking/) revisits this chapter's machinery with the call stack as the explicit operator stack. Once you've internalised why LC 224's iterative sign-stack works, the recursive-descent variant of the same parser is a five-minute exercise. Each grammar nonterminal becomes a function; the function call boundary is what was a `(` push; the function return is what was a `)` pop; recursion is the mechanism. The Dragon Book canonises this in §4.4.[^2]
+Further out, [Part 7 Recursion and backtracking](../part-7-recursion-backtracking/) revisits this chapter's machinery with the call stack as the explicit operator stack. Once you've internalised why LC 224's iterative sign-stack works, the recursive-descent variant of the same parser is a five-minute exercise. Each grammar nonterminal becomes a function; the function call boundary is what was a `(` push; the function return is what was a `)` pop; recursion is the mechanism. The Dragon Book canonises this in §4.4.[^2]
 
 ## References
 

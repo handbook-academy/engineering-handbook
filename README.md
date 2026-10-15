@@ -1085,7 +1085,7 @@ Each widget is described as keyframe data plus narration in YAML. The website's 
 
 </details>
 
-Widgets are catalogued in [`content/dsa/widgets/_widget-registry.yml`](content/dsa/widgets/_widget-registry.yml); see [`content/dsa/widgets/README.md`](content/dsa/widgets/README.md) for authoring conventions.
+Widgets are catalogued in [`content/dsa/_widget-registry.yml`](content/dsa/_widget-registry.yml); see [`content/dsa/widgets/README.md`](content/dsa/widgets/README.md) for authoring conventions.
 
 ---
 

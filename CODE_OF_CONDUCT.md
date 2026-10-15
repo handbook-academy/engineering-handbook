@@ -37,7 +37,7 @@ This Code of Conduct applies within all community spaces, and also applies when 
 
 ## Enforcement
 
-Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement by emailing [hello@handbook.academy](mailto:hello@handbook.academy), opening a confidential [private security advisory](../../security/advisories/new) for especially sensitive reports, or contacting the maintainer via their GitHub profile at [@invincible04](https://github.com/invincible04). All complaints will be reviewed and investigated promptly and fairly.
+Instances of abusive, harassing, or otherwise unacceptable behavior may be reported to the community leaders responsible for enforcement by emailing [hello@handbook.academy](mailto:hello@handbook.academy), opening a confidential [private security advisory](https://github.com/handbook-academy/engineering-handbook/security/advisories/new) for especially sensitive reports, or contacting the maintainer via their GitHub profile at [@invincible04](https://github.com/invincible04). All complaints will be reviewed and investigated promptly and fairly.
 
 All community leaders are obligated to respect the privacy and security of the reporter of any incident.
 
