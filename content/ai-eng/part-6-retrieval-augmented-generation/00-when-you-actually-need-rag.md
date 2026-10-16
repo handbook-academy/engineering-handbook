@@ -47,9 +47,9 @@ r   = rag(3_000, 500, 400, 50)               # ~$0.015
 print(f"LC ${lc:.4f}  RAG ${r:.4f}  ratio {lc/r:.0f}x")
 ```
 
-LightOn ran a similar comparison at enterprise scale in November 2025 (1,000 requests per day against a 600K-token base) and landed on RAG being 8 to 82 times cheaper than long context for typical workloads, with better latency too.[^1] The range collapses with prompt caching: cached reads on Claude Sonnet 4.6 cost $0.30 per million tokens versus $3.00 standard, a 90% discount on the input portion that only kicks in when the corpus is identical across requests.[^2] If your corpus is static and the same prompt repeats, caching closes most of the gap. If the corpus moves at all, you eat full input price every time it shifts.
+LightOn ran a similar comparison in November 2025 (a 1,000-page, ~600K-token knowledge base at 100 requests per day) and landed on RAG being 8 to 82 times cheaper than long context for typical workloads, with better latency too.[^1] The range collapses with prompt caching: cached reads on Claude Sonnet 4.6 cost $0.30 per million tokens versus $3.00 standard, a 90% discount on the input portion that only kicks in when the corpus is identical across requests.[^2] If your corpus is static and the same prompt repeats, caching closes most of the gap. If the corpus moves at all, you eat full input price every time it shifts.
 
-The index cost on the RAG side is almost a rounding error. Embedding a 600K-token corpus with `text-embedding-3-small` at $0.02 per million tokens costs $0.012; a managed vector database for a startup-scale workload (around a million queries per month) runs about $68 per month including embeddings and storage.[^3][^4] The break-even versus long context arrives in the first day of any meaningful query volume.
+The index cost on the RAG side is almost a rounding error. Embedding a 600K-token corpus with `text-embedding-3-small` at $0.02 per million tokens costs $0.012; managed vector databases start at roughly $45 to $50 per month (Weaviate Cloud's Flex plan, Pinecone Standard's monthly minimum), and the bill grows with index size and query volume.[^3][^4] The break-even versus long context arrives in the first day of any meaningful query volume.
 
 ![A horizontal cost-per-query comparison showing three strategies. The long-context bar is dramatically tall and labeled $1.51. The RAG bar is a thin sliver at the bottom labeled $0.015. The fine-tune bar is short with a stacked block above it showing the one-time training cost.](images/00-cost-shapes.png)
 *Three cost shapes. Long context bills the full corpus on every query; RAG bills retrieved chunks plus a near-zero index amortization; fine-tune bills a large training step once, then cheaper inference forever.*
@@ -137,7 +137,7 @@ Two patterns show up in production after the strategy decision is made, and they
 
 The first is multi-hop reasoning. Standard RAG (embed query, retrieve top-k chunks, generate) breaks when the answer to step one is needed to formulate the query for step two. The retriever sees only the original question; it can't fetch "the nationality of the performer of song X" if the performer's name isn't in the question. This is the most common RAG failure on multi-hop QA benchmarks and the largest single category Self-Route routes to long context.[^5] If your queries chain reasoning across documents, plain retrieve-then-generate isn't enough; you'll need iterative retrieval or a hybrid escalation path.
 
-The second is treating "the corpus updates daily" as an indexing-only problem. Re-embedding cost itself is small. Operating a vector database where 10% of the corpus mutates daily is not. Index write amplification, delete-and-insert audit logs, and ingestion latency add up to 30 to 50% on top of raw compute at enterprise scale.[^4] Sizing for peak ingestion, instead of sizing only for peak query, is what separates a RAG system that works on day 90 from one that needs an emergency reindex at 3am.
+The second is treating "the corpus updates daily" as an indexing-only problem. Re-embedding cost itself is small. Operating a vector database where 10% of the corpus mutates daily is not. Index write amplification, delete-and-insert audit logs, and ingestion latency all add cost on top of raw compute, and none of it shows up in a query-only sizing estimate. Sizing for peak ingestion, instead of sizing only for peak query, is what separates a RAG system that works on day 90 from one that needs an emergency reindex at 3am.
 
 Both of these are problems you solve in [Chunking and indexing](./01-document-processing-and-chunking.md) and [Retrieval strategies](./02-embeddings-and-vector-search.md) once the strategy decision is settled. They aren't reasons to avoid RAG when the corpus and update shape say you need it; they're reasons to size and design it honestly.
 
@@ -145,10 +145,10 @@ At architecture scale, [AI system design](../../hld/part-9-ai-ml-system-design/0
 
 ## References
 
-[^1]: Amelie Chatelain, "RAG is Dead, Long Live RAG: Retrieval in the Age of Agents," LightOn Engineering Blog, November 2025, https://lighton.ai/fr-blog-posts/rag-is-dead-long-live-rag-retrieval-in-the-age-of-agents
+[^1]: LightOn, "RAG is Dead, Long Live RAG: Retrieval in the Age of Agents," based on Amélie Chatelain's talk at Weights & Biases Fully Connected 2025, November 12, 2025 (archived copy; the original page has been removed), https://web.archive.org/web/20260410222220/https://lighton.ai/fr-blog-posts/rag-is-dead-long-live-rag-retrieval-in-the-age-of-agents; cost calculator: https://github.com/AmelieChatelain/long-context-surely-killed-RAG
 [^2]: Anthropic, "Claude Pricing - API," verified June 2026, https://claude.com/pricing
 [^3]: OpenAI, "API Pricing," verified June 2026, https://openai.com/api/pricing/ and "text-embedding-3-small model page," https://developers.openai.com/api/docs/models/text-embedding-3-small
-[^4]: markaicode.com, "DeepSeek vs Weaviate Cost: The Hidden $340/Month Vector Pipeline Tax," 2026, https://markaicode.com/pricing/deepseek-vs-weaviate-cost/
+[^4]: Weaviate, "Pricing", https://weaviate.io/pricing; Pinecone, "Understanding cost", https://docs.pinecone.io/guides/manage-cost/understanding-cost
 [^5]: Zhuowan Li et al., "Retrieval Augmented Generation or Long-Context LLMs? A Comprehensive Study and Hybrid Approach," EMNLP 2024 Industry Track (Google DeepMind), https://arxiv.org/abs/2407.16833
 [^6]: Kuan Li et al., "LaRA: Benchmarking Retrieval-Augmented Generation and Long-Context LLMs," ICML 2025 (Alibaba-NLP), https://arxiv.org/abs/2502.09977
 [^7]: Nelson F. Liu et al., "Lost in the Middle: How Language Models Use Long Contexts," TACL 12:157-173, 2024, https://arxiv.org/abs/2307.03172

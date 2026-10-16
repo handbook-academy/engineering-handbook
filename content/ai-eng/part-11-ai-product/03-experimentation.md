@@ -112,9 +112,9 @@ Roughly one-third of all experiments come back non-significant.[^11] A p-value a
 2. **Underpowered.** The experiment ran with insufficient N to detect the lift the treatment actually produces. Action: check the confidence interval. If it includes both your target MDE and zero, you're underpowered. Extend or scale.
 3. **Variance inflation.** The treatment has real lift but within-LLM variance masks it at current N. Action: apply CUPED, use paired analysis, or run a larger experiment.
 
-The confidence interval is the tool that distinguishes them. A "no significant effect" with CI [-0.5%, +4.5%] is consistent with a 4-point improvement; you're underpowered. A "no significant effect" with CI [-0.2%, +0.3%] is strong evidence the treatment doesn't exceed 0.3 points; the null is plausible. Spotify's power-analysis docs make the mechanism precise: a calculator that assumes a fixed-sample test while the actual analysis uses always-valid confidence sequences can underestimate required N by a third or more, producing a green checkmark from the calculator and an inconclusive readout from the analysis, with no indication that the two were never in agreement.[^12]
+The confidence interval is the tool that distinguishes them. A "no significant effect" with CI [-0.5%, +4.5%] is consistent with a 4-point improvement; you're underpowered. A "no significant effect" with CI [-0.2%, +0.3%] is strong evidence the treatment doesn't exceed 0.3 points; the null is plausible. Spotify's Confidence team makes the mechanism precise: a calculator that assumes a fixed-sample test while the actual analysis uses always-valid confidence sequences can underestimate required N by a third or more, producing a green checkmark from the calculator and an inconclusive readout from the analysis, with no indication that the two were never in agreement.[^12]
 
-The peeking problem is real and easy to fall into. Checking a fixed-horizon test 20 times at nominal alpha=5% inflates the false-positive rate to roughly 40%.[^1] The fix is sequential testing (always-valid p-values, mSPRT, or O'Brien-Fleming boundaries) from the start, with the stopping rule documented before the experiment begins. The O'Brien-Fleming boundary adds only 3-5% to maximum required N versus a fixed-sample test, while always-valid confidence sequences need about 50% more observations for the same power.[^12] Pick your trade.
+The peeking problem is real and easy to fall into. Checking a fixed-horizon test 20 times at nominal alpha=5% inflates the false-positive rate to roughly 40%.[^1] The fix is sequential testing (always-valid p-values, mSPRT, or O'Brien-Fleming boundaries) from the start, with the stopping rule documented before the experiment begins. O'Brien-Fleming boundaries add only a few percent to maximum required N versus a fixed-sample test, while always-valid confidence sequences need about 50% more observations for the same power.[^12] Pick your trade.
 
 The post-hoc null checklist:
 
@@ -157,6 +157,6 @@ The default rule: offline evals gate, production A/B ships. The exception is whe
 
 [^11]: Statsig, "Interpreting Non-Significant A/B Test Results", August 27, 2024. https://www.statsig.com/blog/interpreting-non-significant-ab-test-results
 
-[^12]: Spotify Confidence, "What Makes a Good Sample Size Calculator?", May 27, 2026. https://engineering.atspotify.com/2026/05/what-makes-a-good-sample-size-calculator
+[^12]: Mårten Schultzberg, Spotify Confidence, "What Makes a Good Sample Size Calculator?", May 27, 2026. https://confidence.spotify.com/blog/good-sample-size-calculator
 
 [^13]: Zeng et al., Nextdoor, "Let AI Entertain You: Increasing User Engagement with Generative AI and Rejection Sampling", arXiv:2312.12457, December 2023. https://arxiv.org/abs/2312.12457

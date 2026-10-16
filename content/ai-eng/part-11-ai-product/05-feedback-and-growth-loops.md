@@ -20,7 +20,7 @@ Bloomberg trained a finance-tuned LLM on their substantial proprietary corpus, c
 
 That's a flywheel. Most AI teams don't have one. They have a log file.
 
-The distinction matters because the gap between accumulating data and compounding improvement is structural, not technical. Tian Pan (May 2026) names three preconditions that must all hold simultaneously for the loop to actually compound: the feedback signal has to be valid, the loop has to physically close from user action to deployed change, and feedback latency has to be short enough to outpace foundation-model improvement cycles.[^2] Break any one and compounding stalls.
+The distinction matters because the gap between accumulating data and compounding improvement is structural, not technical. Tian Pan (May 2026) names three preconditions that must all hold simultaneously for the loop to actually compound: the feedback signal has to be valid, the loop has to close from user action to deployed change, and feedback latency has to be short enough to outpace foundation-model improvement cycles.[^2] Break any one and compounding stalls.
 
 This chapter is the AI-product strategy view of that loop. The technical mechanics of error analysis, annotation pipelines, and judge alignment live in [Feedback and the data flywheel](../part-8-evaluation-and-observability/08-feedback-and-the-data-flywheel.md). What we cover here is why owning the loop is competitive advantage, what makes a real flywheel different from a survey, and what to instrument so the thing actually spins.
 
@@ -87,13 +87,13 @@ A labeling function for a coding assistant might say: if the user accepted the s
 
 Labeled data feeds two improvement paths. Fine-tuning produces durable gains but requires retraining infrastructure, evaluation gates, and deployment pipelines, with cycle times of weeks. Dynamic few-shot retrieval is faster: maintain a database of production traces with metric scores and human-provided fixes; at inference time, retrieve the most similar fixed traces and include them as few-shot demonstrations in the prompt.[^6] Hours to days, not weeks. Prompt engineering becomes a retrieval problem. The ceiling is lower (you can't fix fundamental model limitations this way), but the cadence is fast enough that most teams should default to it and escalate to fine-tuning only when the few-shot ceiling is hit.
 
-The most powerful variant of the loop is reinforcement learning with verifiable rewards: the system generates output, automatically verifies correctness (the code compiles, the test passes, the SQL executes), and improves without waiting for human feedback. It only applies to domains where ground truth is mechanically checkable, but where it does apply, the loop spins as fast as you can run inference. Duolingo's Birdbrain student-model database updates 3,000 times per second with billions of entries.[^8] The signal (correct or incorrect on each exercise) is mechanically verifiable, no labeling required.
+The most powerful variant of the loop is reinforcement learning with verifiable rewards: the system generates output, automatically verifies correctness (the code compiles, the test passes, the SQL executes), and improves without waiting for human feedback. It only applies to domains where ground truth is mechanically checkable, but where it does apply, the loop spins as fast as you can run inference. Duolingo's Birdbrain updates its estimates of learner ability and exercise difficulty every time a learner gets an exercise right or wrong, across roughly a billion exercises a day, and its second version moved those updates from a nightly batch to within minutes.[^8] The signal (correct or incorrect on each exercise) is mechanically verifiable, no labeling required.
 
 ## What this looks like at scale
 
-GitHub Copilot's signals loop (October 2025) is the published reference for end-to-end loop closure at scale. The latest code-completions model was trained on over 400,000 real-world samples from public repositories and further tuned via RL using synthetic training data. Result: 30%+ improvement in retained code, 35% improvement in speed, 20 million users.[^9] Microsoft's framing of the architectural shift: "as foundational models become increasingly commoditized, the long-term defensibility of AI products will not come from the model alone, but from how effectively those models learn from usage."[^9]
+GitHub Copilot's signals loop (October 2025) is the published reference for end-to-end loop closure at scale. The latest code-completions model was trained on over 400,000 real-world samples from public repositories and further tuned via RL using synthetic training data. Together with client-side and UX changes, the result was an over 30% improvement in retained code for completions and a 35% improvement in speed, for a product that has passed 20 million users.[^9] Microsoft's framing of the architectural shift: "as foundational models become increasingly commoditized, the long-term defensibility of AI products will not come from the model alone, but from how effectively those models learn from usage."[^9]
 
-Microsoft's Dragon Copilot for clinical transcription took a similar path but with stricter eval gates because errors have patient-safety implications. Each model generation must pass automated metric benchmarks before deployment. The latest models outperform base foundation models by approximately 50% on clinical transcription accuracy, driven by continuous fine-tuning on physician corrections to AI-generated notes.[^9] Healthcare is the case where structured explicit feedback (the corrections) is worth the friction.
+Microsoft's Dragon Copilot for clinical transcription took a similar path but with stricter eval gates because errors have patient-safety implications. Each new foundation model is benchmarked with automated metrics and adopted only when the gains are significant. The team fine-tuned on a repository of clinical data, then kept refining the model from customer feedback telemetry; Microsoft reports the latest models outperform base foundation models by about 50%.[^9] Healthcare is the case where structured explicit feedback is worth the friction.
 
 ```python
 from dataclasses import dataclass
@@ -129,9 +129,9 @@ The single health metric to instrument: median signal-to-deployment latency in h
 
 **The thumbs-up trap.** Adding a feedback widget, watching the thumbs-up rate, and declaring the model is improving when it stays above 80%. The selection bias example from Morandi and Viswanathan: 34% naive vs. 83% true.[^5] Always corroborate explicit ratings with implicit baselines (retry rate, copy rate, abandon rate) and never use naive thumbs-up fraction as an absolute quality metric.
 
-**The degenerate loop.** The model trains on its own outputs, amplifying existing biases over successive iterations. Pinterest's recommendation system compounded popularity bias because users clicked items the algorithm ranked first, teaching the model to reproduce its own predictions.[^2] In generative AI, a user who accepts an AI-drafted email hasn't confirmed the email was good; they may have been in a hurry. The model learns to produce emails that get accepted by distracted users. The defense is exploration (periodically surface lower-confidence predictions and capture explicit feedback) and delayed outcome signals (was the email sent? did the recipient reply?) instead of immediate-acceptance signals.
+**The degenerate loop.** The model trains on its own outputs, amplifying existing biases over successive iterations. Recommenders show the pattern clearly: users click what was ranked first, and the model learns to reproduce its own rankings. Pinterest found a rich-get-richer effect across its recommendation funnel that favored established content over new entrants, and built a dedicated debiasing system to counter it.[^11] In generative AI, a user who accepts an AI-drafted email hasn't confirmed the email was good; they may have been in a hurry. The model learns to produce emails that get accepted by distracted users. The defense is exploration (periodically surface lower-confidence predictions and capture explicit feedback) and delayed outcome signals (was the email sent? did the recipient reply?) instead of immediate-acceptance signals.
 
-**The organizational gap.** Production signals are collected but never improve the model because nobody owns the path from user event to deployed change. This is structural, not technical. The fix is assigning explicit ownership: one person or team owns the end-to-end path, and the event schema, labeling pipeline, eval gate, and deployment pipeline share a common key system so traces can be cross-referenced.[^4]
+**The organizational gap.** Production signals are collected but never improve the model because nobody owns the path from user event to deployed change. This is structural, not technical. The fix is assigning explicit ownership: one person or team owns the end-to-end path, and the event schema, labeling pipeline, eval gate, and deployment pipeline share a common schema and join keys (a request ID on every label) so traces can be cross-referenced.[^4]
 
 **Model collapse from synthetic data.** The Shumailov et al. paper (Nature, July 2024) demonstrated that "use of model-generated content in training causes irreversible defects in the resulting models, where tails of the original content distribution disappear."[^10] LLM-generated labels are particularly risky in feedback loops because they're generated by the same model being improved, and the loop becomes self-referential. Maintain a minimum ratio of human-labeled data in each fine-tuning run; treat LLM-generated labels as weak supervision to be combined with human labels, not as ground truth on their own.
 
@@ -149,11 +149,11 @@ The competitive consequence still holds. Static data isn't the moat. The dynamic
 
 [^1]: Kartik Hosanagar, "The Real AI Moat: Data Flywheels", SXSW 2026 keynote / Wharton faculty essay, March 2026.
 
-[^2]: Tian Pan, "The Data Flywheel: Why Most AI Teams Don't Have One", May 2026. https://tianpan.co/blog/2026-05-data-flywheel-three-preconditions
+[^2]: Tian Pan, "The Data Flywheel Assumption: When AI Features Compound and When They Just Accumulate Noise", May 5, 2026. https://tianpan.co/blog/2026/05/05/data-flywheel-assumption-ai-features-noise
 
 [^3]: Gartner, "Survey: 63% of Data Management Leaders Lack or Are Unsure of AI-Ready Data Practices", February 2026 press release citing Q3 2024 survey of 248 leaders.
 
-[^4]: Tian Pan, "The Feedback Loop Failure That Kills Most AI Products", April 2026. https://tianpan.co/blog/2026-04-feedback-loop-failure-ownership-gap
+[^4]: Tian Pan, "Closing the Feedback Loop: How Production AI Systems Actually Improve", April 15, 2026. https://tianpan.co/blog/2026/04/15/closing-the-feedback-loop-production-ai
 
 [^5]: Morandi and Viswanathan, "Selection Bias in Production LLM Feedback", arXiv:2605.12177, May 2026. https://arxiv.org/abs/2605.12177
 
@@ -161,8 +161,10 @@ The competitive consequence still holds. Static data isn't the moat. The dynamic
 
 [^7]: Ratner et al., "Snorkel: Rapid Training Data Creation with Weak Supervision", VLDB 2017/2020, arXiv:1711.10160. https://arxiv.org/abs/1711.10160
 
-[^8]: Duolingo Engineering, "How Birdbrain Personalizes Lessons at Scale", December 2024. https://blog.duolingo.com/birdbrain-personalization
+[^8]: Klinton Bicknell, Claire Brust, Burr Settles, "How Duolingo's AI Learns What You Need to Learn", IEEE Spectrum, February 2023. https://spectrum.ieee.org/duolingo
 
-[^9]: Asha Sharma and Rolf Harms, Microsoft Azure, "Building the Signals Loop: How GitHub Copilot and Dragon Copilot Learn from Usage", October 2025. https://azure.microsoft.com/en-us/blog/signals-loop-copilot
+[^9]: Asha Sharma and Rolf Harms, Microsoft Azure, "The Signals Loop: Fine-tuning for world-class AI apps and agents", October 21, 2025. https://azure.microsoft.com/en-us/blog/the-signals-loop-fine-tuning-for-world-class-ai-apps-and-agents/
 
 [^10]: Shumailov et al., "The Curse of Recursion: Training on Generated Data Makes Models Forget", Nature, July 2024 (originally arXiv:2305.17493). https://www.nature.com/articles/s41586-024-07566-y
+
+[^11]: Gudmundsson et al. (Pinterest), "PinEqualizer: Full Funnel Content Exploration and Debiasing System at Pinterest", KDD 2026, arXiv:2607.22518, https://arxiv.org/abs/2607.22518

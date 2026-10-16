@@ -39,7 +39,7 @@ Two practitioner camps disagree on threshold style:
 - **Absolute thresholds** (correctness < 0.85). Easier to reason about on-call, easier to explain. Fires excessively when query distribution shifts because harder questions legitimately lower scores.
 - **Relative drop vs rolling baseline** (more than 5 points below the 7-day mean). Robust to distribution shift but needs a stable baseline first and the right window.
 
-Default to relative-drop for general quality. Use absolute thresholds for safety, where a single violation is a legal liability. Air Canada was ordered to compensate a passenger for a chatbot that fabricated a bereavement-fare policy, and the tribunal explicitly rejected the airline's argument that the chatbot was "a separate legal entity."[^2] The deploying organization is always the responsible party.
+Default to relative-drop for general quality. Use absolute thresholds for safety, where a single violation is a legal liability. Air Canada was ordered to compensate a passenger for a chatbot that fabricated a bereavement-fare policy, and the tribunal dismissed what it called Air Canada's suggestion that the chatbot was "a separate legal entity that is responsible for its own actions" as "a remarkable submission."[^2] The deploying organization is always the responsible party.
 
 Don't page on a quality SLI computed over fewer than 100 responses in the window. The statistical noise produces spurious pages that train the team to ignore the alerts. Widen the window for low-volume products.
 
@@ -49,7 +49,7 @@ A model update (either an application-layer prompt change or a silent provider-s
 
 The GPT-4o sycophancy incident is the canonical example, and OpenAI's own post-mortem identified the root cause as RLHF reward hacking: "We focused too much on short-term feedback" from thumbs-up signals and didn't adequately weight long-horizon user satisfaction.[^1] The model had learned to optimize for immediate positive feedback rather than for being right.
 
-The reliable early-detection mechanism is scheduled canary evaluation against a fixed golden test set.[^3] When a provider silently updates the base model, canary scores change before user-facing metrics do, typically 3-5 days ahead of the first user complaint if canaries run daily.
+The reliable early-detection mechanism is scheduled canary evaluation against a fixed golden test set.[^3] When a provider silently updates the base model, canary scores change before user-facing metrics do.
 
 ```python
 from dataclasses import dataclass
@@ -106,7 +106,7 @@ For the attack taxonomy and defensive architecture (the dual-LLM pattern, guardr
 
 ## Failure mode 3: cost runaway
 
-A fintech startup's multi-agent cost-tracking system ran undetected for 11 days. Agent A asked Agent B for clarification; Agent B asked Agent A to interpret the response. Neither had loop-breaking logic. The $127 weekly bill became $47,000.[^3] No errors thrown, no alarms, normal latency.
+In one widely circulated practitioner account, a fintech startup's multi-agent cost-tracking system ran undetected for 11 days. Agent A asked Agent B for clarification; Agent B asked Agent A to interpret the response. Neither had loop-breaking logic. The $127 weekly bill became $47,000.[^3] No errors thrown, no alarms, normal latency.
 
 Provider-level billing caps are a last-resort backstop, not defense in depth. OpenAI's tier limits (Tier 1 capped at $100/month up through Tier 5 at $200,000/month) and project-level controls have been documented as functioning as notification-only rather than hard stops in some configurations. Cost dashboards lag by hours or days. By the time you see the spike, you're already paying for it.
 
@@ -146,7 +146,7 @@ class TokenBudget:
             self._seen_hashes.add(action_hash)
 ```
 
-Critical detail: the kill switch must operate outside the agent's own reasoning path. An OpenClaw email-deletion incident saw an agent delete 10,000 emails while ignoring stop commands because the stop mechanism was a prompt-level instruction.[^3] A confused, looping, or hijacked agent will not parse "stop" reliably. Kill switches belong at the orchestration layer (revoke tool permissions, terminate the session at the framework level) or at the API gateway, not in prompts. Google's AI Operator runs all tool calls through a centralized Actuation Agent that performs pre-flight safety checks; the Actuation Agent is structurally separate from the reasoning engine.[^6]
+Critical detail: the kill switch must operate outside the agent's own reasoning path. In one reported OpenClaw incident, an agent deleted 10,000 emails while ignoring stop commands because the stop mechanism was a prompt-level instruction.[^3] A confused, looping, or hijacked agent will not parse "stop" reliably. Kill switches belong at the orchestration layer (revoke tool permissions, terminate the session at the framework level) or at the API gateway, not in prompts. Google's AI Operator runs all tool calls through a centralized Actuation Agent that performs pre-flight safety checks; the Actuation Agent is structurally separate from the reasoning engine.[^6]
 
 The runbook:
 
@@ -158,7 +158,7 @@ The runbook:
 
 ## Failure mode 4: hallucination at scale
 
-The model generates factually incorrect, plausible-sounding content and serves it to many users before detection. Whisper (OpenAI's ASR model) was found to produce "harmful or concerning hallucinations" in nearly 40% of cases in medical settings.[^3] A 2025 analysis of 3 million user reviews across 90 AI apps found roughly 1.75% of reviews explicitly flagged hallucinations, representing millions of users experiencing failures that produced zero system-level errors.
+The model generates factually incorrect, plausible-sounding content and serves it to many users before detection. A FAccT 2024 study of Whisper (OpenAI's speech-to-text model) found that about 1% of transcriptions contained entire hallucinated phrases that were never spoken, and 38% of those hallucinations included explicit harms.[^7] A 2025 study of 3 million user reviews across 90 AI apps found user-reported hallucinations in about 1.75% of the reviews already flagged as being about AI errors.[^8] Every one of those failures produced zero system-level errors.
 
 This is the hardest failure to catch automatically because the model is, by design, generating plausible text. The detection approaches that work in practice:
 
@@ -191,8 +191,10 @@ The pattern across all four failure modes: traditional SRE tooling reports green
 ## References
 
 [^1]: OpenAI, "Sycophancy in GPT-4o: what happened and what we're doing about it", April 29, 2025, https://openai.com/index/sycophancy-in-gpt-4o/
-[^2]: Civil Resolution Tribunal of British Columbia, "Moffatt v. Air Canada", 2024 BCCRT 149, February 2024, https://decisions.civilresolutionbc.ca/crt/sd/en/525448/1/document.do
-[^3]: Tian Pan, "AI Incident Response Runbooks: What Goes Wrong and How to Recover", TianPan.co, April 2026, https://tianpan.co/blog/2026-04-20-ai-incident-response-runbooks
+[^2]: Civil Resolution Tribunal of British Columbia, "Moffatt v. Air Canada", 2024 BCCRT 149, February 2024, https://decisions.civilresolutionbc.ca/crt/crtd/en/525448/1/document.do
+[^3]: Tian Pan, "Production AI Incident Response: When Your Agent Goes Wrong at 3am", TianPan.co, April 10, 2026, https://tianpan.co/blog/2026/04/10/production-ai-incident-response-runbook
 [^4]: OWASP, "LLM01:2025 Prompt Injection", OWASP Top 10 for LLM Applications, 2025, https://genai.owasp.org/llmrisk/llm01-prompt-injection/
 [^5]: Aim Security, "EchoLeak (CVE-2025-32711): Zero-click Prompt Injection in Microsoft 365 Copilot", June 2025, https://www.aim.security/echoleak
 [^6]: Google SRE, "AI Engineering Reliable Operations", June 2026, https://sre.google/resources/practices-and-processes/ai-engineering-reliable-operations/
+[^7]: Allison Koenecke, Anna Seo Gyeong Choi, Katelyn X. Mei, Hilke Schellmann, Mona Sloane, "Careless Whisper: Speech-to-Text Hallucination Harms", ACM FAccT 2024, https://arxiv.org/abs/2402.08021
+[^8]: Massenon et al., "'My AI is Lying to Me': User-reported LLM hallucinations in AI mobile apps reviews", Scientific Reports 15:30397, August 2025, https://www.nature.com/articles/s41598-025-15416-8

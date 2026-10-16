@@ -2,7 +2,7 @@
 
 **How to build and run production AI products as a software engineer.**
 
-86 chapters across 12 parts · ~192,000 words · 87 figures · 5 Mermaid diagrams · 200 Python examples · 754 footnoted citations
+86 chapters across 12 parts · ~192,000 words · 87 figures · 5 Mermaid diagrams · 200 Python examples · 757 footnoted citations
 
 Read it here on GitHub, or on the website at [ai-eng.handbook.academy](https://ai-eng.handbook.academy).
 

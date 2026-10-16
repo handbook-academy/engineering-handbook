@@ -31,10 +31,10 @@ The reason the table broke is structural. PDF stores text as positioned glyphs, 
 
 The production tool landscape splits along two axes: rule-based parsers that read the PDF object model and apply heuristics, and vision-language parsers that render the page and detect layout. As of mid-2026, four tools cover almost every real pipeline:
 
-- **PyMuPDF / PyMuPDF4LLM** is the speed default at roughly 850 pages per second for text extraction[^1]. The March 2026 release of PyMuPDF-Layout hit F1 0.864 on the DocLayNet benchmark[^2]. Use it for prose-heavy programmatic PDFs and high-throughput batch indexing. It still struggles with merged cells, multi-page tables, and anything scanned.
+- **PyMuPDF / PyMuPDF4LLM** is the speed default: plain-text extraction runs at about 0.006 seconds per page on one CPU core (well over 100 pages per second), while PyMuPDF4LLM's layout-aware Markdown output is far slower at about 0.5 seconds per page[^1]. The March 2026 release of PyMuPDF-Layout hit F1 0.864 on the DocLayNet benchmark[^2]. Use it for prose-heavy programmatic PDFs and high-throughput batch indexing. It still struggles with merged cells, multi-page tables, and anything scanned.
 - **Docling** (IBM Research, MIT licensed) runs DocLayNet for layout and the TableFormer transformer for table structure. On an Apple M3 Max with four CPU threads, it processes 1.27 to 1.34 pages per second using about 6.2 GB of memory[^3]. Reach for it when tables are load-bearing, the document has multi-column layouts, or data can't leave your network.
 - **Unstructured** (open-source plus commercial API) uses a `hi_res` strategy that with `infer_table_structure=True` extracts tables as HTML with full row and column structure preserved, plus element types (Title, NarrativeText, Table) attached as metadata[^4]. The recommended pattern for tables: embed an LLM-generated natural-language summary, store the raw HTML for display.
-- **LlamaParse** is the commercial escalation: roughly 92% F1 on visually complex documents at $0.10 per page as of mid-2026[^5]. Use it when accuracy matters more than data residency.
+- **LlamaParse** is the commercial escalation: its Agentic tier costs 10 credits per page (about $0.0125 at list price) and scored 84.9% overall on ParseBench, a benchmark LlamaIndex published itself, as of April 2026[^5]. Use it when accuracy matters more than data residency.
 
 Scanned PDFs are their own category. No text layer exists, so the parser has to invoke OCR. Docling's default EasyOCR runs at upwards of 30 seconds per page on CPU[^3], so a 500-page scanned document is a four-hour job on a single core. Route those to Azure Document Intelligence or AWS Textract, or accept the GPU cost of running OCR yourself.
 
@@ -146,11 +146,11 @@ At architecture scale, [Enterprise RAG system design](../../hld/part-9-ai-ml-sys
 
 ## References
 
-[^1]: markaicode, "Top 5 PDF Tools for AI Production," May 2026, https://markaicode.com/top-pdf-tools-ai-production-2026
+[^1]: Artifex, "PyMuPDF benchmark" (ParseBench, AWS c7i.2xlarge, single CPU core, PyMuPDF 1.28.2), September 2026, https://pymupdf.io/benchmark
 [^2]: Artifex, "PyMuPDF-Layout Performance on DocLayNet: A Comparative Evaluation," March 2026, https://artifex.com/blog/pymupdf-layout-performance-on-doclaynet-a-comparative-evaluation
 [^3]: Christoph Auer et al. (IBM Research), "Docling Technical Report," arXiv:2408.09869, August 2024, https://arxiv.org/abs/2408.09869
 [^4]: Unstructured, "Preserving Table Structure for Better Retrieval," August 2025, https://unstructured.io/blog/preserving-table-structure-for-better-retrieval
-[^5]: markaicode, "Best AI Tools for Document Analysis in 2026," mid-2026, https://markaicode.com/best-ai-tools-document-analysis-2026
+[^5]: LlamaIndex, "Introducing LlamaParse v2", December 18, 2025, https://www.llamaindex.ai/blog/introducing-llamaparse-v2-simpler-better-cheaper; LlamaIndex, "Pricing" (1,000 credits = $1.25), https://www.llamaindex.ai/pricing; LlamaIndex, "ParseBench", April 13, 2026, https://www.llamaindex.ai/blog/parsebench
 [^6]: Hicham Bennani and Maxime Moslonka, "A Systematic Analysis of Chunking Strategies for Reliable Question Answering," arXiv:2601.14123, January 2026, https://arxiv.org/abs/2601.14123
 [^7]: Renyi Qu, Ruixuan Bao, and Lyumanshan Tu (Vectara), "Is Semantic Chunking Worth the Computational Cost?", NAACL 2025 Findings, https://aclanthology.org/2025.findings-naacl.114/
 [^8]: LangChain documentation, "How to split text by tokens," https://python.langchain.com/docs/how_to/split_by_token/

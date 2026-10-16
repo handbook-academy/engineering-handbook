@@ -115,11 +115,11 @@ Cost-wise, an average agent decision trace with six tool calls is around 12 KB. 
 
 There is no AI-specific SOC 2 extension as of June 2026. AI features are evaluated against the same Common Criteria as the rest of your software. The five criteria most affected:[^6]
 
-- **CC6.1 (logical access).** AI systems often have non-human identities: LLM agents with API keys, service accounts. Auditors check whether these are subject to the same governance as human users: least-privilege, key rotation, revocation procedures. Treat every LLM agent identity as a privileged service account. 90-day rotation, narrow scope, automated revocation on agent decommission. Most teams miss this.[^7]
+- **CC6.1 (logical access).** AI systems often have non-human identities: LLM agents with API keys, service accounts. Auditors check whether these are subject to the same governance as human users: least-privilege, key rotation, revocation procedures. Treat every LLM agent identity as a privileged service account. 90-day rotation, narrow scope, automated revocation on agent decommission. Most teams miss this.
 - **CC6.3 (access removal on termination).** AI agents that accumulate permissions, especially OAuth tokens granted by users, need explicit revocation workflows. When a user offboards, downstream agent permissions revoke too.
 - **CC7.1 (system operations and anomaly detection).** Continuous monitoring of AI outputs. Per-call latency, error rates, output distribution drift, token usage spikes. Auditors look for alert thresholds, runbooks, documented incident response.
 - **CC7.2 (component anomaly monitoring).** Model output quality degradation counts as an anomaly. Production eval pipelines (covered in [Online evaluation and A/B testing](../part-8-evaluation-and-observability/05-online-evaluation-and-ab-testing.md)) double as CC7.2 evidence if they generate scored records.
-- **CC9.2 (vendor risk).** Every third-party model API is a vendor relationship. You need a DPA, a documented fallback if the vendor goes down, and a review of the vendor's own SOC 2 Type II report. OpenAI, Anthropic, and Google Cloud all hold SOC 2 Type II as of June 2026 and provide reports under NDA to enterprise customers.[^7]
+- **CC9.2 (vendor risk).** Every third-party model API is a vendor relationship. You need a DPA, a documented fallback if the vendor goes down, and a review of the vendor's own SOC 2 Type II report. OpenAI, Anthropic, and Google Cloud all hold SOC 2 Type II as of 2026 and make the reports available to customers through their trust portals.[^7]
 
 The auditor question that focuses everything: "show me what your AI said to that user on March 14th." There are exactly two acceptable answers. One is "here is the record." The other is "we have engineered this system so that question is impossible to ask, and here is the documented design decision." Anything in between is a finding.[^8]
 
@@ -166,7 +166,7 @@ Red-teaming, the discipline that produces evidence that your guardrails actually
 
 [^6]: AICPA, "SOC 2 Trust Services Criteria," 2017 (with 2022 updates), https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2/
 
-[^7]: hoop.dev, "AI Governance and SOC 2 Compliance: Building Auditable AI Systems," September 2025, https://hoop.dev/blog/ai-governance-and-soc-2-compliance-building-auditable-ai-systems/
+[^7]: OpenAI, "Security and privacy" and Trust Portal, https://openai.com/security-and-privacy/ and https://trust.openai.com/; Anthropic, "What Certifications has Anthropic obtained?", March 2026, https://support.claude.com/en/articles/10015870-what-certifications-has-anthropic-obtained; Google Cloud, "SOC 2", https://cloud.google.com/security/compliance/soc-2
 
 [^8]: localaimaster.com, "Local AI Audit Trail: Log Every Prompt & Response (2026)," https://localaimaster.com/blog/local-ai-audit-trail
 
