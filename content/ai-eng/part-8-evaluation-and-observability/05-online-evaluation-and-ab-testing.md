@@ -11,7 +11,7 @@ prerequisites:
   - 04-regression-suites-and-ci-gates
 tags: [llm, observability]
 date_created: 2026-06-12
-date_updated: 2026-06-12
+date_updated: 2026-10-16
 ---
 
 # Online evaluation and A/B testing

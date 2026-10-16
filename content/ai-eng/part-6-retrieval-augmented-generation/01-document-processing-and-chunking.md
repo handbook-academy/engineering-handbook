@@ -11,7 +11,7 @@ prerequisites:
   - 00-when-you-actually-need-rag
 tags: [llm, rag]
 date_created: 2026-06-12
-date_updated: 2026-06-12
+date_updated: 2026-10-16
 ---
 
 # Document processing and chunking

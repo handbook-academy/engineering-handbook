@@ -12,7 +12,7 @@ prerequisites:
   - 05-shipping-changes
 tags: [llm, deployment, cost, slo]
 date_created: 2026-06-12
-date_updated: 2026-08-31
+date_updated: 2026-10-16
 ---
 
 # SLOs and incident response

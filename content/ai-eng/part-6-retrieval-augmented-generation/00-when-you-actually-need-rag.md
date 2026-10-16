@@ -12,7 +12,7 @@ prerequisites:
   - part-5-context-engineering/00-context-is-more-than-the-prompt
 tags: [llm, rag]
 date_created: 2026-06-12
-date_updated: 2026-06-12
+date_updated: 2026-10-16
 ---
 
 # When you actually need RAG

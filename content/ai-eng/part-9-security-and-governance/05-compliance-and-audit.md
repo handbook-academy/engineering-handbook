@@ -10,7 +10,7 @@ prerequisites:
   - part-8-evaluation-and-observability/06-tracing
 tags: [llm, ai-safety]
 date_created: 2026-06-12
-date_updated: 2026-06-12
+date_updated: 2026-10-16
 ---
 
 # Compliance and audit

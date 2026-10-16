@@ -11,7 +11,7 @@ prerequisites:
   - 02-ai-product-metrics
 tags: [llm]
 date_created: 2026-06-12
-date_updated: 2026-06-12
+date_updated: 2026-10-16
 ---
 
 # Experimentation
