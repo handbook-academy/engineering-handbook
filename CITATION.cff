@@ -11,7 +11,7 @@ abstract: >-
   prerequisites to LLM serving architectures.
   The DSA Handbook (content/dsa/) contains 120 teaching chapters across 15
   parts, 37 pattern decision pages, 5 long-form LeetCode editorials, and 46
-  interactive widget specs (~470,000 words, 226 Mermaid diagrams), with sibling
+  interactive widget specs (~495,000 words, 226 Mermaid diagrams), with sibling
   Python / Java / C++ / Go solutions for 155 LeetCode problems.
   The AI Engineering Handbook (content/ai-eng/) contains 86 teaching chapters
   across 12 parts (~192,000 words, 87 figures, 750+ citations) on building
