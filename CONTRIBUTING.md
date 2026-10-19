@@ -71,7 +71,7 @@ Before starting a large contribution, search the [issue tracker](https://github.
 3. Make the change.
 4. (Optional) Run `npm install && npm run check:all` locally to catch issues.
 5. Open a PR. Reference any related issue in the description.
-6. Wait for review. A maintainer will merge or request changes within **one week**.
+6. Wait for review. A maintainer will merge it or request changes.
 
 ### For a new chapter (from an outline)
 
@@ -80,7 +80,7 @@ Before starting a large contribution, search the [issue tracker](https://github.
    - Expected word count
    - Self-imposed deadline
 
-2. Wait for acknowledgement from a maintainer (usually within 48 hours).
+2. Wait for acknowledgement from a maintainer.
 
 3. Fork and branch: `chapter/part-2-caching` or similar.
 
@@ -171,11 +171,7 @@ Prefer primary sources (the engineering blog, the paper, the RFC) over secondary
 
 ## Review Process
 
-We follow a **batch review** model. Maintainers review PRs on a weekly cadence, not in real time. Expect:
-
-- **Typo and link fixes:** merged within 3 days.
-- **Content edits and examples:** reviewed within 1 week.
-- **Full new chapters:** reviewed within 2 weeks, usually across 2 review rounds.
+Maintainers review PRs in batches, not in real time. Typo and link fixes are the quickest to review. Full new chapters often go through more than one review round.
 
 ### What reviewers check
 
