@@ -364,7 +364,7 @@ sequenceDiagram
 [^10]: MongoDB documentation, "WiredTiger Storage Engine." https://www.mongodb.com/docs/manual/core/wiredtiger/
 [^11]: MongoDB documentation, "Data Model Design: embedded vs references." https://www.mongodb.com/docs/manual/core/data-model-design/
 [^12]: Kyle Kingsbury, "Jepsen: MongoDB 4.2.6," May 15, 2020. https://jepsen.io/analyses/mongodb-4.2.6
-[^13]: Jose David Baena, "Cassandra's Architecture Handles 1M+ Writes/Second Because of These Design Decisions." https://josedavidbaena.com/blog/exploration-cassandra/cassandra/architecture-overview
+[^13]: Apache Cassandra Documentation, "Architecture Overview & Storage Engine." https://cassandra.apache.org/doc/latest/cassandra/architecture/overview.html
 [^14]: Apache Cassandra documentation, "Data Definition Language." https://github.com/apache/cassandra/blob/trunk/doc/modules/cassandra/pages/developing/cql/ddl.adoc
 [^15]: Apache Cassandra documentation, "Consistency levels." https://cassandra.apache.org/doc/latest/cassandra/architecture/dynamo.html
 [^16]: Neo4j, "Graph Database vs. Relational Database." https://neo4j.com/blog/graph-database/graph-database-vs-relational-database/
@@ -384,7 +384,7 @@ sequenceDiagram
 [^30]: Dan McKinley, "Choose Boring Technology." https://boringtechnology.club/
 [^31]: Thakur Coder, "Netflix Uses Cassandra. Instagram Uses PostgreSQL. Twitter Uses Redis. They're All Right." https://www.thakurcoder.com/blog/netflix-instagram-twitter-database-architecture
 [^32]: PostgreSQL documentation, "JSON Types." https://www.postgresql.org/docs/current/datatype-json.html
-[^33]: Instagram Engineering, "Sharding & IDs at Instagram," December 2012. https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c
+[^33]: Instagram Engineering, "Sharding & IDs at Instagram," December 2012. https://web.archive.org/web/20210112134155/https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c
 [^34]: Selleo, "Rewriting a Ruby on Rails App from MongoDB to PostgreSQL." https://www.selleo.com/blog/rewriting-a-ruby-on-rails-app-from-mongodb-to-postgresql
 [^35]: Nearform, "Database Migration: A TypeScript-guided journey from MongoDB to PostgreSQL." https://www.nearform.com/digital-community/database-migration-a-typescript-guided-journey-from-mongodb-to-postgresql/
 [^36]: Discord Engineering blog, "How Discord Supercharges Network Disks for Extreme Low Latency." https://discord.com/blog/how-discord-supercharges-network-disks-for-extreme-low-latency

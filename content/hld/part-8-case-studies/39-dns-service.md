@@ -547,6 +547,6 @@ A: BigPineapple uses Adaptive Replacement Cache (ARC), which maintains ghost lis
 
 [^21]: "Using Response Rate Limiting (RRL)", ISC Knowledge Base, 2018-04-24. https://kb.isc.org/docs/aa-00994
 
-[^22]: Scott Hilton via Help Net Security, "Dyn DDoS attack post-mortem", 2016-10-27. https://www.helpnetsecurity.com/2016/10/27/dyn-ddos-post-mortem/
+[^22]: Scott Hilton via Help Net Security, "Dyn DDoS attack post-mortem", 2016-10-27. https://web.archive.org/web/20260525120553/https://www.helpnetsecurity.com/2016/10/27/dyn-ddos-post-mortem/
 
 [^23]: Sebastiaan Neuteboom, "What came first: the CNAME or the A record?", Cloudflare Blog, 2026-01-14. https://blog.cloudflare.com/cname-a-record-order-dns-standards/

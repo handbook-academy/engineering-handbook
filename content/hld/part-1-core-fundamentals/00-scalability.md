@@ -294,7 +294,7 @@ The database is the bottleneck, not the app tier. But "scale the database" has t
 - [How Discord Stores Trillions of Messages](https://discord.com/blog/how-discord-stores-trillions-of-messages) - Bo Ingram on hot partitions, Rust data services, and the Cassandra to ScyllaDB migration that cut p99 from 40-125 ms to 15 ms.
 - [The Twelve-Factor App: Processes](https://12factor.net/processes) - The canonical statement on stateless share-nothing processes; short enough to read in 5 minutes.
 - [Using Load Shedding to Avoid Overload (Amazon Builders' Library)](https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/) - David Yanacek on why overload amplifies itself and how to break the feedback loop before it cascades.
-- [Sharding and IDs at Instagram](https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c) - The 64-bit shard-encoded primary-key pattern that lets any app server route without an external lookup.
+- [Sharding and IDs at Instagram](https://web.archive.org/web/20210112134155/https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c) - The 64-bit shard-encoded primary-key pattern that lets any app server route without an external lookup.
 
 ## Flashcards
 
@@ -343,7 +343,7 @@ The database is the bottleneck, not the app tier. But "scale the database" has t
 [^8]: AWS, "Troubleshoot replication lags in RDS for PostgreSQL". https://aws.amazon.com/premiumsupport/knowledge-center/rds-postgresql-replication-lag/
 [^9]: Kyle Petroski and Matthew Frail, "How we prepare Shopify for BFCM", Shopify Engineering, Nov 20, 2025. https://shopify.engineering/bfcm-readiness-2025
 [^10]: Notion Engineering, "Lessons learned from sharding Postgres at Notion", Oct 2021. https://www.notion.com/blog/sharding-postgres-at-notion
-[^11]: Instagram Engineering, "Sharding and IDs at Instagram", Dec 30, 2012. https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c
+[^11]: Instagram Engineering, "Sharding and IDs at Instagram", Dec 30, 2012. https://web.archive.org/web/20210112134155/https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c
 [^12]: Bo Ingram, "How Discord Stores Trillions of Messages", Discord Engineering, Mar 6, 2023. https://discord.com/blog/how-discord-stores-trillions-of-messages
 [^13]: Xavier Denis, "A Pods Architecture To Allow Shopify To Scale", Shopify Engineering, Mar 2, 2018. https://shopify.engineering/a-pods-architecture-to-allow-shopify-to-scale
 [^14]: David Yanacek, "Using load shedding to avoid overload", Amazon Builders' Library. https://aws.amazon.com/builders-library/using-load-shedding-to-avoid-overload/

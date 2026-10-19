@@ -253,7 +253,7 @@ Sum-of-subarray-minimums problems (LC 907) extend the previous-smaller-plus-next
 
 [^2]: LeetCode, "739. Daily Temperatures," <https://leetcode.com/problems/daily-temperatures/>.
 
-[^3]: leetcopilot.dev, "Monotonic Stack Cheat Sheet for Beginners," <https://leetcopilot.dev/blog/monotonic-stack-cheat-sheet-for-beginners>.
+[^3]: leetcopilot.dev, "Monotonic Stack Cheat Sheet for Beginners," <https://web.archive.org/web/20260418063725/https://leetcopilot.dev/blog/monotonic-stack-cheat-sheet-for-beginners>.
 
 [^4]: Jon Bentley, *Programming Pearls*, 2nd ed., Addison-Wesley, 2000, Column 8 ("Algorithm Design Techniques").
 

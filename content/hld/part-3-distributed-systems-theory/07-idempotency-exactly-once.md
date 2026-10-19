@@ -419,7 +419,7 @@ If the service crashes after inserting the intent but before completing the tran
 [^6]: J. Jena and S. Dalal, "The Idempotency-Key HTTP Header Field", draft-ietf-httpapi-idempotency-key-header-07, IETF, October 2025 (working-group draft, not yet a finalized RFC). https://www.ietf.org/archive/id/draft-ietf-httpapi-idempotency-key-header-07.html
 [^7]: Stripe Engineering, "Designing robust and predictable APIs with idempotency", Stripe Blog, 2017. https://stripe.com/blog/idempotency
 [^8]: Brandur Leach, "Implementing Stripe-like Idempotency Keys in Postgres", brandur.org, 2017. https://brandur.org/idempotency-keys
-[^9]: PayPal, "Instant Payment Notification" developer guide (4-day retry window). https://developer.paypal.com/docs/api-basics/notifications/ipn/
+[^9]: PayPal, "Instant Payment Notification" developer guide (4-day retry window). https://web.archive.org/web/20220123023133/https://developer.paypal.com/docs/api-basics/notifications/ipn/
 [^10]: Apache Software Foundation, "KIP-98 - Exactly Once Delivery and Transactional Messaging", Apache Kafka Wiki, 2017. https://cwiki.apache.org/confluence/display/KAFKA/KIP-98+-+Exactly+Once+Delivery+and+Transactional+Messaging
 [^11]: Apache Kafka, "KIP-679: Producer will enable the strongest delivery guarantee by default" (default idempotence enabled). https://cwiki.apache.org/confluence/display/KAFKA/KIP-679:+Producer+will+enable+the+strongest+delivery+guarantee+by+default
 [^12]: Conduktor, "Kafka Exactly-Once: When It Works and When It Doesn't", 2025. https://www.conduktor.io/blog/exactly-once-semantics-when-it-works

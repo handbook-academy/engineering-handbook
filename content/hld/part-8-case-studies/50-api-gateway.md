@@ -434,11 +434,11 @@ Total gateway RPS: 20 instances x 50K = 1M RPS. If 5% hit the global tier: 50K o
 
 ## Further Reading
 
-- [Envoy threading model (Matt Klein, 2017)](https://blog.envoyproxy.io/envoy-threading-model-a8d44b922310). The authoritative description of main/worker/file-flusher threads and thread-local RCU that makes the lock-free dataplane possible.
+- [Envoy threading model (Matt Klein, 2017)](https://web.archive.org/web/20201012074707/https://blog.envoyproxy.io/envoy-threading-model-a8d44b922310). The authoritative description of main/worker/file-flusher threads and thread-local RCU that makes the lock-free dataplane possible.
 - [Envoy xDS REST and gRPC protocol](https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol). Canonical reference for ACK/NACK, SotW vs Delta, ADS, and warming semantics.
 - [Curbing Connection Churn in Zuul (Netflix, 2023)](https://netflixtechblog.com/curbing-connection-churn-in-zuul-2feb273a3598). The mTLS + subsetting case study showing 10x connection reduction at 1M+ RPS.
 - [Open Sourcing Zuul 2 (Netflix, 2018)](https://netflixtechblog.com/open-sourcing-zuul-2-82ea476cb2b3). Production gateway architecture with adaptive retries, self-service routing, and P2C load balancing.
-- [Kubernetes Gateway API overview](https://gateway-api.sigs.k8s.io/concepts/api-overview/). The GatewayClass/Gateway/Route role model that supersedes Ingress with proper separation of concerns.
+- [Kubernetes Gateway API overview](https://web.archive.org/web/20260430174811/https://gateway-api.sigs.k8s.io/concepts/api-overview/). The GatewayClass/Gateway/Route role model that supersedes Ingress with proper separation of concerns.
 - [Maglev: A Fast and Reliable Software Network Load Balancer (NSDI 2016)](https://www.usenix.org/conference/nsdi16/technical-sessions/presentation/eisenbud). Consistent hashing at 10 Gbps on commodity hardware; the origin of Envoy's Maglev LB.
 - [W3C Trace Context Recommendation](https://www.w3.org/TR/trace-context/). The `traceparent` and `tracestate` format every gateway must propagate correctly for distributed tracing.
 - [Cloud Computing without Containers (Cloudflare, 2018)](https://blog.cloudflare.com/cloud-computing-without-containers/). V8 isolate cold-start and memory numbers that make edge gateways viable at ~5 ms startup and ~3 MB baseline.
@@ -530,7 +530,7 @@ A: Role-oriented separation of concerns: GatewayClass (infrastructure provider),
 
 [^3]: Envoy Proxy project, "Performance". https://www.envoyproxy.io/docs/envoy/latest/operations/performance
 
-[^4]: Matt Klein, "Envoy threading model", Envoy Proxy Blog, 2017. https://blog.envoyproxy.io/envoy-threading-model-a8d44b922310 (see also https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/arch_overview)
+[^4]: Matt Klein, "Envoy threading model", Envoy Proxy Blog, 2017. https://web.archive.org/web/20201012074707/https://blog.envoyproxy.io/envoy-threading-model-a8d44b922310 (see also https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/arch_overview)
 
 [^5]: Envoy Proxy project, "xDS REST and gRPC protocol". https://www.envoyproxy.io/docs/envoy/latest/api-docs/xds_protocol
 
@@ -540,7 +540,7 @@ A: Role-oriented separation of concerns: GatewayClass (infrastructure provider),
 
 [^8]: Envoy Proxy project, "Architecture overview: Listeners and HTTP filters". https://www.envoyproxy.io/docs/envoy/latest/intro/arch_overview/arch_overview
 
-[^9]: Kubernetes SIG Network, "Gateway API - API Overview". https://gateway-api.sigs.k8s.io/concepts/api-overview/
+[^9]: Kubernetes SIG Network, "Gateway API - API Overview". https://web.archive.org/web/20260430174811/https://gateway-api.sigs.k8s.io/concepts/api-overview/
 
 [^10]: Amazon Web Services, "Throttle requests to your REST APIs for better throughput in API Gateway". https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-request-throttling.html
 

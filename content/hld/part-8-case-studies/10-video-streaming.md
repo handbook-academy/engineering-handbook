@@ -522,7 +522,7 @@ A: A long video is split into N segments (e.g., 60 one-minute chunks) and each s
 
 [^4]: Ars Technica, "YouTube is now building its own video-transcoding chips", April 2021. https://arstechnica.com/gadgets/2021/04/youtube-is-now-building-its-own-video-transcoding-chips/
 
-[^5]: "Google Global Cache", Wikipedia, accessed 2026. https://en.wikipedia.org/wiki/Google_Global_Cache
+[^5]: "Google Global Cache", Wikipedia, accessed 2026. https://web.archive.org/web/20260702000943/https://en.wikipedia.org/wiki/Google_Global_Cache
 
 [^6]: Shweta Jain, "What's in a name? Understanding the Google Cloud network edge", Google Cloud blog, February 22, 2021. https://cloud.google.com/blog/products/networking/understanding-google-cloud-network-edge-points
 

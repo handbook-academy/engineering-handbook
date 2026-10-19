@@ -209,11 +209,11 @@ The CORE three span Easy and Medium natively; the Hard slot is filled via STRETC
 
 ## References
 
-[^1]: LeetCopilot Team, *Why Greedy Fails on Coin Change (And When You Need Dynamic Programming Instead)*, 2025, [leetcopilot.dev/leetcode-pattern/greedy/coin-change-greedy-fails](https://leetcopilot.dev/leetcode-pattern/greedy/coin-change-greedy-fails).
+[^1]: LeetCopilot Team, *Why Greedy Fails on Coin Change (And When You Need Dynamic Programming Instead)*, 2025, [leetcopilot.dev/leetcode-pattern/greedy/coin-change-greedy-fails](https://web.archive.org/web/20260510042614/https://leetcopilot.dev/leetcode-pattern/greedy/coin-change-greedy-fails).
 
-[^2]: LeetCopilot Team, *Jump Game: Why Greedy Beats DP (Proof and Complexity Comparison)*, 2025, [leetcopilot.dev/leetcode-pattern/greedy/jump-game-greedy-vs-dp](https://leetcopilot.dev/leetcode-pattern/greedy/jump-game-greedy-vs-dp).
+[^2]: LeetCopilot Team, *Jump Game: Why Greedy Beats DP (Proof and Complexity Comparison)*, 2025, [leetcopilot.dev/leetcode-pattern/greedy/jump-game-greedy-vs-dp](https://web.archive.org/web/20260510045324/https://leetcopilot.dev/leetcode-pattern/greedy/jump-game-greedy-vs-dp).
 
-[^3]: LeetCopilot Team, *Exchange Argument: The Most Powerful Greedy Proof Technique (With Examples)*, 2025, [leetcopilot.dev/leetcode-pattern/greedy/exchange-argument-explained](https://leetcopilot.dev/leetcode-pattern/greedy/exchange-argument-explained).
+[^3]: LeetCopilot Team, *Exchange Argument: The Most Powerful Greedy Proof Technique (With Examples)*, 2025, [leetcopilot.dev/leetcode-pattern/greedy/exchange-argument-explained](https://web.archive.org/web/20260510052944/https://leetcopilot.dev/leetcode-pattern/greedy/exchange-argument-explained).
 
 [^4]: walkccc, *LeetCode Solutions, 1029. Two City Scheduling*, [walkccc.me/LeetCode/problems/1029](https://walkccc.me/LeetCode/problems/1029/)
 
@@ -223,4 +223,4 @@ The CORE three span Easy and Medium natively; the Hard slot is filled via STRETC
 
 [^7]: Cormen, Leiserson, Rivest, Stein, *Introduction to Algorithms*, 4th ed., MIT Press, 2022, Chapter 15 "Greedy Algorithms" (note: greedy is Chapter 16 in older editions).
 
-[^8]: LeetCopilot Team, *Wrong Sorting Criterion: The #1 Greedy Mistake (And How to Fix It)*, 2025, [leetcopilot.dev/leetcode-pattern/greedy/wrong-sorting-criterion](https://leetcopilot.dev/leetcode-pattern/greedy/wrong-sorting-criterion).
+[^8]: LeetCopilot Team, *Wrong Sorting Criterion: The #1 Greedy Mistake (And How to Fix It)*, 2025, [leetcopilot.dev/leetcode-pattern/greedy/wrong-sorting-criterion](https://web.archive.org/web/20260510052013/https://leetcopilot.dev/leetcode-pattern/greedy/wrong-sorting-criterion).

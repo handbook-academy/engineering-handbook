@@ -236,10 +236,10 @@ A: A normalized OLTP database as the source of truth, with CDC (Debezium, Kafka 
 [^11]: "Data Modeling for Scale: Denormalization and Materialized Views", kindatechnical.com. https://kindatechnical.com/system-design-interview/data-modeling-scale.html
 [^12]: "Denormalization in Databases", GeeksforGeeks DBMS. https://www.geeksforgeeks.org/dbms/denormalization-in-databases/
 [^13]: Bronson et al., "TAO: Facebook's Distributed Data Store for the Social Graph", USENIX ATC 2013. https://www.usenix.org/conference/atc13/technical-sessions/presentation/bronson
-[^14]: "DynamoDB Access Patterns for High-Performance Applications", tampadynamics.com. https://tampadynamics.com/blog/dynamodb-patterns
+[^14]: AWS Documentation, "General design principles for Amazon DynamoDB", Amazon DynamoDB Developer Guide. https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/bp-general-nosql-design.html
 [^15]: Alex DeBrie, "Single-table vs. multi-table design in Amazon DynamoDB", AWS Database Blog, August 2022. https://aws.amazon.com/blogs/database/single-table-vs-multi-table-design-in-amazon-dynamodb/
 [^16]: "Join field type: Parent-join and performance", Elasticsearch Reference. https://www.elastic.co/guide/en/elasticsearch/reference/current/parent-join.html
-[^17]: "Materialized Views and Read Models in CQRS with Kafka", softwarepatternslexicon.com. https://softwarepatternslexicon.com/kafka/microservices-and-event-driven-architectures/command-query-responsibility-segregation-cqrs/materialized-views-and-read-models/
+[^17]: Microsoft Azure Architecture Center, "Materialized View Pattern" (CQRS read projections). https://learn.microsoft.com/en-us/azure/architecture/patterns/materialized-view
 [^18]: "Projections and Materialized Views", softwarepatternslexicon.com event-sourcing reference. https://softwarepatternslexicon.com/event-driven-architecture-patterns/event-sourcing-and-cqrs/projections-materialized-views/
 [^19]: Mark Marchukov, "TAO: The power of the graph", Meta Engineering, June 2013. https://engineering.fb.com/2013/06/25/core-infra/tao-the-power-of-the-graph/
 [^20]: Cheng et al., "RAMP-TAO: Layering Atomic Transactions on Facebook's Online TAO Data Store", VLDB 2021. https://engineering.fb.com/2021/08/18/core-data/ramp-tao/

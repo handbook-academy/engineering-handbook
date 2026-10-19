@@ -560,7 +560,7 @@ A: Hot (hourly, top 1% by subscribers), warm (daily, middle 80%), cold (weekly, 
 
 [^13]: Timescale. "TimescaleDB 2.3: Improving columnar compression for time-series on PostgreSQL." https://www.timescale.com/blog/timescaledb-2-3-improving-columnar-compression-for-time-series-on-postgresql/
 
-[^14]: TaskMonkey. "Keepa Extension, What It Is, How It Works, and Best Settings." 2026. https://taskmonkey.ai/blog/amazon-price-tracker/keepa-extension
+[^14]: Keepa GmbH. "Keepa — Amazon Price Tracker" (Chrome Web Store listing and extension overview). https://chromewebstore.google.com/detail/keepa-amazon-price-tracke/neebplgakaahbhdphmkckjjcegoiijjo
 
 [^15]: AmzFinder. "Keepa: Amazon Price Tracker, Features, Pricing & Free Download." https://www.amzfinder.com/tools/keepa/
 

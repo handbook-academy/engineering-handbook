@@ -575,4 +575,4 @@ A: Reassignment cuts courier earnings on accepted orders. At scale this resemble
 
 [^21]: DoorDash Engineering, "Fighting Fraud at Scale: Insights from building a real-time rules engine", 2025-12. https://careersatdoordash.com/blog/doordash-fraud-insights-from-building-a-real-time-rules-engine/
 
-[^22]: CanvasBusinessModel, "How Does Swiggy Company Work?" (summarizing Swiggy IPO and H1 2025 operating data). https://canvasbusinessmodel.com/blogs/how-it-works/swiggy-how-it-works
+[^22]: Swiggy Limited, Corporate Overview and Investor Relations (food delivery across 700+ Indian cities and Instamart quick-commerce dark-store network). https://www.swiggy.com/corporate/

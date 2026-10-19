@@ -517,7 +517,7 @@ A second branch leads to graphs with cycles. Tree DP's correctness rests on each
 
 [^1]: Cormen, Leiserson, Rivest, Stein, *Introduction to Algorithms*, 4th ed., MIT Press, 2022, Chapter 14 "Dynamic Programming". Chapter 10 §10.4 "Representing rooted trees" establishes the O(n) post-order tree-walk bound used throughout this chapter. <https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/>
 
-[^2]: Hello Interview editorial, "Leetcode 124. Binary Tree Maximum Path Sum." <https://www.hellointerview.com/learn/leetcode/problems/binary-tree-maximum-path-sum>
+[^2]: Hello Interview, "Leetcode 124. Binary Tree Maximum Path Sum." <https://www.hellointerview.com/community/questions/binary-tree-max-sum/cm5eh7nrh04qg838ohcis83zd>
 
 [^3]: USACO Guide, "DP on Trees — Solving For All Roots" (Gold module). Names the two-array technique (in-subtree `f[x]` and out-of-subtree `g[x]`) and gives the per-edge O(1) update derivation used in the LC 834 implementation above. <https://usaco.guide/gold/all-roots>
 

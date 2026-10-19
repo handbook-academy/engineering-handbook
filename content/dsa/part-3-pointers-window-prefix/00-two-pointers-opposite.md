@@ -260,7 +260,7 @@ The window cousin is [Sliding window: fixed size](./02-sliding-window-fixed.md).
 
 ## References
 
-[^1]: LeetCopilot Team, "Container With Most Water: Why Greedy Two Pointers Works (Proof)," 2025. <https://leetcopilot.dev/leetcode-pattern/two-pointers/container-water-proof>.
+[^1]: LeetCopilot Team, "Container With Most Water: Why Greedy Two Pointers Works (Proof)," 2025. <https://web.archive.org/web/20260518191203/https://leetcopilot.dev/leetcode-pattern/two-pointers/container-water-proof>.
 
 [^2]: Wikipedia contributors, "3SUM," last edited 2025-11-10. <https://en.wikipedia.org/wiki/3SUM>.
 

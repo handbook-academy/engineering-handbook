@@ -258,7 +258,7 @@ This is roughly how Kafka's log-structured storage works: sequential writes to a
 
 - [Latency Numbers Every Programmer Should Know](https://gist.github.com/jboner/2841832) - Jeff Dean's canonical table; memorize the order-of-magnitude gaps between tiers before any capacity estimation.
 - [The C10K Problem](http://www.kegel.com/c10k.html) - Dan Kegel's 1999 manifesto that drove the adoption of epoll and kqueue; still the best framing of why thread-per-connection fails.
-- [Efficient IO with io_uring](https://kernel.dk/io_uring.pdf) - Jens Axboe's design paper explaining submission/completion rings; read this before adopting io_uring in production.
+- [Efficient IO with io_uring](https://web.archive.org/web/20261012162519/https://www.kernel.dk/io_uring.pdf) - Jens Axboe's design paper explaining submission/completion rings; read this before adopting io_uring in production.
 - [Serving 100 Gbps from an Open Connect Appliance](https://netflixtechblog.com/serving-100-gbps-from-an-open-connect-appliance-cdb51dda3b99) - Netflix's page-cache-centric CDN design showing how OS tuning unlocks extreme throughput.
 - [Apache Kafka Design](https://kafka.apache.org/42/design/design/) - the "Don't fear the filesystem" section explains why sequential writes, page cache, and sendfile make Kafka fast.
 - [Redis event library: ae.c](https://github.com/redis/redis/blob/unstable/src/ae.c) - a small, readable cross-platform event loop; study `ae_epoll.c` to see how thin the epoll wrapper really is.
@@ -298,7 +298,7 @@ This is roughly how Kafka's log-structured storage works: sequential writes to a
 [^3]: Boner, Jonas (gist) / Dean, Jeff / Norvig, Peter. "Latency Numbers Every Programmer Should Know." https://gist.github.com/jboner/2841832
 [^4]: Simplyblock. "NVMe Latency: Performance Benchmarks Explained." https://www.simplyblock.io/glossary/nvme-latency/
 [^5]: Kegel, Dan. "The C10K problem." http://www.kegel.com/c10k.html
-[^6]: Axboe, Jens. "Efficient IO with io_uring" (2019). https://kernel.dk/io_uring.pdf
+[^6]: Axboe, Jens. "Efficient IO with io_uring" (2019). https://web.archive.org/web/20261012162519/https://www.kernel.dk/io_uring.pdf
 [^7]: Oracle Linux Blog. "An Introduction to the io_uring Asynchronous I/O Framework." https://blogs.oracle.com/linux/post/an-introduction-to-the-io-uring-asynchronous-io-framework
 [^8]: Wikipedia contributors. "io_uring." https://en.wikipedia.org/wiki/Io_uring
 [^9]: Linux kernel documentation. "Journal (jbd2) - ext4 filesystem." https://www.kernel.org/doc/html/latest/filesystems/ext4/journal.html

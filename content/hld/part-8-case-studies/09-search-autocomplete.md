@@ -418,7 +418,7 @@ The trigger condition is "exact-prefix returned fewer than N results" (typically
 - [How Google autocomplete predictions work](https://support.google.com/websearch/answer/7368877?hl=en). Google's own explainer on ranking signals, freshness, and policy filtering; the "predictions are not answers" framing is canon.
 - [You Complete Me (Elastic blog, 2013)](https://www.elastic.co/blog/you-complete-me/). Alexander Reelsen's post introducing the completion suggester with benchmarks showing 0.72 ms p50 vs 4.41 ms for prefix queries.
 - [Index 1,600,000,000 Keys with Automata and Rust (BurntSushi, 2015)](https://burntsushi.net/transducers/). The best deep dive on FST construction, with numbers on Wikipedia titles and Common Crawl URLs.
-- [LinkedIn Cleo: Open Source Technology Behind LinkedIn's Typeahead Search](https://engineering.linkedin.com/open-source/cleo-open-source-technology-behind-linkedins-typeahead-search). The inverted-index + bloom filter + forward-index architecture that served 150M members in 20 ms.
+- [LinkedIn Cleo: Open Source Technology Behind LinkedIn's Typeahead Search](https://web.archive.org/web/20260217114030/https://engineering.linkedin.com/open-source/cleo-open-source-technology-behind-linkedins-typeahead-search). The inverted-index + bloom filter + forward-index architecture that served 150M members in 20 ms.
 - [SymSpell (GitHub)](https://github.com/wolfgarbe/SymSpell). The symmetric delete spelling correction algorithm with benchmarks against BK-tree and Norvig.
 - [SymSpell vs BK-tree (SeekStorm, 2017)](https://seekstorm.com/blog/symspell-vs-bk-tree/). Head-to-head comparison showing SymSpell 100-1,870x faster depending on edit distance.
 - [Fagin et al., "Optimal Aggregation Algorithms for Middleware" (2003)](https://arxiv.org/abs/cs/0204046). The Threshold Algorithm paper; the theoretical backbone of top-K merging across ranked lists.
@@ -518,7 +518,7 @@ A: At least 1,000:1. This extreme ratio means multi-tier caching (CDN, in-memory
 
 [^10]: Tianpan / Puncsky, "Designing typeahead search or autocomplete" - covers the immutable-snapshot + streaming-overlay lambda pattern. https://tianpan.co/notes/179-designing-typeahead-search-or-autocomplete
 
-[^11]: Jingwei Wu, "Cleo: the open source technology behind LinkedIn's typeahead search," LinkedIn Engineering, 2012. https://engineering.linkedin.com/open-source/cleo-open-source-technology-behind-linkedins-typeahead-search
+[^11]: Jingwei Wu, "Cleo: the open source technology behind LinkedIn's typeahead search," LinkedIn Engineering, 2012. https://web.archive.org/web/20260217114030/https://engineering.linkedin.com/open-source/cleo-open-source-technology-behind-linkedins-typeahead-search
 
 [^12]: Ronald Fagin, Amnon Lotem, Moni Naor, "Optimal Aggregation Algorithms for Middleware" (Threshold Algorithm), JCSS 2003. https://arxiv.org/abs/cs/0204046
 

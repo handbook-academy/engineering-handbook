@@ -246,7 +246,7 @@ def get_sum(a: int, b: int) -> int:
 
 [^5]: Wojciech Muła, Nathan Kurz, and Daniel Lemire, "Faster Population Counts Using AVX2 Instructions," *The Computer Journal* 61:1 (2018), pp. 111–120, DOI 10.1093/comjnl/bxx046. Source code at [github.com/CountOnes/hamming_weight](https://github.com/CountOnes/hamming_weight)
 
-[^6]: Charles E. Leiserson, Harald Prokop, and Keith H. Randall, "Using de Bruijn Sequences to Index a 1 in a Computer Word," MIT Lab for Computer Science technical report, July 1998, [supertech.csail.mit.edu/papers/debruijn.pdf](https://supertech.csail.mit.edu/papers/debruijn.pdf).
+[^6]: Charles E. Leiserson, Harald Prokop, and Keith H. Randall, "Using de Bruijn Sequences to Index a 1 in a Computer Word," MIT Lab for Computer Science technical report, July 1998, [supertech.csail.mit.edu/papers/debruijn.pdf](https://web.archive.org/web/20240314060050/http://supertech.csail.mit.edu/papers/debruijn.pdf).
 
 [^7]: Agner Fog, *Instruction Tables: Latencies, Throughputs and Micro-operation Breakdowns for Intel, AMD, and VIA CPUs*, Technical University of Denmark, latest revision, [agner.org/optimize/instruction_tables.pdf](https://www.agner.org/optimize/instruction_tables.pdf).
 

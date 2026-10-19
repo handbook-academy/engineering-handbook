@@ -125,7 +125,7 @@ The first two rows are pure per-element queries; the last two are aggregates tha
 
 [^2]: Cormen, Leiserson, Rivest, Stein, *Introduction to Algorithms*, 4th ed., MIT Press, 2022, Ch. 16.
 
-[^3]: leetcopilot.dev, "Monotonic Stack Cheat Sheet for Beginners." https://leetcopilot.dev/blog/monotonic-stack-cheat-sheet-for-beginners
+[^3]: leetcopilot.dev, "Monotonic Stack Cheat Sheet for Beginners." https://web.archive.org/web/20260418063725/https://leetcopilot.dev/blog/monotonic-stack-cheat-sheet-for-beginners
 
 [^4]: LeetCode, "739. Daily Temperatures." https://leetcode.com/problems/daily-temperatures/
 

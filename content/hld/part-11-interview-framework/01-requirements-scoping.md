@@ -353,7 +353,7 @@ Key insight: the hidden requirements are idempotency (network failures between m
 ## Further Reading
 
 - [HelloInterview Delivery Framework](https://www.hellointerview.com/learn/system-design/in-a-hurry/delivery) - The 5-minute requirements budget, functional/non-functional split, and the NFR checklist that most FAANG candidates now internalize.
-- [DSDM MoSCoW Prioritisation](https://www.agilebusiness.org/dsdm-project-framework/moscow-prioririsation.html) - The primary source for MoSCoW definitions, the 60% Must-Have effort rule, and the canonical test question ("what happens if absent?").
+- [DSDM MoSCoW Prioritisation](https://web.archive.org/web/20260128040714/https://www.agilebusiness.org/dsdm-project-framework/moscow-prioririsation.html) - The primary source for MoSCoW definitions, the 60% Must-Have effort rule, and the canonical test question ("what happens if absent?").
 - [Google SRE Book, Chapter 4: Service Level Objectives](https://sre.google/sre-book/service-level-objectives/) - The canonical distinction between SLI, SLO, and SLA with worked examples; essential for quantifying availability NFRs.
 - [Google SRE Book, Appendix A: Availability Table](https://sre.google/sre-book/availability-table/) - The 99% through 99.999% downtime reference used in every serious availability discussion.
 - [Intercom: RICE Prioritization](https://www.intercom.com/blog/rice-simple-prioritization-for-product-managers/) - Sean McBride's 2018 post defining the Reach x Impact x Confidence / Effort formula; useful when the interviewer asks "how would you rank these features?"
@@ -403,7 +403,7 @@ Key insight: the hidden requirements are idempotency (network failures between m
 
 [^1]: HelloInterview, "Delivery Framework" (System Design in a Hurry). https://www.hellointerview.com/learn/system-design/in-a-hurry/delivery
 [^2]: Google SRE Book, "Chapter 3: Embracing Risk" (Managing Risk section). https://sre.google/sre-book/embracing-risk/
-[^3]: DSDM / Agile Business Consortium, "Chapter 10: MoSCoW Prioritisation" (DSDM Project Framework). https://www.agilebusiness.org/dsdm-project-framework/moscow-prioririsation.html
+[^3]: DSDM / Agile Business Consortium, "Chapter 10: MoSCoW Prioritisation" (DSDM Project Framework). https://web.archive.org/web/20260128040714/https://www.agilebusiness.org/dsdm-project-framework/moscow-prioririsation.html
 [^4]: Chris Jones, John Wilkes, Niall Murphy, Cody Smith, "Service Level Objectives" (Google SRE Book, Chapter 4). https://sre.google/sre-book/service-level-objectives/
 [^5]: Steven Thurgood, "Example Error Budget Policy" (Google SRE Workbook, Appendix B). https://sre.google/workbook/error-budget-policy/
 [^6]: HelloInterview, "Uber" problem breakdown. https://www.hellointerview.com/learn/system-design/problem-breakdowns/uber

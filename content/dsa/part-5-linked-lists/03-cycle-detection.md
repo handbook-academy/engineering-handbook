@@ -286,6 +286,6 @@ The two-pointer setup carries over to [Linked list reversal](./01-reversal-patte
 
 [^6]: Richard P. Brent, "An improved Monte Carlo factorization algorithm," *BIT Numerical Mathematics* 20(2), 1980, pp. 176-184. Reports an average ~36% reduction in function evaluations versus Floyd's, applied to Pollard rho factorization with ~24% overall speedup. <https://doi.org/10.1007/BF01933190>.
 
-[^7]: MIT Algorithm Wiki, "Floyd's tortoise and hare algorithm (Cycle Detection)," running-time analysis O(λ + μ) and space O(1), with the textbook two-phase shape. <https://algorithm-wiki.csail.mit.edu/wiki/Floyd's_tortoise_and_hare_algorithm_(_Cycle_Detection)>.
+[^7]: MIT Algorithm Wiki, "Floyd's tortoise and hare algorithm (Cycle Detection)," running-time analysis O(λ + μ) and space O(1), with the textbook two-phase shape. <https://web.archive.org/web/20240816115115/https://algorithm-wiki.csail.mit.edu/wiki/Floyd's_tortoise_and_hare_algorithm_(_Cycle_Detection)>.
 
 [^8]: LeetCode Discuss thread on LC 142 cataloguing the Phase 2 speed-2 bug as the modal off-by-two error among submissions that pass Phase 1 but fail the entry-point output, referenced via labuladong's annotated walkthrough. <https://labuladong.online/en/algo/leetcode/linked-list-cycle-ii/>.

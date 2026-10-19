@@ -307,7 +307,7 @@ The partition key determines ordering scope. Per-user ordering means `user_id` a
 
 ## Further Reading
 
-- [The Log: What every software engineer should know (Jay Kreps, 2013)](https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying) - the foundational essay that reframes messaging as derived views over a durable log; read this before anything else in the space.
+- [The Log: What every software engineer should know (Jay Kreps, 2013)](https://web.archive.org/web/20260612105408/https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying) - the foundational essay that reframes messaging as derived views over a durable log; read this before anything else in the space.
 - [How LinkedIn customizes Apache Kafka for 7 trillion messages/day](https://engineering.linkedin.com/blog/2019/apache-kafka-trillion-messages) - the canonical large-scale operations story; covers controller tuning, maintenance mode, and Cruise Control.
 - [Exactly-Once Semantics Are Possible (Confluent, 2017)](https://www.confluent.io/blog/exactly-once-semantics-are-possible-heres-how-apache-kafka-does-it/) - authoritative walkthrough of idempotent producer + transactions; explains the 3% overhead and the Kafka-to-Kafka boundary.
 - [Scaling Slack's Job Queue](https://slack.engineering/scaling-slacks-job-queue/) - the best "add Kafka incrementally without rewriting everything" story; shows Kafka as a durable buffer in front of Redis workers.
@@ -365,7 +365,7 @@ The partition key determines ordering scope. Per-user ordering means `user_id` a
 
 ## References
 
-[^1]: Jay Kreps, "The Log: What every software engineer should know about real-time data's unifying abstraction", LinkedIn Engineering, 2013. https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying
+[^1]: Jay Kreps, "The Log: What every software engineer should know about real-time data's unifying abstraction", LinkedIn Engineering, 2013. https://web.archive.org/web/20260612105408/https://engineering.linkedin.com/distributed-systems/log-what-every-software-engineer-should-know-about-real-time-datas-unifying
 [^2]: Neha Narkhede, Guozhang Wang, "Exactly-Once Semantics Are Possible: Here's How Kafka Does It", Confluent Blog, 2017. https://www.confluent.io/blog/exactly-once-semantics-are-possible-heres-how-apache-kafka-does-it/
 [^3]: Jon Lee, Wesley Wu, "How LinkedIn customizes Apache Kafka for 7 trillion messages per day", LinkedIn Engineering, October 2019. https://engineering.linkedin.com/blog/2019/apache-kafka-trillion-messages
 [^4]: AWS, "Amazon SQS queue types". https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-types.html

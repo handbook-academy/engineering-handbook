@@ -553,7 +553,7 @@ A: A customer-deployed service that maintains one upstream SSE connection to the
 
 [^9]: LaunchDarkly Field Guide, "LD Relay Scaling and Performance". https://launchdarkly-labs.github.io/ps-flag-book/ldrelay/scaling-and-performance.html
 
-[^10]: LaunchDarkly docs, "Relay Proxy guidelines". https://launchdarkly.com/docs/fed-docs/sdk/relay-proxy/guidelines
+[^10]: LaunchDarkly docs, "The Relay Proxy". https://launchdarkly.com/docs/sdk/relay-proxy
 
 [^11]: Statsig docs, "Sequential Probability Ratio Tests". https://docs.statsig.com/experiments-plus/sprt
 

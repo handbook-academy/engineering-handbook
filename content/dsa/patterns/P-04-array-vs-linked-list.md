@@ -144,7 +144,7 @@ One problem per main strategy. Each surfaces a single property of the workload t
 
 [^1]: Cormen, Leiserson, Rivest, Stein, *Introduction to Algorithms*, 4th ed., MIT Press, 2022, Ch. 10.
 
-[^2]: Oracle, "ArrayList vs LinkedList," Collections Framework tutorial. https://dev.java/learn/api/collections-framework/arraylist-vs-linkedlist/
+[^2]: Oracle, "ArrayList vs LinkedList," Collections Framework tutorial. https://web.archive.org/web/20260628150327/https://dev.java/learn/api/collections-framework/arraylist-vs-linkedlist/
 
 [^3]: cppreference, "std::list::splice." https://www.cppreference.com/cpp/container/list/splice
 

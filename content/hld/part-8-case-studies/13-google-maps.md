@@ -573,6 +573,6 @@ A: Pre-render zoom levels 0-14 (high reuse across users, ~268M tiles). Render z1
 
 [^19]: Nominatim Documentation, "Architecture Overview" (import + address computation + frontend). https://nominatim.org/release-docs/latest/develop/overview/
 
-[^20]: Valhalla, "Meili: Map Matching in a Programmer's Perspective" (HMM with Newson-Krumm 2009 model). https://github.com/valhalla/valhalla/blob/master/docs/docs/meili/algorithms.md
+[^20]: Valhalla, "Meili: Map Matching in a Programmer's Perspective" (HMM with Newson-Krumm 2009 model). https://valhalla.github.io/valhalla/meili/algorithms/
 
 [^21]: Overture Maps Foundation, "GA release of Transportation Dataset: 86M km of roads", Dec 2024. https://overturemaps.org/announcements/2024/overture-general-availability-of-transportation-dataset/

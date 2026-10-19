@@ -314,7 +314,7 @@ Failure handling: if a server crashes, its remaining codes are lost (at most 10,
 - [Arslan Ahmad, "10 Mistakes That Cost You the Offer" (Design Gurus)](https://www.designgurus.io/blog/system-design-interview-mistakes) - Aggregated failure taxonomy from 500+ coached engineers; the complement to the framework.
 - [Ryan Peterman, "The Peterman Post"](https://www.developing.dev/) - Ex-software engineer at Instagram newsletter covering communication tactics and think-aloud discipline in design interviews.
 - [Exponent, "Meta System Design Interview 2026"](https://www.tryexponent.com/blog/meta-system-design-interview) - Recent candidate debriefs with role-specific details and the "disorganized delivery" failure signal.
-- [SwiftPrep, "Google System Design Interview"](https://swiftprep.io/blog/system-design/google-system-design-interview/) - 2026 rubric breakdown with pass-rate data and the "structure beats brilliance" principle.
+- [SwiftPrep, "Google System Design Interview"](https://web.archive.org/web/20260515065541/https://swiftprep.io/blog/system-design/google-system-design-interview/) - 2026 rubric breakdown with pass-rate data and the "structure beats brilliance" principle.
 - [Gaurav Sen, System Design YouTube Channel](https://www.youtube.com/c/GauravSensei) - Visual walkthroughs of classic problems; best for building intuition before reading the detailed frameworks.
 
 ## Flashcards
@@ -373,7 +373,7 @@ Failure handling: if a server crashes, its remaining codes are lost (at most 10,
 [^5]: Evan King / Hello Interview, "Delivery Framework: System Design in a Hurry". https://www.hellointerview.com/learn/system-design/in-a-hurry/delivery
 [^6]: Donne Martin, "The System Design Primer: How to approach a system design interview question". GitHub. https://github.com/donnemartin/system-design-primer
 [^7]: Evan King, "The System Design Interview: What is Expected at Each Level". Hello Interview Blog. https://www.hellointerview.com/blog/the-system-design-interview-what-is-expected-at-each-level
-[^8]: SwiftPrep, "Google System Design Interview" (rubric details and pass-rate data). https://swiftprep.io/blog/system-design/google-system-design-interview/
+[^8]: SwiftPrep, "Google System Design Interview" (rubric details and pass-rate data). https://web.archive.org/web/20260515065541/https://swiftprep.io/blog/system-design/google-system-design-interview/
 [^9]: kindatechnical.com, "Amazon Software Engineer Interview Process and Loop". 2025. https://www.kindatechnical.com/technical-interview-preparation/amazon-software-engineer-interview-process-and-loop.html
 [^10]: Amazon / AWS Careers, "Raising the bar: How Amazon hires for long-term growth and innovation" (Bar Raiser program at 25 years). https://aws.amazon.com/careers/life-at-aws-amazons-bar-raiser-program-hiring-for-long-term-growth-and-innovation/
 [^11]: Lewis C. Lin and Shivam P. Patel, "Intro the PEDALS Method Framework for System Design". lewis-lin.com, September 2020. https://lewis-lin.com/posts/pedals-method/

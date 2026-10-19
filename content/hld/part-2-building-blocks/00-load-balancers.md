@@ -342,7 +342,7 @@ Path-based routing and per-tenant rate limiting require L7. TLS termination can 
 [^18]: AWS, "Create an HTTPS listener for your Application Load Balancer", Elastic Load Balancing User Guide. https://docs.aws.amazon.com/elasticloadbalancing/latest/application/create-https-listener.html
 [^19]: Istio, "Ingress Sidecar TLS Termination". https://istio.io/latest/docs/tasks/traffic-management/ingress/ingress-sidecar-tls-termination/
 [^20]: Broadcom KB, "VRRP Split-Brain Condition When Multiple Nodes Reside on the Same ESXi Host". https://knowledge.broadcom.com/external/article/427472/vrrp-virtual-router-redundancy-protocol.html
-[^21]: Keepalived Project, "Failover using VRRP". https://keepalived.org/doc/case_study_failover.html
+[^21]: Keepalived Project, "Failover using VRRP". https://web.archive.org/web/20260518190226/https://keepalived.org/doc/case_study_failover.html
 [^22]: Andrew Hutchings, "Socket Sharding in NGINX Release 1.9.1", NGINX Blog, 2015-05-26. https://www.f5.com/fr_fr/company/blog/nginx/socket-sharding-nginx-release-1-9-1.html
 [^23]: Yuchen Wu, "How we built Pingora, the proxy that connects Cloudflare to the Internet", Cloudflare Blog, 2022-09-14. https://blog.cloudflare.com/how-we-built-pingora-the-proxy-that-connects-cloudflare-to-the-internet/
 [^24]: AWS, "What is a Network Load Balancer?" (TCP flow hash includes protocol, source/dest IP+port, and TCP sequence number). https://docs.aws.amazon.com/elasticloadbalancing/latest/network/introduction.html

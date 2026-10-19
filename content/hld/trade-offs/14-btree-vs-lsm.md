@@ -250,7 +250,7 @@ A: Store keys in the LSM index but large values in a separate append-only log (W
 [^11]: RocksDB Wiki. "Compaction." https://github.com/facebook/rocksdb/wiki/Compaction
 [^12]: Matsunobu, Dong, Du. "MyRocks: LSM-Tree Database Storage Engine Serving Facebook's Social Graph." VLDB 2020. https://research.facebook.com/publications/myrocks-lsm-tree-database-storage-engine-serving-facebooks-social-graph/
 [^13]: Lu, Pillai, Arpaci-Dusseau, Arpaci-Dusseau. "WiscKey: Separating Keys from Values in SSD-conscious Storage." FAST 2016. https://www.usenix.org/conference/fast16/technical-sessions/presentation/lu
-[^14]: Baena. "Your Compaction Strategy Choice Will Cost You 10x in Write Amplification (Or Save It)." 2025. https://josedavidbaena.com/blog/exploration-cassandra/cassandra/storage-engine-compaction
+[^14]: Apache Cassandra Documentation, "Unified Compaction Strategy (UCS)." https://cassandra.apache.org/doc/latest/cassandra/managing/operating/compaction/ucs.html
 [^15]: Apache Cassandra. "Unified Compaction Strategy." https://cassandra.apache.org/_/blog/Apache-Cassandra-5.0-Features-Unified-Compaction-Strategy.html
 [^16]: Dong, Callaghan, Galanis, Borthakur, Savor, Stumm. "Optimizing Space Amplification in RocksDB." CIDR 2017. https://research.facebook.com/publications/optimizing-space-amplification-in-rocksdb/
 [^17]: Mattis. "Introducing Pebble: A RocksDB-inspired key-value store written in Go." Cockroach Labs, 2020. https://www.cockroachlabs.com/blog/pebble-rocksdb-kv-store

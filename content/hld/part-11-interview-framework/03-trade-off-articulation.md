@@ -248,7 +248,7 @@ The key: you held your pick (Redis), addressed the concern (failover), and named
 - [CAP Twelve Years Later: How the "Rules" Have Changed](https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/) (Brewer, 2012) - The retrospective that retired "2 of 3" and reframed C and A as continuous dimensions.
 - [Consistency Tradeoffs in Modern Distributed Database System Design](https://www.odbms.org/2012/01/consistency-tradeoffs-in-modern-distributed-database-system-design/) (Abadi, 2012) - The PACELC paper that completes CAP with the normal-operation latency trade-off.
 - [Life Beyond Distributed Transactions](https://queue.acm.org/detail.cfm?id=3025012) (Helland, 2007/2016) - The case for async messaging over cross-entity transactions at scale.
-- [No Silver Bullet](http://sunnyday.mit.edu/16.355/BrooksNoSilverBullet2.html) (Brooks, 1986) - The meta-frame for essential vs accidental complexity; explains why most trade-offs are tool-vs-tool, not problem-vs-problem.
+- [No Silver Bullet](https://web.archive.org/web/20240722094346/http://sunnyday.mit.edu/16.355/BrooksNoSilverBullet2.html) (Brooks, 1986) - The meta-frame for essential vs accidental complexity; explains why most trade-offs are tool-vs-tool, not problem-vs-problem.
 - [2016 Letter to Shareholders](https://www.aboutamazon.com/news/company-news/2016-letter-to-shareholders) (Bezos) - Source of "disagree and commit," the 70% rule, and one-way vs two-way doors.
 - [What Your System Design Interviewer Is REALLY Judging You On](https://hellointerview.substack.com/p/what-your-system-design-interviewer) (Hello Interview, 2025) - The silent scorecard: trade-off navigation is the top hidden evaluation dimension.
 - [The Staff Engineer's Path](https://www.oreilly.com/library/view/the-staff-engineers/9781098118723/) (Reilly, 2022) - Trade-off articulation as the load-bearing staff-plus skill.
@@ -301,7 +301,7 @@ The key: you held your pick (Redis), addressed the concern (failover), and named
 [^5]: Abadi, D. "Consistency Tradeoffs in Modern Distributed Database System Design". IEEE Computer, Feb 2012. https://www.odbms.org/2012/01/consistency-tradeoffs-in-modern-distributed-database-system-design/
 [^6]: Fox, A. and Brewer, E. "Harvest, Yield and Scalable Tolerant Systems". HotOS 1999. https://paperswelove.org/papers/harvest-yield-and-scalable-tolerant-systems-dd4f89bf/
 [^7]: Pritchett, D. "BASE: An ACID Alternative". ACM Queue, 2008. https://web.archive.org/web/20241111141336/https://queue.acm.org/detail.cfm?id=1394128
-[^8]: Brooks, F. "No Silver Bullet: Essence and Accidents of Software Engineering". IEEE Computer, April 1987. http://sunnyday.mit.edu/16.355/BrooksNoSilverBullet2.html
+[^8]: Brooks, F. "No Silver Bullet: Essence and Accidents of Software Engineering". IEEE Computer, April 1987. https://web.archive.org/web/20240722094346/http://sunnyday.mit.edu/16.355/BrooksNoSilverBullet2.html
 [^9]: Gall, J. "Systemantics: How Systems Really Work and How They Fail". 1975. Gall's Law summary: https://www.deviq.com/laws/galls-law/
 [^10]: Brewer, E. "CAP Twelve Years Later: How the 'Rules' Have Changed". IEEE Computer, Feb 2012, reproduced at InfoQ. https://www.infoq.com/articles/cap-twelve-years-later-how-the-rules-have-changed/
 [^11]: Reilly, T. "The Staff Engineer's Path". O'Reilly, 2022. https://www.oreilly.com/library/view/the-staff-engineers/9781098118723/

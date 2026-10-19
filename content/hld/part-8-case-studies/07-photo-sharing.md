@@ -456,8 +456,8 @@ Not all 40 billion photos need WebP/AVIF immediately. Think about which photos a
 
 ## Further Reading
 
-- [Sharding and IDs at Instagram](https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c). The canonical blog post on the 41+13+10 bit ID scheme; explains why encoding the shard in the ID eliminates a directory lookup.
-- [Instagration Pt 2: Scaling to Multiple Data Centers](https://instagram-engineering.com/instagration-pt-2-scaling-our-infrastructure-to-multiple-data-centers-5745cbad7834). How Instagram handled cross-region Memcached invalidation via PgQ and scaled to 40B photos across three data centers.
+- [Sharding and IDs at Instagram](https://web.archive.org/web/20210112134155/https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c). The canonical blog post on the 41+13+10 bit ID scheme; explains why encoding the shard in the ID eliminates a directory lookup.
+- [Instagration Pt 2: Scaling to Multiple Data Centers](https://web.archive.org/web/20210112134648/https://instagram-engineering.com/instagration-pt-2-scaling-our-infrastructure-to-multiple-data-centers-5745cbad7834). How Instagram handled cross-region Memcached invalidation via PgQ and scaled to 40B photos across three data centers.
 - [Finding a Needle in Haystack (OSDI 2010)](https://www.usenix.org/conference/osdi10/finding-needle-haystack-facebooks-photo-storage). Facebook's log-structured photo store that reduced per-read I/O from 3 disk seeks to 1.
 - [f4: Facebook's Warm BLOB Storage System (OSDI 2014)](https://research.facebook.com/publications/f4-facebooks-warm-blob-storage-system/). Erasure coding for warm photo data, reducing effective replication from 3.6x to 2.8x or 2.1x across a 65+ PB corpus.
 - [CloudFront Origin Shield documentation](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/origin-shield.html). The AWS feature that protects your origin from viral-content stampedes via request coalescing.
@@ -555,7 +555,7 @@ A: S3 returns 503 Slow Down errors. Mitigations: (1) Origin Shield coalesces dup
 
 [^8]: AWS, "Amazon S3 Intelligent-Tiering Storage Class". https://aws.amazon.com/s3/storage-classes/intelligent-tiering/
 
-[^9]: Instagram Engineering, "Sharding and IDs at Instagram", 2012. https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c
+[^9]: Instagram Engineering, "Sharding and IDs at Instagram", 2012. https://web.archive.org/web/20210112134155/https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c
 
 [^10]: AWS, "Uploading to Amazon S3 directly from a web or mobile application", AWS Compute Blog, 2020. https://aws.amazon.com/blogs/compute/uploading-to-amazon-s3-directly-from-a-web-or-mobile-application/
 
@@ -575,11 +575,11 @@ A: S3 returns 503 Slow Down errors. Mitigations: (1) Origin Shield coalesces dup
 
 [^18]: AWS, "Download and upload objects with presigned URLs", S3 User Guide. https://docs.aws.amazon.com/AmazonS3/latest/userguide/using-presigned-url.html
 
-[^19]: Instagram Engineering, "What Powers Instagram: Hundreds of Instances, Dozens of Technologies", 2011. https://instagram-engineering.com/what-powers-instagram-hundreds-of-instances-dozens-of-technologies-adf2e22da2ad
+[^19]: Instagram Engineering, "What Powers Instagram: Hundreds of Instances, Dozens of Technologies", 2011. https://web.archive.org/web/20230529003539/https://instagram-engineering.com/what-powers-instagram-hundreds-of-instances-dozens-of-technologies-adf2e22da2ad
 
 [^20]: Flickr Code Blog (Kay Kremerskothen), "Ticket Servers: Distributed Unique Primary Keys on the Cheap", February 2010. http://code.flickr.com/blog/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/
 
-[^21]: Instagram Engineering, "Instagration Pt 2: Scaling our Infrastructure to Multiple Data Centers", 2015. https://instagram-engineering.com/instagration-pt-2-scaling-our-infrastructure-to-multiple-data-centers-5745cbad7834
+[^21]: Instagram Engineering, "Instagration Pt 2: Scaling our Infrastructure to Multiple Data Centers", 2015. https://web.archive.org/web/20210112134648/https://instagram-engineering.com/instagration-pt-2-scaling-our-infrastructure-to-multiple-data-centers-5745cbad7834
 
 [^22]: AWS, "Best practices design patterns: optimizing Amazon S3 performance", S3 User Guide. https://docs.aws.amazon.com/AmazonS3/latest/userguide/optimizing-performance.html
 

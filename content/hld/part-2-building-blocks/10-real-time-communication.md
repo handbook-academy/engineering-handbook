@@ -297,7 +297,7 @@ Think about what happens when a gateway process restarts. Where are the messages
 - [Slack Engineering: Flannel Edge Cache](https://slack.engineering/flannel-an-application-level-edge-cache/) - reconnect storm mitigation at 4M simultaneous connections; the edge-cache pattern for WebSocket metadata.
 - [The Road to 2 Million WebSocket Connections in Phoenix](https://phoenixframework.org/blog/the-road-to-2-million-websocket-connections) - deep kernel tuning, BEAM VM story, and every resource ceiling you will hit on the way to millions of connections.
 - [WebRTC for the Curious (Sean DuBois)](https://webrtcforthecurious.com/) - free book; the best first read on ICE/STUN/TURN/SDP for engineers who have never touched WebRTC.
-- [uWebSockets.js Backpressure Example](https://github.com/uNetworking/uWebSockets.js/blob/master/examples/Backpressure.js) - the most honest comment in any WebSocket library: "Any slow receiver can DOS your whole server if you are not taking backpressure into account."
+- [uWebSockets.js Backpressure Example](https://github.com/uNetworking/uWebSockets.js/blob/master/examples/Backpressure.mjs) - the most honest comment in any WebSocket library: "Any slow receiver can DOS your whole server if you are not taking backpressure into account."
 
 ## Flashcards
 
@@ -367,4 +367,4 @@ Think about what happens when a gateway process restarts. Where are the messages
 [^17]: Evil Martians, "Connection avalanche safety tips and prepping for real-time applications". https://evilmartians.com/chronicles/connection-avalanche-safety-tips-and-prepping-for-realtime-applications
 [^18]: Matt Nowack, "Using Rust to Scale Elixir for 11 Million Concurrent Users", Discord Engineering, May 2019. https://discord.com/blog/using-rust-to-scale-elixir-for-11-million-concurrent-users
 [^19]: Jozsef Vass, "How Discord Handles Two and Half Million Concurrent Voice Users using WebRTC", Discord Engineering, September 2018. https://discord.com/blog/how-discord-handles-two-and-half-million-concurrent-voice-users-using-webrtc
-[^20]: uNetworking, "uWebSockets.js Backpressure example", GitHub. https://github.com/uNetworking/uWebSockets.js/blob/master/examples/Backpressure.js
+[^20]: uNetworking, "uWebSockets.js Backpressure example", GitHub. https://github.com/uNetworking/uWebSockets.js/blob/master/examples/Backpressure.mjs

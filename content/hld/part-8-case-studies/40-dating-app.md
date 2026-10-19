@@ -540,7 +540,7 @@ A: Approximately 2% for men versus 10-30% for women, based on Swipestats analysi
 
 [^13]: Fotto.ai, "How the Tinder Algorithm Actually Works in 2026". https://fotto.ai/blog/how-tinder-algorithm-actually-works
 
-[^14]: loke.dev, "Why Does Your Balanced Database Shard Still Suffer From Hotspot Contention?". https://loke.dev/blog/database-sharding-hotspot-key-skew
+[^14]: loke.dev, "Why Does Your Balanced Database Shard Still Suffer From Hotspot Contention?". https://web.archive.org/web/20260412115103/https://loke.dev/blog/database-sharding-hotspot-key-skew
 
 [^15]: rkenmi, "Sharding User IDs of Celebrities". https://rkenmi.com/posts/sharding-user-ids-of-celebrities
 

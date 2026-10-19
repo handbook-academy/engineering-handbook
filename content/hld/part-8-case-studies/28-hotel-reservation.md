@@ -556,7 +556,7 @@ A: One ElastiCache cluster per use case isolates workloads. Features are ingeste
 
 [^8]: Matt Polito, "PostgreSQL DateRange and Efficient Time Management," Hashrocket, Mar 2024. https://hashrocket.com/blog/posts/postgresql-daterange-and-efficient-time-management
 
-[^9]: "3 Logic Errors You Can Finally Delete Using Postgres Range Types and EXCLUDE Constraints," loke.dev, 2025. https://loke.dev/blog/postgres-range-types-exclude-constraints
+[^9]: "3 Logic Errors You Can Finally Delete Using Postgres Range Types and EXCLUDE Constraints," loke.dev, 2025. https://web.archive.org/web/20260615013527/https://loke.dev/blog/postgres-range-types-exclude-constraints
 
 [^10]: "Build a trip booking application in Python," Temporal learn, Jul 2024. https://learn.temporal.io/tutorials/python/trip-booking-app/
 

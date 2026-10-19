@@ -540,7 +540,7 @@ A: SeverityNumber is an integer from 1-24, bucketed into TRACE (1-4), DEBUG (5-8
 
 [^5]: Bloo, "Security Log Retention: Regulation, Risk, and Reality". https://bloo.io/blog/security-log-retention
 
-[^6]: Hoop.dev, "Masking and Tokenizing PII in Production Logs for PCI DSS Compliance". https://hoop.dev/blog/masking-and-tokenizing-pii-in-production-logs-for-pci-dss-compliance/
+[^6]: OWASP Cheat Sheet Series, "Logging Cheat Sheet" (sensitive data exclusion and masking in logs, including payment card data under PCI DSS). https://cheatsheetseries.owasp.org/cheatsheets/Logging_Cheat_Sheet.html
 
 [^7]: Bernaille, "2023-03-08 incident: A deep dive into the platform-level impact", Datadog Engineering, May 2023. https://www.datadoghq.com/blog/engineering/2023-03-08-deep-dive-into-platform-level-impact
 

@@ -336,7 +336,7 @@ Think about what happens between the moment an admin clicks "deactivate user" an
 - [Neil Madden, "CVE-2022-21449: Psychic Signatures in Java"](https://neilmadden.blog/2022/04/19/psychic-signatures-in-java/) - The ECDSA r=s=0 disclosure. Shows how a single missing bounds check in a crypto implementation breaks all downstream JWT verification.
 - [GitHub Actions OIDC documentation](https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect) - A production example of short-lived JWTs replacing long-lived secrets for CI/CD cloud access.
 - [PASETO specification](https://github.com/paseto-standard/paseto-spec) - The JWT alternative that eliminates algorithm negotiation entirely. Worth evaluating for greenfield internal services.
-- [OWASP JWT Cheat Sheet](https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html) - Practical security guidance covering weak secrets, token storage, and validation order.
+- [OWASP JWT Cheat Sheet](https://web.archive.org/web/20260606011649/https://cheatsheetseries.owasp.org/cheatsheets/JSON_Web_Token_for_Java_Cheat_Sheet.html) - Practical security guidance covering weak secrets, token storage, and validation order.
 - [RFC 9449: OAuth 2.0 DPoP](https://datatracker.ietf.org/doc/html/rfc9449) - Sender-constrained tokens that bind a JWT to the client's key, making stolen tokens unusable by a different client.
 
 ## Flashcards

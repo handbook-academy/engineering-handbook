@@ -264,7 +264,7 @@ At the reveal moment (timer hits zero), freeze the state and send one atomic "re
 - [Designing Data-Intensive Applications, Ch. 5 and 9 (Kleppmann)](https://dataintensive.net/) - the canonical textbook treatment of replication, consistency models, and consensus; read before attempting any multi-region design.
 - [Linearizability: A Correctness Condition for Concurrent Objects (Herlihy and Wing, 1990)](https://cs.brown.edu/~mph/HerlihyW90/p463-herlihy.pdf) - the paper that formally defines linearizability; essential for understanding why real-time ordering matters.
 - [Please stop calling databases CP or AP (Kleppmann, 2015)](https://kleppmann.com/2015/05/11/please-stop-calling-databases-cp-or-ap.html) - the essay that explains why CAP's binary classification confuses more than it clarifies.
-- [Session Guarantees for Weakly Consistent Replicated Data (Terry et al., 1994)](https://paperswelove.org/papers/session-guarantees-for-weakly-consistent-replicate-895bba0a/) - the origin of RYW, monotonic reads, monotonic writes, and writes-follow-reads.
+- [Session Guarantees for Weakly Consistent Replicated Data (Terry et al., 1994)](https://doi.org/10.1109/PDIS.1994.331722) - the origin of RYW, monotonic reads, monotonic writes, and writes-follow-reads.
 - [Eventually Consistent (Vogels, ACM Queue 2008)](https://queue.acm.org/detail.cfm?id=1466448) - Amazon CTO's classic framing of the eventual consistency trade-off and why different workloads deserve different guarantees.
 - [Jepsen consistency models reference](https://jepsen.io/consistency) - interactive map of every consistency model with arrows showing implication; the clearest single-page reference online.
 - [Azure Cosmos DB consistency levels](https://learn.microsoft.com/en-us/azure/cosmos-db/consistency-levels) - a rare commercial system that exposes five named levels with precise trade-off documentation.
@@ -314,7 +314,7 @@ At the reveal moment (timer hits zero), freeze the state and send one atomic "re
 
 [^1]: Maurice P. Herlihy and Jeannette M. Wing, "Linearizability: A Correctness Condition for Concurrent Objects," ACM TOPLAS, 1990. https://dl.acm.org/doi/10.1145/78969.78972
 [^2]: Peter Bailis et al., "Highly Available Transactions: Virtues and Limitations," VLDB 2014. http://www.vldb.org/pvldb/vol7/p181-bailis.pdf
-[^3]: Douglas B. Terry, Alan J. Demers, Karin Petersen, Mike J. Spreitzer, Marvin M. Theimer, Brent B. Welch, "Session Guarantees for Weakly Consistent Replicated Data," PDIS 1994. https://paperswelove.org/papers/session-guarantees-for-weakly-consistent-replicate-895bba0a/
+[^3]: Douglas B. Terry, Alan J. Demers, Karin Petersen, Mike J. Spreitzer, Marvin M. Theimer, Brent B. Welch, "Session Guarantees for Weakly Consistent Replicated Data," PDIS 1994. https://doi.org/10.1109/PDIS.1994.331722
 [^4]: Martin Kleppmann, "Please stop calling databases CP or AP," 2015. https://kleppmann.com/2015/05/11/please-stop-calling-databases-cp-or-ap.html
 [^5]: Jepsen, "Consistency" overview (Bailis/Viotti hierarchy). https://jepsen.io/consistency
 [^6]: Leslie Lamport, "How to Make a Multiprocessor Computer That Correctly Executes Multiprocess Programs," IEEE Trans. Computers, 1979. https://dl.acm.org/doi/10.1109/TC.1979.1675439

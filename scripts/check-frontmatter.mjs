@@ -4,8 +4,29 @@
  * Usage: node scripts/check-frontmatter.mjs
  */
 
-import { readFile, glob } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
+import { join } from 'node:path';
 import { exit } from 'node:process';
+
+// Recursively list Markdown files under `dir` as repo-relative POSIX paths.
+// Avoids fs/promises.glob, which only exists in Node 22+ (package.json
+// declares node >=20, and CI may run an older runtime).
+async function walkMarkdown(dir) {
+  const out = [];
+  let entries;
+  try {
+    entries = await readdir(dir, { withFileTypes: true });
+  } catch (err) {
+    if (err.code === 'ENOENT') return out;
+    throw err;
+  }
+  for (const entry of entries) {
+    const full = join(dir, entry.name).replace(/\\/g, '/');
+    if (entry.isDirectory()) out.push(...(await walkMarkdown(full)));
+    else if (entry.isFile() && entry.name.endsWith('.md')) out.push(full);
+  }
+  return out;
+}
 
 const REQUIRED_FIELDS = [
   'title',
@@ -171,8 +192,8 @@ function isMissing(fm, field) {
 
 function classify(file) {
   // Normalize separators so we don't double-check Windows vs POSIX paths.
-  // glob() yields repo-relative paths (no leading "/"), so anchor patterns to
-  // "content/..." rather than "/content/...".
+  // walkMarkdown() yields repo-relative paths (no leading "/"), so anchor
+  // patterns to "content/..." rather than "/content/...".
   const norm = file.replace(/\\/g, '/');
   if (norm.includes('content/hld/trade-offs/')) return 'hld-tradeoff';
   if (norm.includes('content/hld/')) return 'hld-chapter';
@@ -581,9 +602,9 @@ async function main() {
   // Every book shares this validator. classify() in validate() dispatches each
   // file to its book/genre-specific schema branch (HLD chapter, HLD trade-off,
   // DSA chapter, DSA editorial, DSA pattern decision page, AI Engineering chapter).
-  for await (const f of glob('content/hld/**/*.md')) files.push(f);
-  for await (const f of glob('content/dsa/**/*.md')) files.push(f);
-  for await (const f of glob('content/ai-eng/**/*.md')) files.push(f);
+  for (const book of ['content/hld', 'content/dsa', 'content/ai-eng']) {
+    files.push(...(await walkMarkdown(book)));
+  }
 
   if (files.length === 0) {
     console.log('No content files found.');

@@ -4,7 +4,20 @@
  * Usage: node scripts/content-stats.mjs
  */
 
-import { readFile, glob } from 'node:fs/promises';
+import { readFile, readdir } from 'node:fs/promises';
+import { join } from 'node:path';
+
+// Recursively list Markdown files under `dir`. Avoids fs/promises.glob,
+// which only exists in Node 22+ (package.json declares node >=20).
+async function walkMarkdown(dir) {
+  const out = [];
+  for (const entry of await readdir(dir, { withFileTypes: true })) {
+    const full = join(dir, entry.name).replace(/\\/g, '/');
+    if (entry.isDirectory()) out.push(...(await walkMarkdown(full)));
+    else if (entry.isFile() && entry.name.endsWith('.md')) out.push(full);
+  }
+  return out;
+}
 
 const PART_TITLES = {
   0: 'Prerequisites',
@@ -32,7 +45,7 @@ async function main() {
   const files = [];
   // HLD-only reporter — the part-number table reflects the HLD curriculum.
   // DSA stats live in the DSA-specific reporting flow.
-  for await (const f of glob('content/hld/**/*.md')) files.push(f);
+  files.push(...(await walkMarkdown('content/hld')));
 
   let totalWords = 0;
   let totalMermaid = 0;

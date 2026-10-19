@@ -382,4 +382,4 @@ Ship a Backstage instance with a single Software Template that scaffolds a new s
 [^15]: von Grunberg, K., "Implementing Dynamic Configuration Management with Score and Humanitec", Humanitec blog, Feb 16 2023. https://humanitec.com/blog/implementing-dynamic-configuration-management-with-score-and-humanitec
 [^16]: Signisys, "Gartner Says 80% of Software Orgs Will Have Platform Teams by 2026", summarizing Gartner Hype Cycle for Platform Engineering 2024. https://www.signisys.com/blog/gartner-says-80-of-software-orgs-will-have-platform-teams-by-2026/
 [^17]: Humanitec, "DevOps Benchmarking Study 2023", whitepaper (93% top performers use an IDP). https://humanitec.com/whitepapers/devops-benchmarking-study-2023
-[^18]: Greul, H., "Adopter Spotlight: American Airlines demos Runway", Spotify for Backstage blog, Aug 25 2021. https://backstage.spotify.com/blog/adopter-spotlight-american-airlines-demos-runway
+[^18]: "Implementing a developer portal at American Airlines" (interview on building the Runway Backstage portal at American Airlines), Engineering Enablement podcast. https://getdx.com/podcast/building-a-developer-portal/

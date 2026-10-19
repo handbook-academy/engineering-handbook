@@ -38,6 +38,16 @@ exclude = [
   "https://www.nasdaq.com/",
   # Transient TLS CloseNotify; archive URL sits next to the primary in the footnote.
   "https://newsroom.tiktok.com/",
+  # Intermittently refuse connections from GitHub-hosted runners ("Connection
+  # failed" / timeouts) while serving the same pages to browsers. Passed in
+  # earlier CI runs, so these are runner-IP blocks, not dead links.
+  "https://etcd.io/",
+  "https://istio.io/",
+  "https://weaviate.io/",
+  # Certificate chain not trusted by lychee's TLS client; pages load fine in
+  # browsers, which fetch the missing intermediate certificate.
+  "https://db-engines.com/",
+  "https://web.eecs.utk.edu/",
 ]
 
 # Don't check mail links.

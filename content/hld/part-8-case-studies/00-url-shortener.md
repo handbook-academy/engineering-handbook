@@ -443,7 +443,7 @@ DynamoDB's `PutItem` with `attribute_not_exists(short_code)` gives you an atomic
 - [Bitly Trust and Safety: An Overview of Our Abuse System](https://bitly.com/blog/trust-safety-abuse-system/). The closest thing to a public architecture post Bitly publishes; describes Crawler, Threat Detection Service, and Abuse API end-to-end.
 - [How Discord Stores Trillions of Messages](https://discord.com/blog/how-discord-stores-trillions-of-messages/). The canonical reference for hot-partition cascades and request coalescing via a Rust data-services tier.
 - [Announcing Snowflake (Twitter, 2010)](https://blog.twitter.com/engineering/en_us/a/2010/announcing-snowflake). The original 64-bit uncoordinated ID scheme that inspired batch allocation patterns everywhere.
-- [Sharding and IDs at Instagram](https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c). The 41+13+10 bit layout in PL/PGSQL, complete with runnable code.
+- [Sharding and IDs at Instagram](https://web.archive.org/web/20210112134155/https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c). The 41+13+10 bit layout in PL/PGSQL, complete with runnable code.
 - [Ticket Servers: Distributed Unique Primary Keys on the Cheap (Flickr, 2010)](https://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/). The REPLACE INTO + odd/even offset HA pattern.
 - [We made Workers KV up to 3x faster (Cloudflare, 2024)](https://blog.cloudflare.com/faster-workers-kv/). Tiered cache architecture and hot-key concentration data (0.03% of keys = ~50% of requests).
 - [Designing robust and predictable APIs with idempotency (Stripe, 2017)](https://stripe.com/blog/idempotency). Idempotency keys, exponential backoff, and thundering-herd mitigation.
@@ -523,7 +523,7 @@ A: The safety status is stored in the cached record itself. On redirect, the ser
 
 ## References
 
-[^1]: Bitly, "Bitly Enters 2026 With Expanded Link and QR Code Solutions", 2025. https://bitly.com/pages/resources/press/bitly-connection-layer-links-qr-codes-2026
+[^1]: Bitly, "Bitly Enters 2026 With Expanded Link and QR Code Solutions", 2025. https://web.archive.org/web/20260901170734/https://bitly.com/pages/resources/press/bitly-connection-layer-links-qr-codes-2026/
 
 [^2]: Birthday-bound analysis: 62^7 = 3.52 trillion slots; at 10M/day = ~965 years of headroom.
 
@@ -539,7 +539,7 @@ A: The safety status is stored in the cached record itself. On redirect, the ser
 
 [^8]: Kremerskothen, "Ticket Servers: Distributed Unique Primary Keys on the Cheap", Flickr code blog, 2010. https://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/
 
-[^9]: Instagram Engineering, "Sharding and IDs at Instagram", 2012. https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c
+[^9]: Instagram Engineering, "Sharding and IDs at Instagram", 2012. https://web.archive.org/web/20210112134155/https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c
 
 [^10]: King, "Announcing Snowflake", Twitter engineering blog, 2010. https://blog.twitter.com/engineering/en_us/a/2010/announcing-snowflake
 
@@ -549,7 +549,7 @@ A: The safety status is stored in the cached record itself. On redirect, the ser
 
 [^13]: Ingram, "How Discord Stores Trillions of Messages", Discord engineering blog, 2023-03-06. https://discord.com/blog/how-discord-stores-trillions-of-messages
 
-[^14]: Bitly press release, "Bitly Takes Action To Enhance The Future of User Safety With New IWF Partnership", 2023. https://bitly.com/pages/resources/press/bitly-takes-action-to-enhance-the-future-of-user-safety-with-new-iwf-partnership
+[^14]: Bitly press release, "Bitly Takes Action To Enhance The Future of User Safety With New IWF Partnership", 2023. https://web.archive.org/web/20260402060931/https://bitly.com/pages/resources/press/bitly-takes-action-to-enhance-the-future-of-user-safety-with-new-iwf-partnership/
 
 [^15]: Google Cloud customer case study, "Bitly: Ensuring real-time link safety with Web Risk to protect people". https://cloud.google.com/customers/bitly
 

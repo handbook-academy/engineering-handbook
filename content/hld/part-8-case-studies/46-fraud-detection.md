@@ -502,7 +502,7 @@ A: Multiple accounts sharing devices, IPs, or cards form a connected component. 
 
 [^8]: RisingWave, "Feature Freshness Matters for ML Models", 2025. https://risingwave.com/blog/feature-freshness-ml-model-performance/
 
-[^9]: Iterathon, "How to Build Feature Stores for Production ML Systems 2026", 2025. https://iterathon.tech/blog/feature-store-implementation-production-ml-2026
+[^9]: Iterathon, "How to Build Feature Stores for Production ML Systems 2026", 2025. https://web.archive.org/web/20260612084110/https://iterathon.tech/blog/feature-store-implementation-production-ml-2026
 
 [^10]: Mears, Ben. "Shepherd: How Stripe adapted Chronon to scale ML feature development", Stripe Dev blog, 2024-04-15. https://stripe.dev/blog/shepherd-how-stripe-adapted-chronon-to-scale-ml-feature-development
 

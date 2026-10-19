@@ -443,7 +443,7 @@ Your system needs to support 200 data centers, 50 workers per DC, and at least 5
 ## Further Reading
 
 - [Announcing Snowflake (Twitter Engineering, 2010)](https://blog.x.com/engineering/en_us/a/2010/announcing-snowflake). The original blog post and canonical bit-layout reference; explains the ZooKeeper coordination model.
-- [Sharding and IDs at Instagram (2012)](https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c). The embedded shard-ID variant with full PL/pgSQL source; shows how ID design drives database routing.
+- [Sharding and IDs at Instagram (2012)](https://web.archive.org/web/20210112134155/https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c). The embedded shard-ID variant with full PL/pgSQL source; shows how ID design drives database routing.
 - [RFC 9562: Universally Unique IDentifiers (2024)](https://datatracker.ietf.org/doc/rfc9562/). The definitive standard; obsoletes RFC 4122, defines v6, v7, v8, and monotonicity methods.
 - [A deeper look at UUIDv4 vs UUIDv7 in PostgreSQL 18 (credativ, 2025)](https://www.credativ.de/en/blog/postgresql-en/a-deeper-look-at-old-uuidv4-vs-new-uuidv7-in-postgresql-18/). The most rigorous Postgres benchmark comparing insert performance, index size, and fragmentation.
 - [Ticket Servers: Distributed Unique Primary Keys on the Cheap (Flickr, 2010)](https://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/). The two-MySQL-servers trick that has run since 2006.
@@ -541,7 +541,7 @@ A: With 12 sequence bits, the ceiling is 4,096 IDs per ms. On exhaustion, the ge
 
 [^8]: Kay Kremerskothen (Flickr), "Ticket Servers: Distributed Unique Primary Keys on the Cheap", 2010-02-08. https://code.flickr.net/2010/02/08/ticket-servers-distributed-unique-primary-keys-on-the-cheap/
 
-[^9]: Instagram Engineering, "Sharding & IDs at Instagram", 2012. https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c (original: https://instagram-engineering.tumblr.com/post/10853187575/sharding-ids-at-instagram)
+[^9]: Instagram Engineering, "Sharding & IDs at Instagram", 2012. https://web.archive.org/web/20210112134155/https://instagram-engineering.com/sharding-ids-at-instagram-1cf5a71e5a5c (original: https://instagram-engineering.tumblr.com/post/10853187575/sharding-ids-at-instagram)
 
 [^10]: sony/sonyflake v2 README. https://github.com/sony/sonyflake
 

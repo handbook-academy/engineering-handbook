@@ -538,7 +538,7 @@ A: Whisper emits phantom transcripts like "thank you for watching" or "please su
 
 [^16]: SignalWire, "FreeSWITCH And The Opus Audio Codec". https://developer.signalwire.com/freeswitch/FreeSWITCH-Explained/Modules/mod-opus/FreeSWITCH-And-The-Opus-Audio-Codec_12517398/
 
-[^17]: AssemblyAI, "Twilio phone agent with AssemblyAI Universal-3 Pro Streaming". https://www.assemblyai.com/blog/twilio-phone-agent-with-assemblyai-universal-3-pro-streaming
+[^17]: AssemblyAI, "Twilio phone agent with AssemblyAI Universal-3 Pro Streaming". https://web.archive.org/web/20260616075820/https://www.assemblyai.com/blog/twilio-phone-agent-with-assemblyai-universal-3-pro-streaming
 
 [^18]: Apple Machine Learning Research, "Apple Intelligence Foundation Language Models", 2024. https://machinelearning.apple.com/research/apple-intelligence-foundation-language-models
 

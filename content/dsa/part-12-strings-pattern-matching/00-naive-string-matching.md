@@ -140,7 +140,7 @@ The pattern admits no canonical Hard problem on its own. The LeetCode Hards tagg
 
 [^clrs]: Cormen, Leiserson, Rivest, Stein. *Introduction to Algorithms*, 4th ed., MIT Press, 2022. §32.1 "The naive string-matching algorithm." The procedure `NAIVE-STRING-MATCHER(T, P)` with loop bound `for s = 0 to n - m`; worst-case bound `O((n - m + 1) m)`.
 
-[^chl]: Crochemore, Hancart, Lecroq. *Algorithms on Strings*, Cambridge University Press, 2007. §1.2 "Brute force algorithm." Companion site at [monge.univ-mlv.fr/~lecroq/string](https://monge.univ-mlv.fr/~lecroq/string/) with the canonical pseudocode and worst-case analysis.
+[^chl]: Crochemore, Hancart, Lecroq. *Algorithms on Strings*, Cambridge University Press, 2007. §1.2 "Brute force algorithm." Companion site at [monge.univ-mlv.fr/~lecroq/string](https://web.archive.org/web/20241217120010/http://monge.univ-mlv.fr/~lecroq/string/) with the canonical pseudocode and worst-case analysis.
 
 [^wiki-kmp]: Wikipedia, "Knuth-Morris-Pratt algorithm." [en.wikipedia.org/wiki/Knuth-Morris-Pratt_algorithm](https://en.wikipedia.org/wiki/Knuth%E2%80%93Morris%E2%80%93Pratt_algorithm). The "Background" section gives the adversarial pair (`s = "AAAA...A"` of length 1M, `w = 999 As followed by B`) with the resulting one-billion-comparison worst case, and the average-case `Θ(n)` argument for uniform random text.
 

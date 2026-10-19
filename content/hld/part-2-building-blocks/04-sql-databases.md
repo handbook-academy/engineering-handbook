@@ -412,7 +412,7 @@ FROM pg_stat_activity WHERE state != 'idle' ORDER BY duration DESC;
 [^15]: PostgreSQL Documentation, "Index Types". https://www.postgresql.org/docs/current/indexes-types.html
 [^16]: PostgreSQL Documentation, "Multicolumn Indexes". https://www.postgresql.org/docs/current/indexes-multicolumn.html
 [^17]: PostgreSQL Documentation, "Index-Only Scans and Covering Indexes". https://www.postgresql.org/docs/current/indexes-index-only-scans.html
-[^18]: Instagram Engineering, "Handling Growth with Postgres: 5 Tips From Instagram", 2013. https://instagram-engineering.com/handling-growth-with-postgres-5-tips-from-instagram-d5d7e7ffdfcb
+[^18]: Instagram Engineering, "Handling Growth with Postgres: 5 Tips From Instagram", 2013. https://web.archive.org/web/20240126214634/https://instagram-engineering.com/handling-growth-with-postgres-5-tips-from-instagram-d5d7e7ffdfcb
 [^19]: Postgres.ai, "Over-indexing" (on HOT updates and write amplification). https://postgres.ai/docs/postgres-howtos/performance-optimization/indexing/over-indexing
 [^20]: PostgreSQL Documentation, "Using EXPLAIN" and "Query Planning". https://www.postgresql.org/docs/current/using-explain.html
 [^21]: PostgreSQL Documentation, "pg_stat_statements". https://www.postgresql.org/docs/current/pgstatstatements.html

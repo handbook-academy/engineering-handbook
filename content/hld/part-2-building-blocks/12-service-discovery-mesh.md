@@ -283,7 +283,7 @@ Calculate the per-pod memory cost of each option across 80 services (assume 3 re
 
 ## Further Reading
 
-- [Matt Klein, "Service mesh data plane vs. control plane" (2017)](https://blog.envoyproxy.io/service-mesh-data-plane-vs-control-plane-2774e720f7fc) - The taxonomy article that named the data plane/control plane split; required reading before evaluating any mesh.
+- [Matt Klein, "Service mesh data plane vs. control plane" (2017)](https://web.archive.org/web/20190603132747/https://blog.envoyproxy.io/service-mesh-data-plane-vs-control-plane-2774e720f7fc) - The taxonomy article that named the data plane/control plane split; required reading before evaluating any mesh.
 - [Linkerd blog, "Under the hood of Linkerd2-proxy" (2020)](https://linkerd.io/2020/07/23/under-the-hood-of-linkerds-state-of-the-art-rust-proxy-linkerd2-proxy/) - Best single article on why a purpose-built Rust micro-proxy wins on tail latency versus a general-purpose C++ proxy.
 - [Netflix Tech Blog, "Zero Configuration Service Mesh with On-Demand Cluster Discovery" (2023)](https://netflixtechblog.com/zero-configuration-service-mesh-with-on-demand-cluster-discovery-ac6483b52a51) - Real migration story from Eureka + Ribbon to Envoy; shows the pain of maintaining per-language discovery clients.
 - [Kubernetes Blog, "Scaling Kubernetes Networking with EndpointSlices" (2020)](https://kubernetes.io/blog/2020/09/02/scaling-kubernetes-networking-with-endpointslices/) - Why the old Endpoints API broke at scale and how EndpointSlices fix it with 100-endpoint shards.
@@ -337,7 +337,7 @@ Calculate the per-pod memory cost of each option across 80 services (assume 3 re
 [^3]: Kubernetes documentation, "Virtual IPs and Service Proxies". https://kubernetes.io/docs/reference/networking/virtual-ips/
 [^4]: Rob Scott, "Scaling Kubernetes Networking With EndpointSlices", Kubernetes blog, Sep 2, 2020. https://kubernetes.io/blog/2020/09/02/scaling-kubernetes-networking-with-endpointslices/
 [^5]: Cilium documentation, "Kubernetes Without kube-proxy". https://docs.cilium.io/en/stable/network/kubernetes/kubeproxy-free/
-[^6]: Matt Klein, "Service mesh data plane vs. control plane", Envoy Proxy blog, Oct 10, 2017. https://blog.envoyproxy.io/service-mesh-data-plane-vs-control-plane-2774e720f7fc
+[^6]: Matt Klein, "Service mesh data plane vs. control plane", Envoy Proxy blog, Oct 10, 2017. https://web.archive.org/web/20190603132747/https://blog.envoyproxy.io/service-mesh-data-plane-vs-control-plane-2774e720f7fc
 [^7]: CNCF, "Cloud Native Computing Foundation Reaffirms Istio Maturity with Project Graduation", Jul 12, 2023. https://www.cncf.io/announcements/2023/07/12/cloud-native-computing-foundation-reaffirms-istio-maturity-with-project-graduation/
 [^8]: William Morgan, "Benchmarking Linkerd and Istio: 2021 Redux", Linkerd blog, Nov 29, 2021. https://linkerd.io/2021/11/29/linkerd-vs-istio-benchmarks-2021/
 [^9]: Eliza Weisman, "Under the hood of Linkerd's state-of-the-art Rust proxy, Linkerd2-proxy", Linkerd blog, Jul 23, 2020. https://linkerd.io/2020/07/23/under-the-hood-of-linkerds-state-of-the-art-rust-proxy-linkerd2-proxy/

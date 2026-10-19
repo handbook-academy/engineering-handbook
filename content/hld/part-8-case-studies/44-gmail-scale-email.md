@@ -408,7 +408,7 @@ This handles the crash scenario: the new message's increment arrives, pushing re
 - [Ridding Gmail of 100 million more spam messages with TensorFlow](https://workspace.google.com/blog/product-announcements/ridding-gmail-of-100-million-more-spam-messages-with-tensorflow). Google's public engineering note on the ML layer of the spam cascade; explains what categories TensorFlow catches that rules miss.
 - [RFC 8620 (JMAP Core) and RFC 8621 (JMAP Mail)](https://jmap.io/spec.html). The modern replacement for IMAP; batched JSON-over-HTTPS with back-references eliminates multi-round-trip mobile sync.
 - [Exchange Online Data Resiliency](https://learn.microsoft.com/en-us/compliance/assurance/assurance-exchange-data-resiliency/). Microsoft's public architecture for DAG replication, lagged copies, Shadow Redundancy, and Safety Net.
-- [jwz threading algorithm](https://www.jwz.org/doc/threading.html). The canonical email threading algorithm from Netscape Mail (1997); still the foundation of Gmail's conversation view.
+- [jwz threading algorithm](https://web.archive.org/web/20260906130932/https://www.jwz.org/doc/threading.html). The canonical email threading algorithm from Netscape Mail (1997); still the foundation of Gmail's conversation view.
 - [Smart Compose: Using Neural Networks to Help Write Emails](https://research.google/blog/smart-compose-using-neural-networks-to-help-write-emails/). The hybrid BoW+RNN-LM model serving per-keystroke suggestions at ~100 ms; shows what server-side plaintext access enables.
 
 ## Flashcards
@@ -503,7 +503,7 @@ A: Each message-attachment reference stores a random magic number M. On delete, 
 
 [^9]: RFC 5322, "Internet Message Format". https://www.rfc-editor.org/rfc/rfc5322
 
-[^10]: Jamie Zawinski, "message threading" (jwz threading algorithm). https://www.jwz.org/doc/threading.html
+[^10]: Jamie Zawinski, "message threading" (jwz threading algorithm). https://web.archive.org/web/20260906130932/https://www.jwz.org/doc/threading.html
 
 [^11]: Google, "Email sender guidelines", Google Workspace Admin Help. https://support.google.com/a/answer/81126
 
