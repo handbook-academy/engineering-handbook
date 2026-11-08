@@ -36,7 +36,7 @@ There are three classes of mock partner, each doing a different job.
 | Class | What it gives you | Cost (verified May 2026) | Cadence |
 |---|---|---|---|
 | Trusted peer (rotating, not fixed) | Talk-while-coding reps; bidirectional learning | Free | 1 per week |
-| Anonymous platform peer (Pramp, Exponent) | Pressure of stranger feedback; topic-matched, accountability | Free[^10] | Every 2 to 3 weeks |
+| Anonymous platform peer (Pramp, Exponent, [Practick](https://practick.io)) | Pressure of stranger feedback; topic-matched, accountability | Free[^10] | Every 2 to 3 weeks |
 | Paid expert (interviewing.io, ex-FAANG via referral) | Calibrated against real-loop bar; layered questions; company-specific style | $100 to $250 per session[^1][^6] | Every 4 to 6 weeks |
 
 Pramp is the standard peer-platform entry point. It pairs strangers, swaps roles at the 30-minute mark, and bakes the interviewer-side experience into every session. The platform's own data point is that "you learn as much from interviewing others as you do from being interviewed,"[^10] which is the mechanism: playing interviewer forces you to internalize the rubric, and once internalized the rubric runs in your head during your own loops. Free is the right price for a session that compounds in both directions.
