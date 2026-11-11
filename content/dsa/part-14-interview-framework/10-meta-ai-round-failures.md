@@ -91,7 +91,7 @@ The diagnostic, which works on your last practice session as well as on a real r
 
 3. **Run cadence.** How many times did you click run between the start of phase 2 and the end of the session? Under five in a 60-minute round is a flagged signal.[^3] The rhythm interviewers want is prompt, review, run, confirm, move on.[^1]
 
-4. **Rejection.** Did you ever discard an AI suggestion outright — not refine, not re-prompt, but throw it away and write something different yourself? Candidates who never reject an AI output score in the bottom band on the "critical evaluation" axis.[^9]
+4. **Rejection.** Did you ever discard an AI suggestion outright — not refine, not re-prompt, but throw it away and write something different yourself? Candidates who never reject an AI output score in the bottom band on the "critical evaluation" axis.[^9] On one practice platform, 103 of the 172 people who decided on five or more AI proposals never rejected one.[^11]
 
 5. **No-AI fallback.** If the AI had been removed at minute 20, would you still have finished phase 2? If the answer is no, you are in the V1 pattern, and the AI nerf in the actual interview is the trap that springs.[^1]
 
@@ -126,3 +126,5 @@ This format is six months old at the time of writing.[^2] The rubric is still be
 [^9]: CoderPad, "5 Skills of the Future Developer: A Framework for Evaluating AI Fluency," 2026-04-02. The industry rubric (5 skills, 5-point scoring); the State of Tech Hiring 2026 finding that catching and fixing AI mistakes is the top recruiter signal. <https://coderpad.io/blog/interviewing/5-skills-of-the-future-developer-a-framework-for-evaluating-ai-fluency/>.
 
 [^10]: Kannika Peña with Coach John (Meta engineering manager who has interviewed 3,000+ candidates), "Meta Coding Interview (questions, AI-enabled round, prep)," IGotAnOffer, last updated 2026-02-04. The official Meta AI-round structure (Part 1 explore/fix, Part 2 implement, Part 3 extend/improve); the "silently pasting AI output is a red flag" rubric language. <https://igotanoffer.com/en/advice/meta-coding-interviews>.
+
+[^11]: Nyrion, "The state of AI coding interviews, 2026," accessed 2026-11-10. Practice-session data, not real interviews: 3,245 accept or reject decisions on AI code proposals by 318 people, 2026-10-07 to 2026-11-08. <https://nyrion.ai/research/ai-coding-interviews-2026>.
