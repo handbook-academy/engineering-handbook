@@ -31,19 +31,22 @@ The mirror failure is mocking too late. A candidate who solves 200 LeetCode prob
 
 ## Which mock service should I use?
 
-There are three classes of mock partner, each doing a different job.
+There are three classes of mock partner, each doing a different job, and a fourth option for AI-assisted rounds.
 
 | Class | What it gives you | Cost (verified May 2026) | Cadence |
 |---|---|---|---|
 | Trusted peer (rotating, not fixed) | Talk-while-coding reps; bidirectional learning | Free | 1 per week |
 | Anonymous platform peer (Pramp, Exponent) | Pressure of stranger feedback; topic-matched, accountability | Free[^10] | Every 2 to 3 weeks |
 | Paid expert (interviewing.io, ex-FAANG via referral) | Calibrated against real-loop bar; layered questions; company-specific style | $100 to $250 per session[^1][^6] | Every 4 to 6 weeks |
+| AI-assisted round practice (Nyrion) | The AI round's format: an unfamiliar multi-file codebase, an assistant in the editor, tests on every Submit, and an interviewer who asks about your code | Free plan; Pro $19 a month[^11] | Weekly in the 2 to 4 weeks before an AI-assisted round |
 
 Pramp is the standard peer-platform entry point. It pairs strangers, swaps roles at the 30-minute mark, and bakes the interviewer-side experience into every session. The platform's own data point is that "you learn as much from interviewing others as you do from being interviewed,"[^10] which is the mechanism: playing interviewer forces you to internalize the rubric, and once internalized the rubric runs in your head during your own loops. Free is the right price for a session that compounds in both directions.
 
 interviewing.io is the paid-expert standard. The interviewer pool is filtered to the top 5% of mock conductors by candidate-side rating, drawn from engineers at Meta, Google, Stripe, and frontier AI labs.[^1] You pay per session, in the $100 to $250 range as of mid-2026, and you get the only feedback that's been calibrated against hundreds of thousands of comparable sessions. Use one before a high-stakes loop. Don't use one as your weekly mock.
 
 Hello Interview ran a third option until May 2026, when they wound down their 1:1 mock and mentorship program with the rationale that "1:1 work can only ever reach so many people," refocusing on async products like Guided Practice and AI-assisted tutoring.[^6] That decision is itself signal: live expert mocks remain high-leverage but supply-constrained, and the market is shifting toward async plus AI augmentation. Book live experts deliberately.
+
+The three classes above train talking and pressure. AI-assisted rounds such as Meta's also need reps in the format itself: an unfamiliar codebase, an assistant, and follow-up questions about code you did not write. Nyrion runs practice rounds in that format, with tests on every Submit, an interviewer who asks about your code, and a report at the end. Use it in the weeks before an AI-assisted loop, alongside the human mocks, not instead of them.
 
 The class to avoid is "same friend, every week, forever." Two friends mocking each other drift toward "good job, you got it" because raising harder questions feels rude. Mutual feedback flatlines. Mix one repeating peer with one anonymous platform mock every two to three weeks and one paid expert in the final stretch.
 
@@ -126,3 +129,5 @@ Then read [Communication during the interview](./02-communicating.md), which is 
 [^9]: Fahim ul Haq, "How do I prepare for coding interviews in three months?" Educative, March 2026. [educative.io/blog/how-do-i-prepare-for-coding-interviews-in-three-months](https://www.educative.io/blog/how-do-i-prepare-for-coding-interviews-in-three-months).
 
 [^10]: Pramp FAQ, "Frequently Asked Questions on Pramp." Pramp / Exponent, accessed 2026-05-20. [pramp.com/faq](https://www.pramp.com/faq).
+
+[^11]: Nyrion, "Pricing." Nyrion, accessed 2026-11-10. Free plan with one complete problem, no card; Pro at $19 a month. [nyrion.ai/pricing](https://nyrion.ai/pricing).
